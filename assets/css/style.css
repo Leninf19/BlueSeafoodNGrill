@@ -1520,7 +1520,7 @@ textarea.input-field {
   .contact-number { --fontSize-body-1: 3rem; }
 
 
-  @media (max-width: 574px) {
+@media (max-width: 574px) {
     /* Hide logo from header when scrolling */
     .header .logo {
         display: none !important;
@@ -1544,58 +1544,58 @@ textarea.input-field {
     }
 }
 
-  /**
-   * TOPBAR
-   */
-   @media (max-width: 574px) {
-    .topbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px 15px;
-        background-color: var(--eerie-black-4);
-    }
+@media (max-width: 574px) {
+  .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 15px;
+      background-color: var(--eerie-black-4);
+  }
 
-    .topbar a {
-        text-decoration: none;
-    }
+  .topbar a {
+      text-decoration: none;
+  }
 
-    .topbar-item {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        color: white;
-        font-size: 14px;
-    }
+  .topbar-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: white;
+      font-size: 14px;
+  }
 
-    /* Make the mobile "Reserve A Table" button match desktop styling */
-    .topbar-reserve-btn {
-        display: inline-block;
-        background-color: transparent;
-        color: var(--gold-crayola);
-        font-size: var(--fontSize-label-2);
-        font-weight: bold;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-        border: 2px solid var(--gold-crayola);
-        padding: 8px 20px;
-        border-radius: 5px;
-        transition: all 0.3s ease;
-        text-align: center;
-    }
+  /* Make the mobile "Reserve A Table" button match desktop styling */
+  .topbar-reserve-btn {
+      display: inline-block;
+      background-color: transparent;
+      color: var(--gold-crayola);
+      font-size: var(--fontSize-label-2);
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      border: 2px solid var(--gold-crayola);
+      padding: 8px 20px;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+      text-align: center;
+  }
 
-    .topbar-reserve-btn:hover {
-        background-color: var(--gold-crayola);
-        color: var(--black);
-    }
+  .topbar-reserve-btn:hover {
+      background-color: var(--gold-crayola);
+      color: var(--black);
+  }
 }
 
 @media (min-width: 575px) {
-    .mobile-only {
-        display: none !important;
-    }
+  .mobile-only {
+      display: none !important;
+  }
 }
 
+  /**
+   * TOPBAR
+   */
 
   .topbar {
     display: block;
@@ -1634,6 +1634,27 @@ textarea.input-field {
   .topbar .link { transition: var(--transition-1); }
 
   .topbar .link:is(:hover, :focus-visible) { color: var(--gold-crayola); }
+
+  @media (max-width: 574px) {
+    .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 12px; /* Reduce padding */
+    }
+
+    .topbar-item {
+        font-size: 12px !important; /* Make phone number smaller */
+    }
+
+    /* Make "Reserve A Table" button smaller */
+    .topbar-reserve-btn {
+        font-size: 10px !important;
+        padding: 5px 12px !important; /* Reduce padding */
+        border-width: 1px !important; /* Make border thinner */
+        letter-spacing: 1px !important;
+    }
+}
 
 
 
