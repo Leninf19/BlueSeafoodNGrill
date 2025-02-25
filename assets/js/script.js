@@ -71,17 +71,19 @@ const hideHeader = function () {
 };
 
 window.addEventListener("scroll", function () {
-  if (window.innerWidth >= 575) { // Desktop only
+  if (window.innerWidth > 574) { // Desktop behavior remains
     if (window.scrollY >= 50) {
       header.classList.add("active");
       backTopBtn.classList.add("active");
-      hideHeader();
     } else {
       header.classList.remove("active");
       backTopBtn.classList.remove("active");
     }
+  } else {
+    header.classList.remove("active"); // Ensures navbar remains static on mobile
   }
 });
+
 
 const logo = document.querySelector(".header .logo");
 const reserveBtn = document.querySelector(".header .btn");
