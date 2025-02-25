@@ -36,12 +36,27 @@ const addEventOnElements = function (elements, eventType, callback) {
 const navbar = document.querySelector("[data-navbar]");
 const navTogglers = document.querySelectorAll("[data-nav-toggler]");
 const overlay = document.querySelector("[data-overlay]");
+const navbarLogo = document.querySelector(".navbar .logo"); // Selects logo inside menu
 
 const toggleNavbar = function () {
-  navbar.classList.toggle("active");
-  overlay.classList.toggle("active");
-  document.body.classList.toggle("nav-active");
-}
+    navbar.classList.toggle("active");
+    overlay.classList.toggle("active");
+    document.body.classList.toggle("nav-active");
+
+    // Ensure logo is shown only when the menu is open
+    if (navbar.classList.contains("active")) {
+        navbarLogo.style.display = "block"; // Show logo when menu is open
+    } else {
+        navbarLogo.style.display = "none"; // Hide logo when menu is closed
+    }
+};
+
+// Attach the function to the menu open/close buttons
+navTogglers.forEach(toggler => {
+    toggler.addEventListener("click", toggleNavbar);
+});
+
+
 
 addEventOnElements(navTogglers, "click", toggleNavbar);
 
@@ -90,15 +105,20 @@ const reserveBtn = document.querySelector(".header .btn");
 
 window.addEventListener("scroll", function () {
   if (window.innerWidth <= 574) { // Apply only for mobile
-    if (window.scrollY > 50) {
-      logo.style.display = "none";
-      reserveBtn.style.display = "none";
+    logo.style.display = "none"; // Hide logo permanently on mobile when scrolling
+    reserveBtn.style.display = "none"; // Hide reserve button as well
+  } else {
+    if (window.scrollY === 0) {
+      logo.style.display = "block"; // Show logo on desktop when at top
+      reserveBtn.style.display = "block";
     } else {
-      logo.style.display = "block";
+      logo.style.display = "block"; // Keep it visible on desktop
       reserveBtn.style.display = "block";
     }
   }
 });
+
+
 
 
 const navButton = document.querySelector(".nav-open-btn");
