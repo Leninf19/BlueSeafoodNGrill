@@ -36,20 +36,26 @@ const addEventOnElements = function (elements, eventType, callback) {
 const navbar = document.querySelector("[data-navbar]");
 const navTogglers = document.querySelectorAll("[data-nav-toggler]");
 const overlay = document.querySelector("[data-overlay]");
-const navbarLogo = document.querySelector(".navbar .logo"); // Selects logo inside menu
+const navbarLogo = document.querySelector(".navbar-logo-container"); // Select the logo inside the menu
 
 const toggleNavbar = function () {
     navbar.classList.toggle("active");
     overlay.classList.toggle("active");
     document.body.classList.toggle("nav-active");
 
-    // Ensure logo is shown only when the menu is open
+    // Ensure logo is only shown when the menu is open
     if (navbar.classList.contains("active")) {
-        navbarLogo.style.display = "block"; // Show logo when menu is open
+        navbarLogo.style.display = "flex"; // Show logo when menu is open
     } else {
         navbarLogo.style.display = "none"; // Hide logo when menu is closed
     }
 };
+
+// Apply event listener to menu buttons
+navTogglers.forEach(toggler => {
+    toggler.addEventListener("click", toggleNavbar);
+});
+
 
 // Attach the function to the menu open/close buttons
 navTogglers.forEach(toggler => {
