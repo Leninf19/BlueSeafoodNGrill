@@ -57,24 +57,29 @@ const backTopBtn = document.querySelector("[data-back-top-btn]");
 let lastScrollPos = 0;
 
 const hideHeader = function () {
-  const isScrollBottom = lastScrollPos < window.scrollY;
-  if (isScrollBottom) {
-    header.classList.add("hide");
+  if (window.innerWidth >= 575) { // Only apply effect on desktop
+    const isScrollBottom = lastScrollPos < window.scrollY;
+    if (isScrollBottom) {
+      header.classList.add("hide");
+    } else {
+      header.classList.remove("hide");
+    }
+    lastScrollPos = window.scrollY;
   } else {
-    header.classList.remove("hide");
+    header.classList.remove("hide"); // Keep header visible on mobile
   }
-
-  lastScrollPos = window.scrollY;
-}
+};
 
 window.addEventListener("scroll", function () {
-  if (window.scrollY >= 50) {
-    header.classList.add("active");
-    backTopBtn.classList.add("active");
-    hideHeader();
-  } else {
-    header.classList.remove("active");
-    backTopBtn.classList.remove("active");
+  if (window.innerWidth >= 575) { // Desktop only
+    if (window.scrollY >= 50) {
+      header.classList.add("active");
+      backTopBtn.classList.add("active");
+      hideHeader();
+    } else {
+      header.classList.remove("active");
+      backTopBtn.classList.remove("active");
+    }
   }
 });
 
