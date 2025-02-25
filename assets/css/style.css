@@ -632,9 +632,17 @@ body.nav-active { overflow: hidden; }
 }
 
 .nav-open-btn {
-  padding: 12px;
-  padding-inline-end: 0;
+  position: fixed;
+  top: 20px; /* Default position at the top */
+  right: 20px; /* Keeps it on the right */
+  z-index: 1000; /* Ensures it stays above other elements */
+  transition: top 0.3s ease-in-out;
 }
+
+.scrolled .nav-open-btn {
+  top: 10px; /* Moves it back up when scrolling down */
+}
+
 
 .nav-open-btn .line {
   width: 30px;
@@ -689,8 +697,9 @@ body.nav-active { overflow: hidden; }
 .navbar .close-btn:is(:hover, :focus-visible) { color: var(--gold-crayola); }
 
 .navbar .logo {
-  width: 300px; /* Adjust this value as needed */
-  height: auto; /* Maintains aspect ratio */
+  max-width: max-content;
+  margin-inline: auto;
+  margin-block-end: 60px;
 }
 
 .navbar-list {
@@ -1441,23 +1450,30 @@ textarea.input-field {
  * responsive for larger than 575px screen
  */
 
- @media (max-width: 574px) { /* Target mobile devices */
-
-  body {
+ @media (max-width: 574px) {  
+  .hero {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    min-height: 100vh; /* Ensures vertical centering */
-    text-align: center; /* Centers inline text */
+    justify-content: center;
+    min-height: 100vh; /* Ensures it takes the full screen */
+    padding: 50px 20px; /* Adjusts spacing */
+    text-align: center; /* Centers text */
   }
 
-  .container { 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%; /* Ensures full width */
+  .hero .slider-bg img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .hero-title {
+    font-size: 2rem; /* Makes text smaller for better fit */
+  }
+
+  .hero .btn {
+    font-size: 1.4rem;
+    padding: 10px 20px;
   }
 }
 
