@@ -1495,9 +1495,6 @@ textarea.input-field {
     }
 }
 
-
-
-
   .hero-title {
     font-size: 2rem; /* Makes text smaller for better fit */
   }
@@ -1699,6 +1696,7 @@ textarea.input-field {
     width: calc(50% - 20px);
     margin-inline: auto;
   }
+  
 
 
 
@@ -1997,27 +1995,26 @@ textarea.input-field {
    * HEADER
    */
    @media (max-width: 574px) {
-    .header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background-color: var(--eerie-black-4); /* Ensures navbar background is always visible */
-      padding: 15px 20px;
-      z-index: 1000;
-      transition: none; /* Disables transition effects */
+    .reserve-btn, 
+    .btn.btn-secondary {
+        display: none !important;
     }
-  
-    .nav-open-btn {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      z-index: 1001;
+
+    .header .logo {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 80px; /* Adjust size if needed */
+        height: auto;
+        transition: opacity 0.3s ease-in-out;
     }
-  
-    .navbar {
-      display: none; /* Prevents dropdown */
+
+    .header.scrolled .logo {
+        opacity: 0; /* Ensures logo disappears on scroll */
+        pointer-events: none;
     }
-  }
+}
+
   
   .nav-open-btn,
   .navbar > *:not(.navbar-list),

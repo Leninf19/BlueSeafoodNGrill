@@ -89,14 +89,17 @@ const logo = document.querySelector(".header .logo");
 const reserveBtn = document.querySelector(".header .btn");
 
 window.addEventListener("scroll", function () {
-  if (window.scrollY === 0) {
-    logo.style.display = "none";
-    reserveBtn.style.display = "none";
-  } else {
-    logo.style.display = "block";
-    reserveBtn.style.display = "block";
+  if (window.innerWidth <= 574) { // Apply only for mobile
+    if (window.scrollY > 50) {
+      logo.style.display = "none";
+      reserveBtn.style.display = "none";
+    } else {
+      logo.style.display = "block";
+      reserveBtn.style.display = "block";
+    }
   }
 });
+
 
 const navButton = document.querySelector(".nav-open-btn");
 
