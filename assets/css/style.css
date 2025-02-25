@@ -689,9 +689,8 @@ body.nav-active { overflow: hidden; }
 .navbar .close-btn:is(:hover, :focus-visible) { color: var(--gold-crayola); }
 
 .navbar .logo {
-  max-width: max-content;
-  margin-inline: auto;
-  margin-block-end: 60px;
+  width: 300px; /* Adjust this value as needed */
+  height: auto; /* Maintains aspect ratio */
 }
 
 .navbar-list {
@@ -1442,22 +1441,25 @@ textarea.input-field {
  * responsive for larger than 575px screen
  */
 
-@media (min-width: 575px) {
+ @media (max-width: 574px) { /* Target mobile devices */
 
-  /**
-   * CUSTOM PROPERTY
-   */
-
-  :root {
-
-    /**
-     * typography
-     */
-
-    --fontSize-body-2: 2rem;
-
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Ensures vertical centering */
+    text-align: center; /* Centers inline text */
   }
 
+  .container { 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Ensures full width */
+  }
+}
 
 
   /**
@@ -1629,10 +1631,6 @@ textarea.input-field {
     bottom: 0;
     min-width: max-content;
   }
-
-}
-
-
 
 
 
@@ -1891,15 +1889,24 @@ textarea.input-field {
 
 }
 
+.footer {
+  width: 100%;
+  text-align: center;
+}
 
-
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
 
 /**
  * responsive for larger than 1200px screen
  */
 
-@media (min-width: 1200px) {
+@media (min-width: 450px) {
 
   /**
    * CUSTOM PROPERTY
