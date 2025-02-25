@@ -1547,6 +1547,55 @@ textarea.input-field {
   /**
    * TOPBAR
    */
+   @media (max-width: 574px) {
+    .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 15px;
+        background-color: var(--eerie-black-4);
+    }
+
+    .topbar a {
+        text-decoration: none;
+    }
+
+    .topbar-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: white;
+        font-size: 14px;
+    }
+
+    /* Make the mobile "Reserve A Table" button match desktop styling */
+    .topbar-reserve-btn {
+        display: inline-block;
+        background-color: transparent;
+        color: var(--gold-crayola);
+        font-size: var(--fontSize-label-2);
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        border: 2px solid var(--gold-crayola);
+        padding: 8px 20px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+
+    .topbar-reserve-btn:hover {
+        background-color: var(--gold-crayola);
+        color: var(--black);
+    }
+}
+
+@media (min-width: 575px) {
+    .mobile-only {
+        display: none !important;
+    }
+}
+
 
   .topbar {
     display: block;
