@@ -1771,6 +1771,38 @@ textarea.input-field {
     min-width: max-content;
   }
 
+  @media (max-width: 574px) {
+    .footer-section.has-bg-image.text-center {
+        padding: 20px 10px; /* Adds padding to keep things balanced */
+    }
+
+    .footer-list {
+        display: flex;
+        flex-wrap: wrap; /* Allows links to wrap into multiple rows */
+        justify-content: center; /* Centers links */
+        gap: 10px 20px; /* Space between links */
+        max-width: 90%;
+        margin: 0 auto;
+    }
+
+    .footer-item {
+        flex: 1 1 calc(50% - 20px); /* Makes a two-column layout */
+        text-align: center;
+    }
+
+    .footer-link {
+        display: block;
+        font-size: 12px; /* Adjust text size */
+        padding: 8px 0;
+        color: var(--gold-crayola);
+        transition: color 0.3s ease;
+    }
+
+    .footer-link:hover {
+        color: var(--white); /* Highlight effect on hover */
+    }
+}
+
 
 
 /**
