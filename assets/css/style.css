@@ -947,51 +947,9 @@ body.nav-active { overflow: hidden; }
 
 .service .card-title { margin-block-end: 12px; }
 
-@media (max-width: 574px) {
-  /* Make the service items align in a row */
-  .grid-list {
-      display: flex;
-      flex-direction: row; /* Align items in a row */
-      justify-content: center; /* Center them */
-      gap: 10px; /* Add space between items */
-      flex-wrap: nowrap; /* Prevent wrapping */
-  }
 
-  /* Reduce the size of images */
-  .service-card .card-banner {
-      height: 120px; /* Adjust image size */
-      overflow: hidden;
-  }
 
-  .service-card .card-banner img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-  }
 
-  /* Lower the middle image slightly */
-  .service-card:nth-child(2) {
-      margin-top: 15px; /* Push the middle image down */
-  }
-
-  /* Reduce size of "Food," "Drinks," and "Desserts" text */
-  .service-card .card-title {
-      font-size: 1.2rem; /* Adjust label size */
-      text-align: center;
-  }
-
-  /* Adjust button size */
-  .btn-text {
-      font-size: 1rem; /* Smaller button text */
-      padding: 5px 8px; /* Reduce button padding */
-  }
-
-  /* Make each service card take equal space */
-  .service-card {
-      flex: 1; /* Makes each item take up equal space */
-      min-width: 30%; /* Ensures three fit in a row */
-  }
-}
 
 
 /*-----------------------------------*\
