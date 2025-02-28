@@ -699,7 +699,7 @@ body.nav-active { overflow: hidden; }
 .navbar .logo {
   max-width: max-content;
   margin-inline: auto;
-  margin-block-end: 60px;
+  margin-block-end: 100px;
 }
 
 .navbar-list {
@@ -1499,7 +1499,7 @@ textarea.input-field {
 }
 
   .hero-title {
-    font-size: 2rem; /* Makes text smaller for better fit */
+    font-size: 4rem; /* Makes text smaller for better fit */
   }
 
   .hero .btn {
@@ -1520,29 +1520,30 @@ textarea.input-field {
   .contact-number { --fontSize-body-1: 3rem; }
 
 
-@media (max-width: 574px) {
-    /* Hide logo from header when scrolling */
-    .header .logo {
-        display: none !important;
-    }
-
-    /* Ensure logo is visible only inside the dropdown */
-    .navbar .logo {
-        display: block;
+  @media (max-width: 574px) {
+    .hero-logo-container {
+        position: absolute;
+        top: 50px; /* Adjust if needed */
+        left: 50%;
+        transform: translateX(-50%);
         text-align: center;
-        margin: 20px auto;
+        z-index: 5;
+        display: block; /* Make sure it's visible on mobile */
     }
 
-    .navbar .logo img {
-        width: 150px; /* Adjust size as needed */
+    .hero-logo {
+        max-width: 550px; /* Adjust size as needed */
         height: auto;
     }
+}
 
-    /* Hide logo when the menu is closed */
-    .navbar:not(.active) .logo {
+/* Hide the logo on larger screens */
+@media (min-width: 575px) {
+    .hero-logo-container {
         display: none !important;
     }
 }
+
 
 @media (max-width: 574px) {
   .topbar {
@@ -1610,7 +1611,6 @@ textarea.input-field {
   }
 
   .topbar:has(~ .header.active) { transform: translateY(-100%); }
-
   .topbar-item:not(.link),
   .topbar .separator { display: none; }
 
@@ -1866,54 +1866,6 @@ textarea.input-field {
     color: var(--black);
   }
 
-  @media (max-width: 574px) {
-    .hero {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        padding: 0;
-        text-align: center;
-        overflow: hidden;
-    }
-
-    /* Ensure the logo is visible and centered */
-    .hero-logo-container {
-        position: absolute;
-        top: 10%; /* Adjusted to be above the hero text */
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 50; /* Ensures it stays above other elements */
-        display: flex;
-        justify-content: center;
-        width: 100%;
-    }
-
-    .hero-logo {
-        width: 150px; /* Adjust size if needed */
-        max-width: 60%;
-        height: auto;
-        opacity: 1; /* Make sure it's visible */
-        display: block;
-    }
-
-    /* Ensure background image does not cover the logo */
-    .hero .slider-bg {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        object-fit: cover;
-        z-index: -1; /* Keeps background behind everything */
-    }
-}
-
-
-
-
   /**
    * RESERVATION
    */
@@ -1927,8 +1879,6 @@ textarea.input-field {
   .reservation .input-wrapper:nth-child(4) {
     grid-template-columns: repeat(3, 1fr);
   }
-
-
 
   /**
    * FOOTER
@@ -2259,51 +2209,6 @@ textarea.input-field {
   }
 
   .header .btn { margin-inline-start: 0; }
-
-  @media (max-width: 574px) {
-    /* Ensure navbar is positioned correctly */
-    .navbar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        background: var(--black);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        padding-top: 80px; /* Space for logo */
-        z-index: 999;
-        overflow-y: auto;
-    }
-
-    /* Make sure logo is inside the menu */
-    .navbar-logo-container {
-        display: flex !important;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        padding: 15px 0; /* Space above & below */
-    }
-
-    .navbar-logo {
-        width: 120px; /* Adjust to fit */
-        max-width: 50%;
-        height: auto;
-        opacity: 1;
-        display: block !important;
-    }
-
-    /* Hide logo when menu is closed */
-    .navbar:not(.active) .navbar-logo-container {
-        display: none !important;
-    }
-}
-
-
-
-
   /**
    * HERO
    */
@@ -2456,32 +2361,5 @@ textarea.input-field {
   .features .shape-2 {
     bottom: 80px;
     left: 0;
-  }
-
-}
-@media (max-width: 574px) {
-  .hero {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh; /* Full screen height */
-      text-align: center;
-      position: relative;
-  }
-
-  .hero-logo {
-      display: block;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 80%; /* Adjust size as needed */
-      max-width: 300px;
-  }
-
-  .hero-logo img {
-      width: 100%;
-      height: auto;
   }
 }
