@@ -2363,3 +2363,31 @@ textarea.input-field {
     left: 0;
   }
 }
+
+/* Hide the hamburger menu on PC */
+@media (min-width: 575px) {
+  .nav-open-btn {
+      display: none !important;
+  }
+}
+
+/* Ensure it's visible on mobile */
+@media (max-width: 574px) {
+  .nav-open-btn {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+      z-index: 1100; /* Keeps it above everything */
+      display: block; /* Ensure it's visible on mobile */
+  }
+}
+
+@media (max-width: 574px) {
+  .hero-logo {
+      max-width: 6000px; /* Adjust size as needed */
+      height: auto;
+      
+      /* Soft glow effect */
+      filter: drop-shadow(0px 0px 15px rgba(255, 255, 255, 0.7));
+  }
+}

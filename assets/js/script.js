@@ -234,4 +234,3 @@ window.addEventListener("load", function () {
     heroSection.style.display = "flex";
   }
 });
-
