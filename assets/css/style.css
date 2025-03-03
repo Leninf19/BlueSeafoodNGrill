@@ -1680,7 +1680,7 @@ textarea.input-field {
     .hero-logo-container {
         position: absolute;
         top: 50px; /* Adjust if needed */
-        left: 50%;
+        left: 47.7%;
         transform: translateX(-50%);
         text-align: center;
         z-index: 5;
