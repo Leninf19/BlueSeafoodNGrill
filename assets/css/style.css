@@ -1207,7 +1207,7 @@ body.nav-active { overflow: hidden; }
 \*-----------------------------------*/
 
 .testi {
-  padding-block-end: 340px;
+  padding-block-end: 150px;  /* Reduced padding from 340px to 150px */
   position: static;
 }
 
@@ -1220,16 +1220,18 @@ body.nav-active { overflow: hidden; }
 .testi .wrapper {
   display: flex;
   justify-content: center;
-  gap: 2px;
-  margin-block: 40px 50px;
+  gap: 10px;  /* Reduced gap from 2px to 10px for better spacing between elements */
+  margin-block: 10px 20px;  /* Reduced margin from 30px to 10px and 20px */
 }
 
-.testi .separator { animation: rotate360 15s linear infinite; }
+.testi .separator { 
+  animation: rotate360 15s linear infinite;
+}
 
 .profile .img {
   margin-inline: auto;
   border-radius: var(--radius-circle);
-  margin-block-end: 15px;
+  margin-block-end: 10px; /* Reduced margin-block-end to 10px */
 }
 
 .testi .profile-name {
