@@ -1207,31 +1207,37 @@ body.nav-active { overflow: hidden; }
 \*-----------------------------------*/
 
 .testi {
-  padding-block-end: 150px;  /* Reduced padding from 340px to 150px */
-  position: static;
+  position: relative;
+  padding-block-end: 150px; /* Reduce bottom padding */
 }
 
 .testi .quote {
   font-size: 7rem;
   font-family: var(--fontFamily-forum);
   line-height: 0.7em;
+  text-align: center; /* Ensure the quote text is centered */
+  position: absolute;
+  top: 50%; /* Adjust vertical centering */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Offset by 50% for perfect centering */
+  color: white; /* Ensure visibility over the image */
 }
 
 .testi .wrapper {
   display: flex;
   justify-content: center;
-  gap: 10px;  /* Reduced gap from 2px to 10px for better spacing between elements */
-  margin-block: 10px 20px;  /* Reduced margin from 30px to 10px and 20px */
+  gap: 10px;
+  margin-block: 10px 20px;
 }
 
-.testi .separator { 
+.testi .separator {
   animation: rotate360 15s linear infinite;
 }
 
 .profile .img {
   margin-inline: auto;
   border-radius: var(--radius-circle);
-  margin-block-end: 10px; /* Reduced margin-block-end to 10px */
+  margin-block-end: 10px;
 }
 
 .testi .profile-name {
@@ -1239,9 +1245,21 @@ body.nav-active { overflow: hidden; }
   font-weight: var(--weight-bold);
   text-transform: uppercase;
   letter-spacing: var(--letterSpacing-3);
+  text-align: center;
 }
 
-
+/* Center the content within the hero section, and adjust positioning */
+.hero-content {
+  position: absolute;
+  top: 40%; /* Adjust this value to move the content lower */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  text-align: center;
+  color: white;
+  width: 100%;
+  padding: 20px;
+}
 
 
 
