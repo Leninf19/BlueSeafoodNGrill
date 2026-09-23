@@ -1,6 +1,7 @@
 /**
- * Photo library. All images are the restaurant's own photography from the previous website
- * repository. Source files live in src/assets/photos and are resized/converted (AVIF/WebP)
+ * Photo library. All images are the restaurant's own photography: from the previous website
+ * repository, plus storefront and back-entrance photos supplied in September 2026.
+ * Source files live in src/assets/photos and are resized/converted (AVIF/WebP)
  * automatically at build time.
  *
  * To add a photo: drop a JPG into src/assets/photos, import it below and give it
@@ -10,9 +11,13 @@ import seafoodBoilHero from '../assets/photos/seafood-boil-hero.jpg';
 import seafoodBoilBowl from '../assets/photos/seafood-boil-bowl.jpg';
 import sauteedJumboShrimp from '../assets/photos/sauteed-jumbo-shrimp.jpg';
 import dirtyFries from '../assets/photos/dirty-fries.jpg';
-import oystersNeon from '../assets/photos/oysters-neon.jpg';
+import oystersWide from '../assets/photos/oysters-wide.jpg';
+import oystersTall from '../assets/photos/oysters-tall.jpg';
+import oystersFeature from '../assets/photos/oysters-feature.jpg';
 import storefrontEvening from '../assets/photos/storefront-evening.jpg';
 import signDaytime from '../assets/photos/sign-daytime.jpg';
+import storefrontDay from '../assets/photos/storefront-day.jpg';
+import backEntranceNight from '../assets/photos/back-entrance-night.jpg';
 import fishOverGreens from '../assets/photos/fish-over-greens.jpg';
 import tostadas from '../assets/photos/tostadas.jpg';
 import dessertCreamPour from '../assets/photos/dessert-cream-pour.jpg';
@@ -36,13 +41,29 @@ export const photos = {
     src: dirtyFries,
     alt: 'A fry basket of golden dirty fries tossed with parmesan and herbs, lifted by a gloved hand in the kitchen',
   },
-  oystersNeon: {
-    src: oystersNeon,
-    alt: 'A platter of oysters on the half shell beneath the restaurant’s glowing blue “BLUE” neon sign',
+  oystersWide: {
+    src: oystersWide,
+    alt: 'Oysters on the half shell on a platter of ice with sauce cups, in front of a glowing blue “BLUE” neon sign',
+  },
+  oystersTall: {
+    src: oystersTall,
+    alt: 'Oysters on the half shell on a platter of ice with sauce cups, lit by a blue neon sign',
+  },
+  oystersFeature: {
+    src: oystersFeature,
+    alt: 'Close-up of oysters on the half shell arranged on ice around cups of sauce',
   },
   storefrontEvening: {
     src: storefrontEvening,
-    alt: 'Blue Seafood & Grill storefront on East Grand Avenue at dusk, windows lit and the blue sign glowing',
+    alt: 'The Blue Seafood & Grill storefront at dusk: the lit blue sign above the awning and “Seafood” and “Oysters” neon in the windows',
+  },
+  storefrontDay: {
+    src: storefrontDay,
+    alt: 'The blue Blue Seafood & Grill storefront at 1351 E Grand Ave on a sunny day, with the Blue sign above the awning and “Seafood” and “Oysters” neon in the front windows',
+  },
+  backEntranceNight: {
+    src: backEntranceNight,
+    alt: 'The Blue Seafood & Grill sign on the lattice fence at the back entrance at night, lit by a lamp post beside white roses',
   },
   signDaytime: {
     src: signDaytime,

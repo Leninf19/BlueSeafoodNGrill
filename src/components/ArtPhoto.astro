@@ -1,0 +1,60 @@
+---
+/**
+ * Art-directed photo: a different crop below `breakpoint` (e.g. a tall crop for phones)
+ * and a wide crop above it. Both crops are served as AVIF/WebP with a JPG fallback.
+ * The parent should fix the box size (aspect-ratio / height) so there is no layout shift.
+ */
+import { getImage } from 'astro:assets';
+import { photos, type PhotoKey } from '../data/photos';
+
+interface Props {
+  desktop: PhotoKey;
+  mobile: PhotoKey;
+  /** Width in px at which the desktop crop takes over. */
+  breakpoint?: number;
+  sizes?: string;
+  eager?: boolean;
+  class?: string;
+}
+
+const { desktop, mobile, breakpoint = 768, sizes = '100vw', eager = false, class: className } = Astro.props;
+const d = photos[desktop];
+const m = photos[mobile];
+
+const widthsFor = (w: number, list: number[]) => {
+  const ws = list.filter((x) => x < w);
+  return [...ws, w];
+};
+
+async function srcset(src: ImageMetadata, list: number[], format: 'avif' | 'webp' | 'jpg') {
+  const ws = widthsFor(src.width, list);
+  const imgs = await Promise.all(ws.map((width) => getImage({ src, width, format, quality: 72 })));
+  return imgs.map((img, i) => `${img.src} ${ws[i]}w`).join(', ');
+}
+
+const mobileList = [400, 600, 800];
+const desktopList = [800, 1200, 1600, 2000];
+const formats = ['avif', 'webp'] as const;
+
+const mobileSets = await Promise.all(formats.map((f) => srcset(m.src, mobileList, f)));
+const desktopSets = await Promise.all(formats.map((f) => srcset(d.src, desktopList, f)));
+const fallback = await getImage({ src: d.src, width: Math.min(d.src.width, 1200), format: 'jpg', quality: 72 });
+const fallbackSet = await srcset(d.src, desktopList, 'jpg');
+const query = `(max-width: ${breakpoint - 0.02}px)`;
+---
+
+<picture class={className}>
+  {formats.map((f, i) => <source media={query} type={`image/${f}`} srcset={mobileSets[i]} sizes={sizes} />)}
+  {formats.map((f, i) => <source type={`image/${f}`} srcset={desktopSets[i]} sizes={sizes} />)}
+  <img
+    src={fallback.src}
+    srcset={fallbackSet}
+    sizes={sizes}
+    width={d.src.width}
+    height={d.src.height}
+    alt={d.alt}
+    loading={eager ? 'eager' : 'lazy'}
+    fetchpriority={eager ? 'high' : 'auto'}
+    decoding={eager ? 'sync' : 'async'}
+  />
+</picture>

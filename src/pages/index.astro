@@ -4,600 +4,496 @@ import Photo from '../components/Photo.astro';
 import Icon from '../components/Icon.astro';
 import OpenStatus from '../components/OpenStatus.astro';
 import Reviews from '../components/Reviews.astro';
-import WaveRule from '../components/WaveRule.astro';
-import { business, fullAddress } from '../data/business';
-import { menu, type MenuItem } from '../data/menu';
-import type { PhotoKey } from '../data/photos';
+import { business } from '../data/business';
+import { menu } from '../data/menu';
 
-const findItem = (name: string): MenuItem => {
-  const item = menu.flatMap((s) => s.items).find((i) => i.name === name);
-  if (!item) throw new Error(`Featured dish "${name}" is not in src/data/menu.ts`);
-  return item;
-};
+// Dish names must match src/data/menu.ts exactly; the build fails if one is renamed or removed.
+const menuNames = new Set(menu.flatMap((s) => s.items.map((i) => i.name)));
+const dishes = (list: [string, string][]) =>
+  list.map(([name, short]) => {
+    if (!menuNames.has(name)) throw new Error(`Home page dish "${name}" is not in src/data/menu.ts`);
+    return { name, short };
+  });
 
-const signatures: { dish: string; photo: PhotoKey; caption?: string }[] = [
-  { dish: 'Cajun Seafood Boil', photo: 'seafoodBoilBowl' },
-  { dish: 'Sautéed Jumbo Shrimp', photo: 'sauteedJumboShrimp' },
-  { dish: 'Dirty Fries', photo: 'dirtyFries' },
-  { dish: 'Bone-In Ribeye', photo: 'ribeyeWithShrimp', caption: 'Pictured topped with jumbo shrimp.' },
+const boils = dishes([
+  ['Cajun Seafood Boil', 'crab · lobster · shrimp · corn'],
+  ['Pan Roast', 'smoked tomato cream · jasmine rice'],
+  ['Cioppino', 'tomato-herb broth · crostini'],
+  ['Sautéed Clams', 'garlic butter–wine sauce'],
+]);
+
+const plates = dishes([
+  ['Sautéed Jumbo Shrimp', 'roasted garlic cream · sourdough'],
+  ['Melted Shrimp Tacos (3)', 'blackened shrimp · cilantro aioli'],
+  ['Lobster Roll', 'New England roll · dirty fries'],
+  ['Bone-In Ribeye', 'peppercorn sauce · asparagus'],
+]);
+
+// Homepage menu preview: numbered categories with a few real dish names each.
+const preview: { id: string; title: string; sample: string }[] = [
+  { id: 'oysters', title: 'Oysters', sample: 'Rockefeller · Grilled with garlic butter · Fried' },
+  { id: 'starters', title: 'Starters', sample: 'Crab cakes · Calamari · Shrimp ceviche tostadas · Seared ahi' },
+  { id: 'steamers', title: 'Steamers & Boils', sample: 'Cajun boil · Pan roast · Cioppino · Sautéed clams' },
+  { id: 'entrees', title: 'Entrées', sample: 'Shrimp tacos · Lobster roll · Fish n’ chips · Ribeye' },
+  { id: 'salads', title: 'Salads, Sides & Kids', sample: 'Wedge · Caesar · Dirty fries · Kids fish n’ chips' },
 ];
-
-const menuShortcuts = menu
-  .filter((s) => s.layout !== 'compact')
-  .map((s) => ({ id: s.id, title: s.title, count: s.items.length }));
-
-const gallery: { photo: PhotoKey; wide?: boolean }[] = [
-  { photo: 'oystersNeon', wide: true },
-  { photo: 'tostadas' },
-  { photo: 'dessertSlice' },
-  { photo: 'fishOverGreens' },
-  { photo: 'dessertCreamPour' },
-  { photo: 'seafoodBoilHero', wide: true },
-];
+const menuIds = new Set(menu.map((s) => s.id));
+for (const p of preview) if (!menuIds.has(p.id)) throw new Error(`Menu section #${p.id} not found`);
 ---
 
 <Base
   title="Blue Seafood & Grill | Seafood Restaurant in Arroyo Grande, CA"
-  description="Fresh surf & turf in Arroyo Grande: oysters, Cajun seafood boils, lobster rolls, shrimp tacos and bone-in ribeye. Open Tuesday–Sunday on East Grand Avenue."
+  description="Seafood boils, oysters, shrimp tacos, lobster rolls and bone-in ribeye on East Grand Avenue in Arroyo Grande. Open for lunch and dinner Tuesday–Sunday."
   path="/"
+  headerOverlay
 >
-  <!-- Hero -->
-  <section class="hero on-dark" aria-labelledby="hero-title">
-    <div class="hero-media">
-      <Photo
-        name="seafoodBoilHero"
-        sizes="100vw"
-        widths={[640, 960, 1280, 1920, 2400]}
-        eager
-      />
+  <!-- Hero: bright photo, white panel overlapping its lower edge -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-photo fill">
+      <Photo name="seafoodBoilHero" sizes="100vw" widths={[640, 960, 1280, 1920, 2400]} eager />
     </div>
-    <div class="container hero-content">
-      <p class="eyebrow">Arroyo Grande · Central Coast</p>
-      <h1 id="hero-title" class="heading-xl">
-        Fresh surf &amp; turf <em>in Arroyo Grande</em>
-      </h1>
-      <p class="lede">
-        Oysters, Cajun seafood boils, lobster rolls and melted shrimp tacos — with a bone-in ribeye
-        for the turf side of the table. On East Grand Avenue, open Tuesday through Sunday.
-      </p>
+    <div class="hero-panel">
+      <p class="label">Seafood &amp; grill · Arroyo Grande</p>
+      <h1 id="hero-title" class="display-xl">Seafood boils, oysters &amp; <em>a hot grill</em> on Grand Avenue</h1>
+      <p class="hero-sub">Lunch and dinner, Tuesday through Sunday, at 1351 E Grand Ave.</p>
       <div class="btn-row">
-        <a class="btn btn-light" href="/menu"><Icon name="menu" /> View the menu</a>
-        <a class="btn btn-ghost-light" href={business.links.reserve} target="_blank" rel="noopener">
-          <Icon name="calendar" /> Reserve a table
-        </a>
+        <a class="btn" href="/menu"><Icon name="menu" /> View the menu</a>
+        <a class="btn btn-ghost" href={business.links.reserve} target="_blank" rel="noopener">Reserve a table</a>
       </div>
       <OpenStatus class="hero-status" />
     </div>
   </section>
 
-  <!-- Quick info -->
-  <section class="quick-info" aria-label="Hours, location and reservations">
-    <div class="container quick-grid">
-      <div class="quick-card">
-        <Icon name="clock" class="quick-icon" />
-        <h2 class="quick-title">Hours</h2>
-        <dl class="quick-hours">
+  <!-- What we cook -->
+  <section class="container intro" aria-labelledby="intro-title">
+    <h2 id="intro-title" class="label">What we cook</h2>
+    <p class="intro-text">
+      Oysters grilled with garlic butter, baked Rockefeller-style or fried. A Cajun boil of crab,
+      lobster, shrimp and corn for the middle of the table. <em>Melted shrimp tacos</em>, a lobster
+      roll with truffle-parmesan fries, and a bone-in ribeye for whoever came for steak.
+    </p>
+  </section>
+
+  <!-- Spread 1: Steamers & Boils -->
+  <section class="spread" aria-labelledby="boils-title">
+    <div class="spread-media">
+      <div class="spread-big fill"><Photo name="seafoodBoilBowl" sizes="(min-width: 960px) 58vw, 100vw" /></div>
+      <div class="spread-small fill"><Photo name="dirtyFries" sizes="(min-width: 960px) 20vw, 50vw" widths={[400, 700, 1000]} /></div>
+    </div>
+    <div class="spread-copy">
+      <p class="label cond-label"><span class="cond">Steamers &amp; Boils</span></p>
+      <h2 id="boils-title" class="display-lg">Built for the <em>middle of the table</em></h2>
+      <ul role="list" class="dish-list">
+        {boils.map((d) => <li><span class="name">{d.name}</span><span class="desc">{d.short}</span></li>)}
+      </ul>
+      <a class="text-link" href="/menu#steamers">All steamers &amp; boils <Icon name="arrowRight" size={16} /></a>
+    </div>
+  </section>
+
+  <!-- Spread 2: Starters & Entrées -->
+  <section class="spread spread-rev" aria-labelledby="plates-title">
+    <div class="spread-media">
+      <div class="spread-big fill"><Photo name="sauteedJumboShrimp" sizes="(min-width: 960px) 58vw, 100vw" /></div>
+      <div class="spread-small fill"><Photo name="ribeyeWithShrimp" sizes="(min-width: 960px) 20vw, 50vw" widths={[400, 750]} /></div>
+    </div>
+    <div class="spread-copy">
+      <p class="label cond-label"><span class="cond">Starters &amp; Entrées</span></p>
+      <h2 id="plates-title" class="display-lg">Shrimp on sourdough, <em>steak off the grill</em></h2>
+      <ul role="list" class="dish-list">
+        {plates.map((d) => <li><span class="name">{d.name}</span><span class="desc">{d.short}</span></li>)}
+      </ul>
+      <a class="text-link" href="/menu#entrees">All entrées <Icon name="arrowRight" size={16} /></a>
+    </div>
+  </section>
+
+  <!-- Menu preview: numbered categories + oysters -->
+  <section class="board bg-navy on-dark" aria-labelledby="board-title">
+    <div class="container board-grid">
+      <figure class="board-photo">
+        <div class="fill"><Photo name="oystersFeature" sizes="(min-width: 960px) 45vw, 100vw" widths={[400, 660]} /></div>
+        <figcaption>
+          <span class="cond">Oysters</span>
+          <span>Rockefeller, grilled with garlic butter, or fried — by the half dozen or dozen.</span>
+        </figcaption>
+      </figure>
+      <div class="board-list">
+        <p class="label">The menu</p>
+        <h2 id="board-title" class="display-md">Pick a place to start</h2>
+        <ol role="list">
           {
-            business.hoursSummary.map((h) => (
-              <div>
-                <dt>{h.label}</dt>
-                <dd>{h.value}</dd>
-              </div>
+            preview.map((p, i) => (
+              <li>
+                <a href={`/menu#${p.id}`}>
+                  <span class="n cond">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="t cond">{p.title}</span>
+                  <span class="s">{p.sample}</span>
+                </a>
+              </li>
             ))
           }
-        </dl>
+        </ol>
+        <a class="btn btn-light" href="/menu">Open the full menu</a>
       </div>
-      <div class="quick-card">
-        <Icon name="pin" class="quick-icon" />
-        <h2 class="quick-title">Location</h2>
-        <address>{business.address.street}<br />{business.address.city}, {business.address.region} {business.address.postalCode}</address>
-        <a class="text-link" href={business.links.directions} target="_blank" rel="noopener">
-          Get directions <Icon name="arrowRight" size={18} />
-        </a>
-      </div>
-      <div class="quick-card">
-        <Icon name="calendar" class="quick-icon" />
-        <h2 class="quick-title">Reservations</h2>
-        <p>Book online through Reserve with Google, or give us a call.</p>
-        <div class="quick-links">
-          <a class="text-link" href={business.links.reserve} target="_blank" rel="noopener">
-            Reserve online <Icon name="arrowRight" size={18} />
-          </a>
-          <a class="text-link" href={business.phone.href}>{business.phone.display}</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Signatures -->
-  <section class="section signatures" aria-labelledby="signatures-title">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow">From the kitchen</p>
-        <h2 id="signatures-title" class="heading-lg">A taste of the menu</h2>
-        <p class="lede">
-          From a Cajun seafood boil built for sharing to truffle-parmesan dirty fries — a few
-          plates straight from our kitchen.
-        </p>
-      </div>
-
-      <ul role="list" class="signature-grid">
-        {
-          signatures.map(({ dish, photo, caption }, i) => {
-            const item = findItem(dish);
-            return (
-              <li class:list={['signature', { 'signature-lead': i === 0 }]}>
-                <div class="media signature-media">
-                  <Photo
-                    name={photo}
-                    sizes={i === 0 ? '(min-width: 960px) 50vw, 100vw' : '(min-width: 960px) 25vw, (min-width: 640px) 50vw, 100vw'}
-                  />
-                </div>
-                <div class="signature-body">
-                  <h3 class="heading-sm">{item.name}</h3>
-                  {item.description && <p>{item.description}</p>}
-                  {caption && <p class="signature-caption">{caption}</p>}
-                </div>
-              </li>
-            );
-          })
-        }
-      </ul>
-
-      <div class="signatures-cta">
-        <a class="btn btn-primary" href="/menu">See the full menu <Icon name="arrowRight" /></a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Story -->
-  <section class="section story bg-sand" aria-labelledby="story-title">
-    <div class="container story-grid">
-      <div class="story-media">
-        <div class="media story-main">
-          <Photo name="storefrontEvening" sizes="(min-width: 960px) 40vw, 100vw" />
-        </div>
-        <div class="media story-inset">
-          <Photo name="oystersNeon" sizes="(min-width: 960px) 20vw, 50vw" widths={[400, 700, 1080]} />
-        </div>
-      </div>
-
-      <div class="story-copy stack">
-        <p class="eyebrow">Our place</p>
-        <h2 id="story-title" class="heading-lg">A neighborhood seafood house on Grand Avenue</h2>
-        <WaveRule />
-        <p>
-          Blue Seafood &amp; Grill opened in Arroyo Grande in {business.openedYear}, bringing a
-          seafood-first menu to East Grand Avenue — a short drive from Pismo Beach, Grover Beach and
-          the rest of the Five Cities.
-        </p>
-        <p>
-          The menu leans into the coast: oysters grilled, fried or Rockefeller-style, Cajun seafood
-          boils, cioppino and a pan roast finished with smoked tomato cream. For the turf side there is
-          a bone-in ribeye and a Western burger, plus vegetarian and vegan dishes and a kids menu.
-        </p>
-        <p>
-          <a class="text-link" href="/about">More about Blue <Icon name="arrowRight" size={18} /></a>
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Menu shortcuts -->
-  <section class="section-tight menu-shortcuts" aria-labelledby="shortcuts-title">
-    <div class="container shortcuts-inner">
-      <div>
-        <p class="eyebrow">Browse the menu</p>
-        <h2 id="shortcuts-title" class="heading-md">Jump straight to what you’re craving</h2>
-      </div>
-      <ul role="list" class="shortcut-list">
-        {
-          menuShortcuts.map((s) => (
-            <li>
-              <a href={`/menu#${s.id}`} class="shortcut">
-                <span>{s.title}</span>
-                <span class="shortcut-count">{s.count}</span>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
     </div>
   </section>
 
   <Reviews />
 
-  <!-- Gallery / Instagram -->
-  <section class="section gallery" aria-labelledby="gallery-title">
-    <div class="container">
-      <div class="gallery-head">
-        <div class="section-head">
-          <p class="eyebrow">Gallery</p>
-          <h2 id="gallery-title" class="heading-lg">Fresh from the pass</h2>
-          <p class="lede">
-            For news and more photos, follow along on Instagram at
-            {' '}<a class="text-link" href={business.links.instagram} target="_blank" rel="noopener">{business.links.instagramHandle}</a>.
-          </p>
-        </div>
-        <div class="btn-row">
-          <a class="btn btn-primary" href={business.links.instagram} target="_blank" rel="noopener">
-            <Icon name="instagram" /> Follow on Instagram
-          </a>
-          <a class="btn btn-outline" href={business.links.facebook} target="_blank" rel="noopener">
-            <Icon name="facebook" /> Facebook
-          </a>
-        </div>
-      </div>
-
-      <ul role="list" class="gallery-grid">
+  <!-- Find us: real storefront -->
+  <section class="find on-dark" aria-labelledby="find-title">
+    <div class="find-photo fill">
+      <Photo name="storefrontDay" sizes="100vw" widths={[640, 1000, 1400, 1846]} />
+    </div>
+    <div class="find-panel">
+      <p class="label">Find us</p>
+      <h2 id="find-title" class="display-lg">1351 E Grand Ave, <em>Arroyo Grande</em></h2>
+      <p class="find-note">Look for the Blue sign above the awning and the “Seafood” and “Oysters” neon in the front windows.</p>
+      <dl class="find-hours">
         {
-          gallery.map(({ photo, wide }) => (
-            <li class:list={['media', 'gallery-item', { 'gallery-wide': wide }]}>
-              <Photo name={photo} sizes={wide ? '(min-width: 960px) 50vw, 100vw' : '(min-width: 960px) 25vw, 50vw'} />
-            </li>
+          business.hoursSummary.map((h) => (
+            <div>
+              <dt>{h.label}</dt>
+              <dd>{h.value}</dd>
+            </div>
           ))
         }
-      </ul>
-    </div>
-  </section>
-
-  <!-- Visit CTA -->
-  <section class="section-tight visit-cta bg-deep on-dark" aria-labelledby="visit-title">
-    <div class="container visit-inner">
-      <div class="stack">
-        <p class="eyebrow">Plan your visit</p>
-        <h2 id="visit-title" class="heading-lg">See you on Grand Avenue</h2>
-        <p class="lede">{fullAddress}</p>
-      </div>
-      <div class="btn-row visit-actions">
+      </dl>
+      <div class="btn-row">
         <a class="btn btn-light" href={business.links.directions} target="_blank" rel="noopener">
           <Icon name="directions" /> Directions
         </a>
         <a class="btn btn-ghost-light" href={business.phone.href}><Icon name="phone" /> {business.phone.display}</a>
-        <a class="btn btn-ghost-light" href="/visit">Hours &amp; map</a>
       </div>
     </div>
   </section>
 </Base>
 
 <style>
-  /* Hero */
+  /* ---------- Hero ---------- */
   .hero {
-    position: relative;
-    display: grid;
-    align-items: end;
-    min-height: min(88svh, 52rem);
-    padding-block: 7rem 5.5rem;
-    color: var(--white);
-    background: var(--navy-950);
-    isolation: isolate;
+    margin-top: calc(-1 * var(--header-h));
   }
 
-  .hero-media {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
+  .hero-photo {
+    height: max(17rem, 46svh);
   }
 
-  .hero-media :global(img) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: 62% 50%;
+  .hero-photo :global(img) {
+    object-position: 38% 58%;
   }
 
-  .hero-media::after {
+  .hero-photo::after {
     content: '';
     position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(0deg, rgb(6 20 35 / 0.95) 0%, rgb(6 20 35 / 0.55) 45%, rgb(6 20 35 / 0.2) 75%),
-      linear-gradient(90deg, rgb(6 20 35 / 0.55) 0%, transparent 70%);
+    inset: 0 0 auto;
+    height: 8rem;
+    background: linear-gradient(rgb(6 18 30 / 0.55), transparent);
+    pointer-events: none;
   }
 
-  .hero-content {
-    display: grid;
-    gap: 1.25rem;
-    justify-items: start;
-  }
-
-  .hero h1 {
-    max-width: 15ch;
-    font-weight: 450;
-  }
-
-  .hero h1 em {
-    display: block;
-    font-style: italic;
-    color: var(--blue-300);
-  }
-
-  .hero .lede {
-    max-width: 34rem;
-  }
-
-  .hero :global(.hero-status) {
-    color: rgb(247 241 230 / 0.9);
-  }
-
-  /* Quick info */
-  .quick-info {
+  .hero-panel {
     position: relative;
-    z-index: 2;
-    margin-top: -3rem;
+    display: grid;
+    gap: 0.9rem;
+    justify-items: start;
+    margin: -3rem var(--gutter) 0;
+    padding: 1.5rem 1.35rem 1.6rem;
+    background: var(--paper);
   }
 
-  .quick-grid {
+  .hero-panel h1 {
+    font-size: clamp(2.3rem, 1.6rem + 3.6vw, 5rem);
+  }
+
+  .hero-sub {
+    color: var(--soft);
+  }
+
+  .hero-panel :global(.hero-status) {
+    color: var(--soft);
+    font-size: 0.88rem;
+  }
+
+  /* ---------- Intro ---------- */
+  .intro {
+    display: grid;
+    gap: 1rem;
+    padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem) clamp(3rem, 2rem + 3vw, 4.5rem);
+  }
+
+  .intro-text {
+    max-width: 54rem;
+    font-family: var(--serif);
+    font-size: clamp(1.45rem, 1.1rem + 1.6vw, 2.5rem);
+    line-height: 1.28;
+    letter-spacing: -0.01em;
+  }
+
+  .intro-text em {
+    color: var(--blue);
+  }
+
+  /* ---------- Spreads ---------- */
+  .spread {
+    display: grid;
+    gap: 2rem;
+    margin-bottom: clamp(4rem, 3rem + 4vw, 7rem);
+  }
+
+  .spread-media {
+    position: relative;
+  }
+
+  .spread-big {
+    aspect-ratio: 5 / 4;
+  }
+
+  .spread-small {
+    position: relative;
+    width: 48%;
+    aspect-ratio: 3 / 4;
+    margin: -5.5rem var(--gutter) 0 auto;
+    border: 6px solid var(--paper);
+  }
+
+  .spread-rev .spread-small {
+    margin: -5.5rem auto 0 var(--gutter);
+  }
+
+  .spread-copy {
+    display: grid;
+    gap: 1rem;
+    align-content: center;
+    justify-items: start;
+    padding-inline: var(--gutter);
+  }
+
+  .spread-copy .dish-list {
+    width: 100%;
+  }
+
+  .cond-label {
+    letter-spacing: 0;
+  }
+
+  .cond-label .cond {
+    font-size: 1.15rem;
+    letter-spacing: 0.08em;
+  }
+
+  /* ---------- Menu board ---------- */
+  .board {
+    padding-block: clamp(4rem, 3rem + 4vw, 6.5rem);
+  }
+
+  .board-grid {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  .board-photo {
     display: grid;
     gap: 1rem;
   }
 
-  .quick-card {
+  .board-photo .fill {
+    aspect-ratio: 660 / 470;
+    background: var(--navy-2);
+  }
+
+  .board-photo figcaption {
     display: grid;
-    align-content: start;
-    gap: 0.6rem;
-    padding: 1.5rem;
-    border-radius: var(--radius-lg);
-    background: var(--white);
-    box-shadow: var(--shadow);
+    gap: 0.3rem;
+    color: rgb(255 253 249 / 0.82);
   }
 
-  .quick-card :global(.quick-icon) {
-    width: 1.6rem;
-    height: 1.6rem;
-    color: var(--blue-600);
+  .board-photo figcaption .cond {
+    font-size: 2.4rem;
+    color: var(--paper);
   }
 
-  .quick-title {
-    font-family: var(--font-body);
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--brass-500);
+  .board-list {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+    align-content: center;
   }
 
-  .quick-hours {
+  .board ol {
+    width: 100%;
+    margin-block: 0.5rem 1rem;
+    border-top: 1px solid var(--line-dark);
+  }
+
+  .board li a {
+    display: grid;
+    grid-template-columns: 2.4rem 1fr;
+    gap: 0.25rem 0.9rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--line-dark);
+    text-decoration: none;
+  }
+
+  .board li a:hover .t {
+    color: var(--blue-light);
+  }
+
+  .board .n {
+    grid-row: span 2;
+    padding-top: 0.2rem;
+    font-size: 1.2rem;
+    color: var(--blue-light);
+  }
+
+  .board .t {
+    font-size: 2rem;
+    transition: color 0.2s var(--ease);
+  }
+
+  .board .s {
+    font-size: 0.92rem;
+    color: rgb(255 253 249 / 0.75);
+  }
+
+  /* ---------- Find us ---------- */
+  .find {
+    display: grid;
+    background: var(--navy);
+    color: var(--paper);
+  }
+
+  .find-photo {
+    aspect-ratio: 4 / 3;
+    background: var(--navy-2);
+  }
+
+  .find-photo :global(img) {
+    object-position: 41% 40%;
+  }
+
+  .find-panel {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+    padding: 2.25rem var(--gutter) 3rem;
+  }
+
+  .find-note {
+    color: rgb(255 253 249 / 0.82);
+  }
+
+  .find-hours {
     display: grid;
     gap: 0.35rem;
+    width: 100%;
+    max-width: 22rem;
+    margin-block: 0.5rem;
   }
 
-  .quick-hours div {
+  .find-hours div {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--line-dark);
   }
 
-  .quick-hours dt {
-    color: var(--ink-soft);
+  .find-hours dt {
+    color: rgb(255 253 249 / 0.75);
   }
 
-  .quick-hours dd {
-    font-weight: 700;
-    text-align: right;
-    white-space: nowrap;
-  }
-
-  .quick-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.25rem;
-  }
-
-  /* Signatures */
-  .signature-grid {
-    display: grid;
-    gap: 1.5rem;
-  }
-
-  .signature {
-    display: grid;
-    gap: 1rem;
-    align-content: start;
-  }
-
-  .signature-media {
-    aspect-ratio: 4 / 3;
-  }
-
-  .signature-body {
-    display: grid;
-    gap: 0.4rem;
-  }
-
-  .signature-body p {
-    color: var(--ink-soft);
-  }
-
-  .signature-caption {
-    font-size: 0.88rem;
-    font-style: italic;
-  }
-
-  .signatures-cta {
-    margin-top: 2.5rem;
-  }
-
-  /* Story */
-  .story-grid {
-    display: grid;
-    gap: 3rem;
-    align-items: center;
-  }
-
-  .story-media {
-    position: relative;
-    padding-bottom: 3rem;
-  }
-
-  .story-main {
-    aspect-ratio: 4 / 3;
-  }
-
-  .story-inset {
-    position: absolute;
-    right: -0.5rem;
-    bottom: 0;
-    width: 46%;
-    aspect-ratio: 1;
-    border: 6px solid var(--sand-100);
-    box-shadow: var(--shadow);
-  }
-
-  .story-copy p:not(.eyebrow) {
-    max-width: 36rem;
-    color: var(--ink-soft);
-  }
-
-  /* Menu shortcuts */
-  .shortcuts-inner {
-    display: grid;
-    gap: 2rem;
-  }
-
-  .shortcut-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-  }
-
-  .shortcut {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    min-height: 2.9rem;
-    padding: 0.55rem 0.7rem 0.55rem 1.15rem;
-    border: 1px solid var(--sand-300);
-    border-radius: 999px;
-    background: var(--white);
-    font-weight: 700;
-    text-decoration: none;
-    transition: border-color 0.2s, background-color 0.2s;
-  }
-
-  .shortcut:hover {
-    border-color: var(--blue-600);
-    background: var(--sand-50);
-  }
-
-  .shortcut-count {
-    display: inline-grid;
-    place-items: center;
-    min-width: 1.75rem;
-    height: 1.75rem;
-    padding-inline: 0.4rem;
-    border-radius: 999px;
-    background: var(--sand-100);
-    font-size: 0.8rem;
-    color: var(--ink-soft);
-  }
-
-  /* Gallery */
-  .gallery-head {
-    display: grid;
-    gap: 1.5rem;
-    align-items: end;
-    margin-bottom: 2.5rem;
-  }
-
-  .gallery-head .section-head {
-    margin-bottom: 0;
-  }
-
-  .gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
-  }
-
-  .gallery-item {
-    aspect-ratio: 1;
-    border-radius: var(--radius);
-  }
-
-  .gallery-wide {
-    grid-column: span 2;
-    aspect-ratio: 2 / 1;
-  }
-
-  /* Visit CTA */
-  .visit-inner {
-    display: grid;
-    gap: 2rem;
-    align-items: center;
-  }
-
-  @media (min-width: 640px) {
-    .quick-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .quick-card:last-child {
-      grid-column: span 2;
-    }
-
-    .signature-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
+  /* ---------- Desktop ---------- */
   @media (min-width: 960px) {
-    .hero {
-      padding-block: 9rem 8rem;
+    .hero-photo {
+      height: min(84svh, 52rem);
+      min-height: 34rem;
     }
 
-    .quick-grid {
-      grid-template-columns: repeat(3, 1fr);
+    .hero-panel {
+      max-width: 46rem;
+      margin: -10rem 0 0 var(--edge);
+      padding: 2.75rem 3rem 2.75rem;
     }
 
-    .quick-card:last-child {
-      grid-column: auto;
-    }
-
-    .signature-grid {
-      grid-template-columns: 2fr 1fr 1fr;
-      grid-template-rows: auto auto;
-      gap: 2rem;
-    }
-
-    .signature-lead {
-      grid-row: span 2;
-    }
-
-    .signature-lead .signature-media {
-      aspect-ratio: 1;
-    }
-
-    /* Last card spans the two small columns, image beside text */
-    .signature:last-child {
-      grid-column: 2 / span 2;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      align-self: end;
-      gap: 1.5rem;
-    }
-
-    .story-grid {
-      grid-template-columns: 1.05fr 1fr;
+    .spread {
+      grid-template-columns: 7fr 5fr;
       gap: 5rem;
-    }
-
-    .shortcuts-inner {
-      grid-template-columns: 1fr 1.3fr;
       align-items: center;
     }
 
-    .gallery-head {
-      grid-template-columns: 1fr auto;
+    .spread-rev {
+      grid-template-columns: 5fr 7fr;
     }
 
-    .gallery-grid {
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
+    .spread-rev .spread-copy {
+      order: -1;
+      padding: 0 0 0 var(--edge);
     }
 
-    .visit-inner {
-      grid-template-columns: 1fr auto;
+    .spread-copy {
+      padding: 0 var(--edge) 0 0;
+    }
+
+    .spread-big {
+      aspect-ratio: 4 / 3.1;
+    }
+
+    .spread-small {
+      position: absolute;
+      width: 34%;
+      right: -3rem;
+      bottom: -3.5rem;
+      margin: 0;
+    }
+
+    .spread-rev .spread-small {
+      right: auto;
+      left: -3rem;
+      margin: 0;
+    }
+
+    .board-grid {
+      grid-template-columns: 1.1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .board-photo .fill {
+      aspect-ratio: 4 / 4.2;
+    }
+
+    .board .t {
+      font-size: 2.5rem;
+    }
+
+    .find {
+      position: relative;
+      display: block;
+    }
+
+    .find-photo {
+      aspect-ratio: auto;
+      height: min(88svh, 46rem);
+    }
+
+    .find-photo :global(img) {
+      object-position: 36% 45%;
+    }
+
+    .find-photo::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(270deg, rgb(11 34 54 / 0.9) 0%, rgb(11 34 54 / 0.55) 38%, transparent 62%);
+    }
+
+    .find-panel {
+      position: absolute;
+      top: 50%;
+      right: var(--edge);
+      width: min(30rem, 40%);
+      padding: 0;
+      transform: translateY(-50%);
     }
   }
 </style>

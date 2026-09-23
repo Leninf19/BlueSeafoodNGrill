@@ -10,18 +10,16 @@ import { business } from '../data/business';
   path="/404"
   noindex
 >
-  <section class="section bg-deep on-dark not-found" aria-labelledby="nf-title">
-    <div class="container-narrow stack">
-      <p class="eyebrow">404</p>
-      <h1 id="nf-title" class="heading-xl">This one got away.</h1>
-      <p class="lede">
-        We couldn’t find that page. It may have moved when we refreshed the website.
-      </p>
+  <section class="not-found bg-glass" aria-labelledby="nf-title">
+    <div class="container-narrow">
+      <p class="label">404</p>
+      <h1 id="nf-title" class="display-xl">This one got <em>away.</em></h1>
+      <p class="lede">We couldn’t find that page. It may have moved when the website was rebuilt.</p>
       <div class="btn-row">
-        <a class="btn btn-light" href="/">Home</a>
-        <a class="btn btn-ghost-light" href="/menu"><Icon name="menu" /> Menu</a>
-        <a class="btn btn-ghost-light" href="/visit">Hours &amp; directions</a>
-        <a class="btn btn-ghost-light" href={business.phone.href}><Icon name="phone" /> Call us</a>
+        <a class="btn" href="/">Home</a>
+        <a class="btn btn-ghost" href="/menu"><Icon name="menu" /> Menu</a>
+        <a class="btn btn-ghost" href="/visit">Hours &amp; directions</a>
+        <a class="btn btn-ghost" href={business.phone.href}><Icon name="phone" /> Call</a>
       </div>
     </div>
   </section>
@@ -29,8 +27,14 @@ import { business } from '../data/business';
 
 <style>
   .not-found {
-    min-height: 60vh;
     display: grid;
     align-items: center;
+    min-height: 60vh;
+    padding-block: 5rem;
+  }
+
+  .not-found .container-narrow {
+    display: grid;
+    gap: 1.25rem;
   }
 </style>

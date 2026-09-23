@@ -3,12 +3,12 @@ import Icon from './Icon.astro';
 import { business } from '../data/business';
 ---
 
-<nav class="mobile-actions on-dark" aria-label="Quick actions">
+<nav class="mobile-actions" aria-label="Quick actions">
   <a href={business.phone.href} class="action">
     <Icon name="phone" />
     <span>Call</span>
   </a>
-  <a href="/menu" class="action">
+  <a href="/menu" class="action action-main on-dark">
     <Icon name="menu" />
     <span>Menu</span>
   </a>
@@ -27,35 +27,35 @@ import { business } from '../data/business';
     grid-template-columns: repeat(3, 1fr);
     height: calc(var(--action-bar-h) + env(safe-area-inset-bottom));
     padding-bottom: env(safe-area-inset-bottom);
-    background: rgb(6 20 35 / 0.97);
-    border-top: 1px solid rgb(255 255 255 / 0.1);
-    box-shadow: 0 -8px 24px -12px rgb(0 0 0 / 0.5);
+    background: var(--paper);
+    border-top: 1px solid var(--line);
+    box-shadow: 0 -10px 24px -16px rgb(11 34 54 / 0.35);
   }
 
   .action {
-    display: grid;
-    place-items: center;
-    align-content: center;
-    gap: 0.2rem;
-    color: var(--sand-100);
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    color: var(--navy);
+    font-size: 0.9rem;
+    font-weight: 600;
     text-decoration: none;
   }
 
-  .action + .action {
-    border-left: 1px solid rgb(255 255 255 / 0.08);
-  }
-
   .action :global(svg) {
-    width: 1.45rem;
-    height: 1.45rem;
-    color: var(--blue-300);
+    width: 1.2rem;
+    height: 1.2rem;
+    color: var(--blue);
   }
 
-  .action:active {
-    background: rgb(255 255 255 / 0.06);
+  .action-main {
+    background: var(--navy);
+    color: var(--paper);
+  }
+
+  .action-main :global(svg) {
+    color: var(--blue-light);
   }
 
   .action:focus-visible {

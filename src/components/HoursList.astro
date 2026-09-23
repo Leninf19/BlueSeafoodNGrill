@@ -37,7 +37,7 @@ interface Props {
     justify-content: space-between;
     gap: 1rem;
     padding: 0.55rem 0.75rem;
-    border-radius: var(--radius-sm);
+    border-radius: 2px;
   }
 
   .hours-row dd {
@@ -46,26 +46,26 @@ interface Props {
   }
 
   .hours-row[data-today] {
-    background: rgb(10 106 166 / 0.1);
+    background: var(--glass);
     font-weight: 700;
   }
 
   :global(.on-dark) .hours-row[data-today],
   :global(.bg-navy) .hours-row[data-today],
   :global(.bg-deep) .hours-row[data-today] {
-    background: rgb(111 205 247 / 0.12);
+    background: rgb(143 211 245 / 0.12);
   }
 
   .hours-row[data-today] dt::after {
     content: ' · Today';
     font-weight: 600;
-    color: var(--blue-600);
+    color: var(--blue);
   }
 
   :global(.on-dark) .hours-row[data-today] dt::after,
   :global(.bg-navy) .hours-row[data-today] dt::after,
   :global(.bg-deep) .hours-row[data-today] dt::after {
-    color: var(--blue-300);
+    color: var(--blue-light);
   }
 </style>
 

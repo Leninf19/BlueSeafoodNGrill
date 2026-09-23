@@ -11,12 +11,16 @@
  *  - Remove a dish: delete its block (including the trailing comma).
  *  - `note` shows as a small line under the description (add-ons, portion options).
  *  - `tags` can be any of: 'vegetarian', 'vegan', 'raw', 'spicy', 'seasonal'.
+ *  - `photo` (optional) features the dish with one of the photos in src/data/photos.ts;
+ *    `photoNote` explains anything in the photo that differs from the description.
  *  - `popular: true` shows a "Guest favorite" label. Use it only for dishes that are
  *    mentioned often in public reviews (Google review topics / Yelp menu review counts).
  *
  * Source: the restaurant's previous website menu, cross-checked with its Yelp menu listing
  * (2026-09-23). Items marked `// confirm` appear in only one source.
  */
+
+import type { PhotoKey } from './photos';
 
 export type MenuTag = 'vegetarian' | 'vegan' | 'raw' | 'spicy' | 'seasonal';
 
@@ -26,6 +30,8 @@ export interface MenuItem {
   note?: string;
   tags?: MenuTag[];
   popular?: boolean;
+  photo?: PhotoKey;
+  photoNote?: string;
 }
 
 export interface MenuSection {
@@ -58,6 +64,7 @@ export const menu: MenuSection[] = [
       {
         name: 'Sautéed Jumbo Shrimp',
         description: 'Jumbo shrimp sautéed in roasted garlic cream, served over toasted sourdough.',
+        photo: 'sauteedJumboShrimp',
       },
       {
         name: 'Shrimp Ceviche Tostadas',
@@ -148,6 +155,7 @@ export const menu: MenuSection[] = [
           'Shrimp, crab, lobster, clams, mussels, red potatoes, corn and smoked sausage in spicy garlic butter.',
         tags: ['spicy'],
         popular: true,
+        photo: 'seafoodBoilBowl',
       },
       {
         name: 'Pan Roast',
@@ -232,6 +240,8 @@ export const menu: MenuSection[] = [
       {
         name: 'Bone-In Ribeye',
         description: 'Pomme purée, grilled asparagus and peppercorn sauce.',
+        photo: 'ribeyeWithShrimp',
+        photoNote: 'Pictured topped with jumbo shrimp.',
       },
       // confirm: listed on the previous website only
       {
@@ -250,7 +260,7 @@ export const menu: MenuSection[] = [
     id: 'sides',
     title: 'Sides',
     items: [
-      { name: 'Dirty Fries', description: 'Truffle oil, garlic and parmesan.', popular: true },
+      { name: 'Dirty Fries', description: 'Truffle oil, garlic and parmesan.', popular: true, photo: 'dirtyFries' },
       { name: 'Sourdough Garlic Bread' },
       { name: 'Garlic Potato Wedges' },
       { name: 'Fries' },

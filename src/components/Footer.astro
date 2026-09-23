@@ -7,13 +7,13 @@ import { business } from '../data/business';
 const year = new Date().getFullYear();
 ---
 
-<footer class="site-footer bg-deep on-dark">
+<footer class="site-footer on-dark">
   <div class="container footer-grid">
     <div class="footer-brand">
       <a href="/" class="footer-logo">
         <Image src={logo} alt={business.name} width={200} height={95} densities={[1, 2]} />
       </a>
-      <p>{business.tagline}, on East Grand Avenue in Arroyo Grande.</p>
+      <p>Seafood and grill on East Grand Avenue, Arroyo Grande.</p>
       <ul role="list" class="social">
         <li>
           <a href={business.links.instagram} target="_blank" rel="noopener me">
@@ -34,7 +34,7 @@ const year = new Date().getFullYear();
     </div>
 
     <div>
-      <h2 class="footer-title">Visit</h2>
+      <h2 class="footer-title label">Find us</h2>
       <address>
         <a href={business.links.directions} target="_blank" rel="noopener">
           {business.address.street}<br />
@@ -45,7 +45,7 @@ const year = new Date().getFullYear();
     </div>
 
     <div>
-      <h2 class="footer-title">Hours</h2>
+      <h2 class="footer-title label">Hours</h2>
       <dl class="footer-hours">
         {
           business.hoursSummary.map((h) => (
@@ -59,25 +59,27 @@ const year = new Date().getFullYear();
     </div>
 
     <nav aria-label="Footer">
-      <h2 class="footer-title">Explore</h2>
+      <h2 class="footer-title label">Explore</h2>
       <ul role="list" class="footer-links">
         <li><a href="/menu">Menu</a></li>
         <li><a href="/about">About</a></li>
-        <li><a href="/visit">Visit &amp; Contact</a></li>
+        <li><a href="/visit">Visit &amp; contact</a></li>
         <li><a href={business.links.reserve} target="_blank" rel="noopener">Reserve a table</a></li>
       </ul>
     </nav>
   </div>
 
   <div class="container footer-bottom">
-    <p>© {year} {business.name}. All rights reserved.</p>
-    <p>Menu items and hours are subject to change.</p>
+    <p>© {year} {business.name}</p>
+    <p>Menu and hours can change — call ahead if you’re planning around a dish.</p>
   </div>
 </footer>
 
 <style>
   .site-footer {
-    padding-block: 4rem 2rem;
+    padding-block: 4.5rem 2rem;
+    background: var(--navy);
+    color: var(--paper);
     font-size: 0.95rem;
   }
 
@@ -87,9 +89,12 @@ const year = new Date().getFullYear();
   }
 
   .footer-brand p {
-    max-width: 22rem;
+    max-width: 20rem;
     margin-top: 1rem;
-    color: rgb(247 241 230 / 0.75);
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    line-height: 1.4;
+    color: rgb(255 253 249 / 0.82);
   }
 
   .footer-logo {
@@ -103,21 +108,14 @@ const year = new Date().getFullYear();
 
   .footer-title {
     margin-bottom: 0.9rem;
-    font-family: var(--font-body);
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--brass-300);
   }
 
   .site-footer a {
     text-decoration: none;
-    color: var(--sand-100);
   }
 
   .site-footer a:hover {
-    color: var(--blue-300);
+    color: var(--blue-light);
     text-decoration: underline;
   }
 
@@ -131,7 +129,7 @@ const year = new Date().getFullYear();
   }
 
   .footer-hours dt {
-    color: rgb(247 241 230 / 0.7);
+    color: rgb(255 253 249 / 0.72);
   }
 
   .footer-links {
@@ -150,18 +148,17 @@ const year = new Date().getFullYear();
     place-items: center;
     width: 2.75rem;
     height: 2.75rem;
-    border: 1px solid rgb(255 255 255 / 0.2);
+    border: 1px solid var(--line-dark);
     border-radius: 50%;
   }
 
   .social a:hover {
-    border-color: var(--blue-300);
-    text-decoration: none;
+    border-color: var(--blue-light);
   }
 
   .social :global(svg) {
-    width: 1.25rem;
-    height: 1.25rem;
+    width: 1.2rem;
+    height: 1.2rem;
   }
 
   .footer-bottom {
@@ -171,9 +168,9 @@ const year = new Date().getFullYear();
     gap: 0.5rem 2rem;
     margin-top: 3.5rem;
     padding-top: 1.5rem;
-    border-top: 1px solid rgb(255 255 255 / 0.1);
-    font-size: 0.85rem;
-    color: rgb(247 241 230 / 0.68);
+    border-top: 1px solid var(--line-dark);
+    font-size: 0.84rem;
+    color: rgb(255 253 249 / 0.7);
   }
 
   @media (min-width: 720px) {
