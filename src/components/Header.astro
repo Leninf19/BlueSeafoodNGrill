@@ -62,7 +62,10 @@ const current = Astro.url.pathname.replace(/\/+$/, '') || '/';
         </ul>
 
         <div class="nav-panel-extra">
-          <a class="btn btn-light" href={business.links.reserve} target="_blank" rel="noopener">
+          <a class="btn btn-light" href={business.links.order} target="_blank" rel="noopener">
+            <Icon name="bag" /> Order pickup or delivery<span class="visually-hidden"> (opens DoorDash)</span>
+          </a>
+          <a class="btn btn-ghost-light" href={business.links.reserve} target="_blank" rel="noopener">
             <Icon name="calendar" /> Reserve a table
           </a>
           <a class="btn btn-ghost-light" href={business.phone.href}><Icon name="phone" /> {business.phone.display}</a>

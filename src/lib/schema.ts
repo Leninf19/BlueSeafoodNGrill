@@ -38,6 +38,14 @@ export function restaurantSchema(site: URL) {
     hasMap: business.links.googleProfile,
     servesCuisine: ['Seafood', 'American'],
     acceptsReservations: business.links.reserve,
+    potentialAction: {
+      '@type': 'OrderAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: business.links.order,
+        actionPlatform: ['https://schema.org/DesktopWebPlatform', 'https://schema.org/MobileWebPlatform'],
+      },
+    },
     hasMenu: abs(site, '/menu'),
     openingHoursSpecification: openDays.map((d) => ({
       '@type': 'OpeningHoursSpecification',

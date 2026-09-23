@@ -55,6 +55,7 @@ const faqs = [
           <a class="btn btn-ghost" href={business.phone.href}><Icon name="phone" /> {business.phone.display}</a>
           <a class="btn btn-ghost" href={business.links.reserve} target="_blank" rel="noopener"><Icon name="calendar" /> Reserve</a>
         </div>
+        <a class="text-link" href={business.links.order} target="_blank" rel="noopener"><Icon name="bag" size={18} /> Order pickup or delivery<span class="visually-hidden"> (opens DoorDash)</span></a>
       </div>
       <figure class="visit-sign">
         <div class="fill"><Photo name="storefrontDay" sizes="(min-width: 960px) 40vw, 100vw" widths={[480, 800, 1200, 1846]} eager /></div>
@@ -75,6 +76,17 @@ const faqs = [
         <h2 class="label">Reservations</h2>
         <p>Book online through Reserve with Google (booking times are provided by Yelp), or call us.</p>
         <p><a class="text-link" href={business.links.reserve} target="_blank" rel="noopener">Reserve a table <Icon name="external" size={16} /></a></p>
+      </div>
+
+      <div class="info-block">
+        <h2 class="label">Pickup &amp; delivery</h2>
+        <p>Order online for pickup or delivery through DoorDash, or call {business.phone.display} to order by phone.</p>
+        <div class="btn-row">
+          <a class="btn" href={business.links.order} target="_blank" rel="noopener"><Icon name="bag" /> Order pickup or delivery<span class="visually-hidden"> (opens DoorDash)</span></a>
+        </div>
+        <p class="muted small">
+          The same store takes orders on <a class="text-link" href={business.links.orderOnline} target="_blank" rel="noopener">Blue’s order.online page</a> (powered by DoorDash).
+        </p>
       </div>
 
       <div class="info-block">

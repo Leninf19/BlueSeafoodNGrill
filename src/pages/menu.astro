@@ -40,9 +40,10 @@ const lastReviewed = new Date(`${menuLastReviewed}T12:00:00Z`).toLocaleDateStrin
         menu. {menuNotice}
       </p>
       <div class="btn-row">
-        <a class="btn" href={business.links.reserve} target="_blank" rel="noopener"><Icon name="calendar" /> Reserve a table</a>
-        <a class="btn btn-ghost" href={business.phone.href}><Icon name="phone" /> {business.phone.display}</a>
+        <a class="btn" href={business.links.order} target="_blank" rel="noopener"><Icon name="bag" /> Order pickup or delivery<span class="visually-hidden"> (opens DoorDash)</span></a>
+        <a class="btn btn-ghost" href={business.links.reserve} target="_blank" rel="noopener"><Icon name="calendar" /> Reserve a table</a>
       </div>
+      <p class="muted order-note">Online orders are placed through DoorDash. Prefer to call? {business.phone.display}.</p>
     </div>
   </section>
 
@@ -139,9 +140,9 @@ const lastReviewed = new Date(`${menuLastReviewed}T12:00:00Z`).toLocaleDateStrin
     <div class="container menu-cta-inner">
       <h2 id="menu-cta-title" class="display-md">See you on <em>Grand Avenue</em></h2>
       <div class="btn-row">
-        <a class="btn btn-light" href={business.links.reserve} target="_blank" rel="noopener"><Icon name="calendar" /> Reserve a table</a>
+        <a class="btn btn-light" href={business.links.order} target="_blank" rel="noopener"><Icon name="bag" /> Order pickup or delivery<span class="visually-hidden"> (opens DoorDash)</span></a>
+        <a class="btn btn-ghost-light" href={business.links.reserve} target="_blank" rel="noopener"><Icon name="calendar" /> Reserve a table</a>
         <a class="btn btn-ghost-light" href={business.links.directions} target="_blank" rel="noopener"><Icon name="directions" /> Directions</a>
-        <a class="btn btn-ghost-light" href="/visit">Hours &amp; location</a>
       </div>
     </div>
   </section>
@@ -178,6 +179,10 @@ const lastReviewed = new Date(`${menuLastReviewed}T12:00:00Z`).toLocaleDateStrin
     margin: -3rem var(--gutter) 0;
     padding: 1.5rem 1.35rem 1.6rem;
     background: var(--paper);
+  }
+
+  .order-note {
+    font-size: 0.88rem;
   }
 
   /* ---------- Sticky, clearly scrollable section nav ---------- */

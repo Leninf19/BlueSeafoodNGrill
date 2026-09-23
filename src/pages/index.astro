@@ -60,6 +60,9 @@ for (const p of preview) if (!menuIds.has(p.id)) throw new Error(`Menu section #
         <a class="btn" href="/menu"><Icon name="menu" /> View the menu</a>
         <a class="btn btn-ghost" href={business.links.reserve} target="_blank" rel="noopener">Reserve a table</a>
       </div>
+      <a class="text-link hero-order" href={business.links.order} target="_blank" rel="noopener">
+        <Icon name="bag" size={18} /> Order pickup or delivery<span class="visually-hidden"> (opens DoorDash)</span>
+      </a>
       <OpenStatus class="hero-status" />
     </div>
   </section>
@@ -132,7 +135,12 @@ for (const p of preview) if (!menuIds.has(p.id)) throw new Error(`Menu section #
             ))
           }
         </ol>
-        <a class="btn btn-light" href="/menu">Open the full menu</a>
+        <div class="btn-row">
+          <a class="btn btn-light" href="/menu">Open the full menu</a>
+          <a class="btn btn-ghost-light" href={business.links.order} target="_blank" rel="noopener">
+            <Icon name="bag" /> Order pickup or delivery<span class="visually-hidden"> (opens DoorDash)</span>
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -207,6 +215,10 @@ for (const p of preview) if (!menuIds.has(p.id)) throw new Error(`Menu section #
 
   .hero-sub {
     color: var(--soft);
+  }
+
+  .hero-order {
+    font-size: 0.95rem;
   }
 
   .hero-panel :global(.hero-status) {

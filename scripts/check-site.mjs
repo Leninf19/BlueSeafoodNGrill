@@ -62,6 +62,13 @@ for (const file of htmlFiles) {
   if (/\bchef\b/i.test(text)) warn.push(`${route}: mentions "chef" — confirm it is not a staff claim`);
   if (/BlueSeafoodNGrill/i.test(html)) errors.push(`${route}: contains old GitHub Pages base path`);
 
+  // Required links ----------------------------------------------------------
+  const ORDER = 'https://www.doordash.com/store/blue-seafood-and-grill-arroyo-grande-25401228/';
+  if (['/', '/menu', '/visit'].includes(route) && !(html.includes(`href="${ORDER}"`) && /Order pickup or delivery/.test(text)))
+    errors.push(`${route}: missing "Order pickup or delivery" link`);
+  const credit = html.match(/Website design &amp; maintenance by <a href="([^"]+)"[^>]*>Future Marketing Studio<\/a>/);
+  if (!credit || credit[1] !== 'https://futuremark.studio') errors.push(`${route}: missing footer credit`);
+
   // SEO -------------------------------------------------------------------
   const decode = (s) => s?.replace(/&amp;/g, '&');
   const title = decode(html.match(/<title>([^<]*)<\/title>/i)?.[1]?.trim());

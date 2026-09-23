@@ -65,6 +65,7 @@ const year = new Date().getFullYear();
         <li><a href="/about">About</a></li>
         <li><a href="/visit">Visit &amp; contact</a></li>
         <li><a href={business.links.reserve} target="_blank" rel="noopener">Reserve a table</a></li>
+        <li><a href={business.links.order} target="_blank" rel="noopener">Order pickup or delivery<span class="visually-hidden"> (opens DoorDash)</span></a></li>
       </ul>
     </nav>
   </div>
@@ -72,6 +73,9 @@ const year = new Date().getFullYear();
   <div class="container footer-bottom">
     <p>© {year} {business.name}</p>
     <p>Menu and hours can change — call ahead if you’re planning around a dish.</p>
+    <p class="credit">
+      Website design &amp; maintenance by <a href="https://futuremark.studio" target="_blank" rel="noopener">Future Marketing Studio</a>
+    </p>
   </div>
 </footer>
 
@@ -171,6 +175,17 @@ const year = new Date().getFullYear();
     border-top: 1px solid var(--line-dark);
     font-size: 0.84rem;
     color: rgb(255 253 249 / 0.7);
+  }
+
+  .credit {
+    flex-basis: 100%;
+    font-size: 0.78rem;
+    color: rgb(255 253 249 / 0.62);
+  }
+
+  .credit a {
+    text-decoration: underline;
+    text-decoration-color: rgb(255 253 249 / 0.35);
   }
 
   @media (min-width: 720px) {

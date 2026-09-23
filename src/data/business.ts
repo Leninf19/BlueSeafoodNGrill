@@ -51,6 +51,14 @@ export const business = {
   ],
 
   links: {
+    /**
+     * Online ordering (pickup or delivery). Verified 2026-09-23: DoorDash store 25401228,
+     * "Blue Seafood and Grill", 1351 E Grand Ave, Arroyo Grande. Prices are shown by DoorDash,
+     * never on this site.
+     */
+    order: 'https://www.doordash.com/store/blue-seafood-and-grill-arroyo-grande-25401228/',
+    /** The same DoorDash store's own-branded ordering page (order.online). */
+    orderOnline: 'https://order.online/store/blue-seafood-and-grill-25401228',
     /** "Reserve with Google" — booking times are provided by Yelp. */
     reserve: 'https://www.google.com/maps/reserve/v/dine/c/Eq2GgEo4YCc?source=pa&hl=en-US',
     directions:
