@@ -1,0 +1,353 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import HoursList from '../components/HoursList.astro';
+import OpenStatus from '../components/OpenStatus.astro';
+import { business, fullAddress } from '../data/business';
+import { breadcrumbSchema } from '../lib/schema';
+
+const site = Astro.site ?? new URL(Astro.url.origin);
+
+const faqs = [
+  {
+    q: 'Do you take reservations?',
+    a: `Yes. Book online through Reserve with Google (booking times are provided by Yelp), or call us at ${business.phone.display}.`,
+  },
+  {
+    q: 'Are you open on Mondays?',
+    a: 'No — we’re closed on Mondays. We’re open Tuesday through Thursday from 11:30 AM to 8:00 PM, and Friday through Sunday from 11:30 AM to 8:30 PM.',
+  },
+  {
+    q: 'Do you have vegetarian or vegan dishes?',
+    a: 'Yes. The menu includes Veggie Marinara Bucatini and vegan Shiitake Tacos, along with several salads. Let your server know about any dietary needs.',
+  },
+  {
+    q: 'Is there a kids menu?',
+    a: 'Yes — kids sliders, kids pasta with butter or marinara, and kids fish n’ chips.',
+  },
+  {
+    q: 'Can you seat a large group?',
+    a: `For larger parties, please call ${business.phone.display} ahead of time so we can check availability.`,
+  },
+];
+---
+
+<Base
+  title="Hours, Directions & Reservations | Blue Seafood & Grill"
+  description={`Blue Seafood & Grill, ${fullAddress}. Open Tue–Sun from 11:30 AM, closed Mondays. Hours, map, directions, reservations and phone.`}
+  path="/visit"
+  schema={[
+    breadcrumbSchema(site, [
+      { name: 'Home', path: '/' },
+      { name: 'Visit & Contact', path: '/visit' },
+    ]),
+  ]}
+>
+  <section class="visit-hero bg-deep on-dark" aria-labelledby="visit-title">
+    <div class="container visit-hero-inner">
+      <p class="eyebrow">Visit &amp; contact</p>
+      <h1 id="visit-title" class="heading-xl">Find us on Grand Avenue</h1>
+      <p class="lede">
+        {fullAddress}. Reserve a table online, call ahead, or stop in — we’re open six days a week.
+      </p>
+      <OpenStatus />
+    </div>
+  </section>
+
+  <section class="section-tight" aria-label="Contact details and map">
+    <div class="container visit-grid">
+      <div class="info-col">
+        <article class="info-card" aria-labelledby="addr-title">
+          <h2 id="addr-title" class="info-title"><Icon name="pin" /> Address</h2>
+          <address class="info-big">
+            {business.address.street}<br />
+            {business.address.city}, {business.address.region} {business.address.postalCode}
+          </address>
+          <div class="btn-row">
+            <a class="btn btn-primary" href={business.links.directions} target="_blank" rel="noopener">
+              <Icon name="directions" /> Google Maps
+            </a>
+            <a class="btn btn-outline" href={business.links.appleMaps} target="_blank" rel="noopener">
+              Apple Maps
+            </a>
+          </div>
+        </article>
+
+        <article class="info-card" aria-labelledby="phone-title">
+          <h2 id="phone-title" class="info-title"><Icon name="phone" /> Phone &amp; reservations</h2>
+          <p class="info-big"><a href={business.phone.href}>{business.phone.display}</a></p>
+          <div class="btn-row">
+            <a class="btn btn-primary" href={business.links.reserve} target="_blank" rel="noopener">
+              <Icon name="calendar" /> Reserve a table
+            </a>
+            <a class="btn btn-outline" href={business.phone.href}><Icon name="phone" /> Call</a>
+          </div>
+          <p class="info-small">Online reservations use Reserve with Google; booking times are provided by Yelp.</p>
+        </article>
+
+        <article class="info-card" aria-labelledby="hours-title">
+          <h2 id="hours-title" class="info-title"><Icon name="clock" /> Hours</h2>
+          <HoursList />
+          <p class="info-small">Holiday hours may vary — please call ahead.</p>
+        </article>
+
+        <article class="info-card" aria-labelledby="social-title">
+          <h2 id="social-title" class="info-title"><Icon name="instagram" /> Follow along</h2>
+          <ul role="list" class="social-list">
+            <li>
+              <a href={business.links.instagram} target="_blank" rel="noopener me">
+                <Icon name="instagram" /> Instagram <span class="handle">{business.links.instagramHandle}</span>
+              </a>
+            </li>
+            <li>
+              <a href={business.links.facebook} target="_blank" rel="noopener me">
+                <Icon name="facebook" /> Facebook
+              </a>
+            </li>
+            <li>
+              <a href={business.links.googleProfile} target="_blank" rel="noopener">
+                <Icon name="google" /> Google reviews
+              </a>
+            </li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="map-col">
+        <div class="map-frame">
+          <iframe
+            src={business.links.mapEmbed}
+            title={`Map showing ${business.name} at ${fullAddress}`}
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen></iframe>
+        </div>
+        <p class="map-note">
+          Map not loading?{' '}
+          <a class="text-link" href={business.links.googleProfile} target="_blank" rel="noopener">
+            Open {business.name} in Google Maps
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-sand" aria-labelledby="faq-title">
+    <div class="container-narrow">
+      <div class="section-head">
+        <p class="eyebrow">Good to know</p>
+        <h2 id="faq-title" class="heading-lg">Frequently asked questions</h2>
+      </div>
+      <div class="faq-list">
+        {
+          faqs.map((f) => (
+            <details class="faq">
+              <summary>
+                <span>{f.q}</span>
+                <span class="faq-icon" aria-hidden="true" />
+              </summary>
+              <p>{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .visit-hero {
+    padding-block: 5rem 3.5rem;
+  }
+
+  .visit-hero-inner {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+  }
+
+  .visit-grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .info-col {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .info-card {
+    display: grid;
+    align-content: start;
+    gap: 1rem;
+    padding: 1.5rem;
+    border: 1px solid var(--sand-200);
+    border-radius: var(--radius-lg);
+    background: var(--white);
+  }
+
+  .info-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--brass-500);
+  }
+
+  .info-title :global(svg) {
+    width: 1.2rem;
+    height: 1.2rem;
+    color: var(--blue-600);
+  }
+
+  .info-big {
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    line-height: 1.25;
+  }
+
+  .info-big a {
+    text-decoration: none;
+  }
+
+  .info-big a:hover {
+    color: var(--blue-600);
+  }
+
+  .info-small {
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+
+  .social-list {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  .social-list a {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 2.75rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .social-list a:hover {
+    color: var(--blue-600);
+  }
+
+  .social-list :global(svg) {
+    width: 1.3rem;
+    height: 1.3rem;
+    color: var(--blue-600);
+  }
+
+  .handle {
+    font-weight: 500;
+    color: var(--ink-soft);
+  }
+
+  .map-frame {
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-lg);
+    background: var(--sand-200);
+    box-shadow: var(--shadow);
+  }
+
+  .map-frame iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .map-note {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+
+  .faq-list {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .faq {
+    border-radius: var(--radius);
+    background: var(--white);
+  }
+
+  .faq summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.1rem 1.35rem;
+    font-weight: 700;
+    list-style: none;
+    cursor: pointer;
+    border-radius: var(--radius);
+  }
+
+  .faq summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-icon {
+    position: relative;
+    flex: none;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .faq-icon::before,
+  .faq-icon::after {
+    content: '';
+    position: absolute;
+    inset: 50% 0 auto;
+    height: 2px;
+    margin-top: -1px;
+    background: var(--blue-600);
+    transition: transform 0.2s var(--ease);
+  }
+
+  .faq-icon::after {
+    transform: rotate(90deg);
+  }
+
+  .faq[open] .faq-icon::after {
+    transform: rotate(0deg);
+  }
+
+  .faq p {
+    padding: 0 1.35rem 1.25rem;
+    color: var(--ink-soft);
+  }
+
+  @media (min-width: 960px) {
+    .visit-hero {
+      padding-block: 7rem 4.5rem;
+    }
+
+    .visit-grid {
+      grid-template-columns: 1fr 1.15fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .map-col {
+      position: sticky;
+      top: calc(var(--header-h) + 1.5rem);
+    }
+
+    .map-frame {
+      aspect-ratio: auto;
+      height: min(42rem, calc(100vh - var(--header-h) - 6rem));
+    }
+  }
+</style>

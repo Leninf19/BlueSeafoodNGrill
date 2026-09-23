@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { business } from '../data/business';
+---
+
+<Base
+  title="Page not found | Blue Seafood & Grill"
+  description="The page you were looking for could not be found. Browse the Blue Seafood & Grill menu, hours and directions."
+  path="/404"
+  noindex
+>
+  <section class="section bg-deep on-dark not-found" aria-labelledby="nf-title">
+    <div class="container-narrow stack">
+      <p class="eyebrow">404</p>
+      <h1 id="nf-title" class="heading-xl">This one got away.</h1>
+      <p class="lede">
+        We couldn’t find that page. It may have moved when we refreshed the website.
+      </p>
+      <div class="btn-row">
+        <a class="btn btn-light" href="/">Home</a>
+        <a class="btn btn-ghost-light" href="/menu"><Icon name="menu" /> Menu</a>
+        <a class="btn btn-ghost-light" href="/visit">Hours &amp; directions</a>
+        <a class="btn btn-ghost-light" href={business.phone.href}><Icon name="phone" /> Call us</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .not-found {
+    min-height: 60vh;
+    display: grid;
+    align-items: center;
+  }
+</style>

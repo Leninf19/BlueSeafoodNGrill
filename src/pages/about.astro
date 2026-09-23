@@ -1,0 +1,301 @@
+---
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import Icon from '../components/Icon.astro';
+import WaveRule from '../components/WaveRule.astro';
+import { business } from '../data/business';
+import { googleRating } from '../data/reviews';
+import { breadcrumbSchema } from '../lib/schema';
+
+const site = Astro.site ?? new URL(Astro.url.origin);
+
+const highlights = [
+  {
+    title: 'Seafood first',
+    text: 'Oysters three ways, crab cakes, ceviche tostadas, cioppino, a smoked tomato cream pan roast and a Cajun seafood boil made for sharing.',
+  },
+  {
+    title: 'Surf & turf',
+    text: 'A bone-in ribeye with peppercorn sauce, a Western burger with smoked gouda and bacon, and grilled lobster tail for the table that wants both.',
+  },
+  {
+    title: 'Something for everyone',
+    text: 'Salads, vegetarian and vegan plates like shiitake tacos and marinara bucatini, plus a kids menu with sliders, pasta and fish n’ chips.',
+  },
+];
+---
+
+<Base
+  title="About Blue Seafood & Grill | Arroyo Grande Seafood Restaurant"
+  description={`Blue Seafood & Grill has served seafood and grill favorites on East Grand Avenue in Arroyo Grande since ${business.openedYear}. Learn about our menu and plan your visit.`}
+  path="/about"
+  schema={[
+    breadcrumbSchema(site, [
+      { name: 'Home', path: '/' },
+      { name: 'About', path: '/about' },
+    ]),
+  ]}
+>
+  <section class="page-hero on-dark" aria-labelledby="about-title">
+    <div class="page-hero-media">
+      <Photo name="storefrontEvening" sizes="100vw" widths={[640, 1000]} eager />
+    </div>
+    <div class="container page-hero-content">
+      <p class="eyebrow">About us</p>
+      <h1 id="about-title" class="heading-xl">Blue Seafood &amp; Grill</h1>
+      <p class="lede">
+        A neighborhood seafood and grill restaurant on East Grand Avenue in Arroyo Grande, open since
+        {' '}{business.openedYear}.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="story-title">
+    <div class="container about-grid">
+      <div class="stack about-copy">
+        <p class="eyebrow">Our story</p>
+        <h2 id="story-title" class="heading-lg">Fresh surf &amp; turf on the Central Coast</h2>
+        <WaveRule />
+        <p>
+          Blue Seafood &amp; Grill opened its doors at {business.address.street} in
+          {' '}{business.openedYear}. The idea is right there in our name: a seafood-first kitchen with a
+          grill at its heart, serving lunch and dinner six days a week to Arroyo Grande and the
+          rest of the Five Cities — Grover Beach, Pismo Beach, Oceano and Shell Beach.
+        </p>
+        <p>
+          It’s a place for an easy weekday lunch of fish tacos, a Friday dinner over a shared
+          seafood boil, or a long catch-up over oysters and a lobster roll.
+        </p>
+        <p>
+          Guests on Google rate us {googleRating.rating} out of 5 across {googleRating.count} reviews,
+          with fish and chips, shrimp tacos, oysters and the lobster roll among the dishes
+          they mention most.
+        </p>
+      </div>
+
+      <div class="about-photos">
+        <div class="media about-photo-a">
+          <Photo name="signDaytime" sizes="(min-width: 960px) 22vw, 50vw" widths={[400, 570]} />
+        </div>
+        <div class="media about-photo-b">
+          <Photo name="dirtyFries" sizes="(min-width: 960px) 22vw, 50vw" widths={[400, 700, 1000]} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-sand" aria-labelledby="menu-highlights-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">The menu</p>
+        <h2 id="menu-highlights-title" class="heading-lg">What’s on the table</h2>
+      </div>
+      <ul role="list" class="highlight-grid">
+        {
+          highlights.map((h) => (
+            <li class="highlight">
+              <Icon name="flame" class="highlight-icon" />
+              <h3 class="heading-sm">{h.title}</h3>
+              <p>{h.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="highlight-cta">
+        <a class="btn btn-primary" href="/menu">Browse the full menu <Icon name="arrowRight" /></a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="gallery-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">From our kitchen</p>
+        <h2 id="gallery-title" class="heading-lg">A closer look</h2>
+      </div>
+      <div class="about-gallery">
+        <div class="media g-1"><Photo name="seafoodBoilBowl" sizes="(min-width: 960px) 60vw, 100vw" /></div>
+        <div class="media g-2"><Photo name="sauteedJumboShrimp" sizes="(min-width: 960px) 40vw, 100vw" /></div>
+        <div class="media g-3"><Photo name="ribeyeWithShrimp" sizes="(min-width: 960px) 30vw, 50vw" widths={[400, 750]} /></div>
+        <div class="media g-4"><Photo name="dessertCreamPour" sizes="(min-width: 960px) 30vw, 50vw" widths={[400, 693]} /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight bg-deep on-dark" aria-labelledby="about-visit-title">
+    <div class="container about-visit">
+      <div class="stack">
+        <p class="eyebrow">Come by</p>
+        <h2 id="about-visit-title" class="heading-lg">We’d love to cook for you</h2>
+        <p class="lede">
+          Open Tuesday through Sunday from 11:30 AM. Reserve online, call
+          {' '}<a class="text-link" href={business.phone.href}>{business.phone.display}</a>, or just stop in.
+        </p>
+      </div>
+      <div class="btn-row">
+        <a class="btn btn-light" href={business.links.reserve} target="_blank" rel="noopener">
+          <Icon name="calendar" /> Reserve a table
+        </a>
+        <a class="btn btn-ghost-light" href="/visit">Hours &amp; directions</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-hero {
+    position: relative;
+    padding-block: 6rem 4rem;
+    color: var(--white);
+    background: var(--navy-950);
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  .page-hero-media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .page-hero-media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .page-hero-media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgb(6 20 35 / 0.92) 5%, rgb(6 20 35 / 0.45) 60%, rgb(6 20 35 / 0.3));
+  }
+
+  .page-hero-content {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .about-grid {
+    display: grid;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .about-copy p:not(.eyebrow) {
+    max-width: 38rem;
+    color: var(--ink-soft);
+  }
+
+  .about-photos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .about-photo-a {
+    aspect-ratio: 1;
+    margin-top: 3rem;
+  }
+
+  .about-photo-b {
+    aspect-ratio: 2 / 3;
+  }
+
+  .highlight-grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .highlight {
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+    padding: 1.75rem;
+    border-radius: var(--radius-lg);
+    background: var(--white);
+  }
+
+  .highlight :global(.highlight-icon) {
+    width: 2rem;
+    height: 2rem;
+    color: var(--blue-600);
+  }
+
+  .highlight p {
+    color: var(--ink-soft);
+  }
+
+  .highlight-cta {
+    margin-top: 2.5rem;
+  }
+
+  .about-gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .about-gallery .g-1,
+  .about-gallery .g-2 {
+    grid-column: span 2;
+    aspect-ratio: 3 / 2;
+  }
+
+  .about-gallery .g-3,
+  .about-gallery .g-4 {
+    aspect-ratio: 3 / 4;
+  }
+
+  .about-visit {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  @media (min-width: 960px) {
+    .page-hero {
+      padding-block: 9rem 5.5rem;
+    }
+
+    .about-grid {
+      grid-template-columns: 1.1fr 1fr;
+      gap: 5rem;
+    }
+
+    .highlight-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .about-gallery {
+      grid-template-columns: repeat(6, 1fr);
+      grid-auto-rows: 14rem;
+    }
+
+    .about-gallery .g-1 {
+      grid-column: 1 / span 4;
+      grid-row: span 2;
+      aspect-ratio: auto;
+    }
+
+    .about-gallery .g-2 {
+      grid-column: 5 / span 2;
+      aspect-ratio: auto;
+    }
+
+    .about-gallery .g-3 {
+      grid-column: 5 / span 1;
+      aspect-ratio: auto;
+    }
+
+    .about-gallery .g-4 {
+      grid-column: 6 / span 1;
+      aspect-ratio: auto;
+    }
+
+    .about-visit {
+      grid-template-columns: 1fr auto;
+    }
+  }
+</style>

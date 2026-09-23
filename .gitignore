@@ -1,0 +1,20 @@
+# build output
+dist/
+.astro/
+.vercel/
+
+# dependencies
+node_modules/
+
+# environment
+.env
+.env.*
+!.env.example
+
+# logs & tooling
+npm-debug.log*
+.playwright-mcp/
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,453 @@
+---
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import Icon from '../components/Icon.astro';
+import { business } from '../data/business';
+import { menu, menuNotice, consumerAdvisory, menuLastReviewed, tagLabels } from '../data/menu';
+import { menuSchema, breadcrumbSchema } from '../lib/schema';
+
+const site = Astro.site ?? new URL(Astro.url.origin);
+const lastReviewed = new Date(`${menuLastReviewed}T12:00:00Z`).toLocaleDateString('en-US', {
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
+---
+
+<Base
+  title="Menu | Blue Seafood & Grill, Arroyo Grande"
+  description="Browse the Blue Seafood & Grill menu in Arroyo Grande: oysters, Cajun seafood boil, cioppino, lobster rolls, fish tacos, ribeye, salads, vegan and kids dishes."
+  path="/menu"
+  schema={[
+    menuSchema(site),
+    breadcrumbSchema(site, [
+      { name: 'Home', path: '/' },
+      { name: 'Menu', path: '/menu' },
+    ]),
+  ]}
+>
+  <section class="menu-hero on-dark" aria-labelledby="menu-title">
+    <div class="menu-hero-media">
+      <Photo name="oystersNeon" sizes="100vw" widths={[640, 1080]} eager />
+    </div>
+    <div class="container menu-hero-content">
+      <p class="eyebrow">Blue Seafood &amp; Grill</p>
+      <h1 id="menu-title" class="heading-xl">Menu</h1>
+      <p class="lede">
+        Oysters and starters, steamers and boils, seafood and steak entrées — plus salads, vegetarian
+        and vegan plates, sides and a kids menu.
+      </p>
+    </div>
+  </section>
+
+  <nav class="menu-nav" aria-label="Menu sections" data-menu-nav>
+    <div class="container">
+      <ul role="list" class="menu-nav-list">
+        {
+          menu.map((s) => (
+            <li>
+              <a href={`#${s.id}`} data-menu-link={s.id}>
+                {s.title}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container menu-layout">
+    <aside class="menu-aside" aria-label="About this menu">
+      <div class="aside-card">
+        <p class="aside-notice">{menuNotice}</p>
+        <p class="aside-meta">Menu last reviewed {lastReviewed}.</p>
+        <div class="aside-actions">
+          <a class="btn btn-primary" href={business.links.reserve} target="_blank" rel="noopener">
+            <Icon name="calendar" /> Reserve a table
+          </a>
+          <a class="btn btn-outline" href={business.phone.href}>
+            <Icon name="phone" /> {business.phone.display}
+          </a>
+        </div>
+      </div>
+      <dl class="legend">
+        <dt class="visually-hidden">Labels</dt>
+        <dd><span class="tag tag-popular">Guest favorite</span> Frequently mentioned in reviews</dd>
+        <dd><span class="tag">Vegan</span> <span class="tag">Vegetarian</span> Plant-based</dd>
+        <dd><span class="tag">Raw or undercooked</span> See advisory below</dd>
+      </dl>
+    </aside>
+
+    <div class="menu-sections">
+      {
+        menu.map((section) => (
+          <section class="menu-section" id={section.id} aria-labelledby={`${section.id}-title`} data-menu-section>
+            <header class="menu-section-head">
+              <h2 id={`${section.id}-title`} class="heading-md">{section.title}</h2>
+              {section.intro && <p>{section.intro}</p>}
+            </header>
+
+            {section.layout === 'compact' ? (
+              <ul role="list" class="compact-list">
+                {section.items.map((item) => (
+                  <li>{item.name}</li>
+                ))}
+              </ul>
+            ) : (
+              <ul role="list" class="item-list">
+                {section.items.map((item) => (
+                  <li class="menu-item">
+                    <h3 class="item-name">{item.name}</h3>
+                    {(item.popular || item.tags?.length) && (
+                      <p class="item-tags">
+                        {item.popular && <span class="tag tag-popular">Guest favorite</span>}
+                        {item.tags?.map((t) => (
+                          <span class="tag">{tagLabels[t]}</span>
+                        ))}
+                      </p>
+                    )}
+                    {item.description && <p class="item-desc">{item.description}</p>}
+                    {item.note && <p class="item-note">{item.note}</p>}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        ))
+      }
+
+      <footer class="menu-footnotes">
+        <p><strong>Allergies:</strong> Please tell your server about any food allergies before you order.</p>
+        <p><strong>Advisory:</strong> {consumerAdvisory}</p>
+        <p>Menu last reviewed {lastReviewed}. Please call us for current pricing.</p>
+      </footer>
+    </div>
+  </div>
+
+  <section class="section-tight bg-deep on-dark" aria-labelledby="menu-cta-title">
+    <div class="container menu-cta">
+      <h2 id="menu-cta-title" class="heading-md">Hungry yet?</h2>
+      <div class="btn-row">
+        <a class="btn btn-light" href={business.links.reserve} target="_blank" rel="noopener">
+          <Icon name="calendar" /> Reserve a table
+        </a>
+        <a class="btn btn-ghost-light" href={business.links.directions} target="_blank" rel="noopener">
+          <Icon name="directions" /> Directions
+        </a>
+        <a class="btn btn-ghost-light" href="/visit">Hours &amp; location</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .menu-hero {
+    position: relative;
+    padding-block: 5rem 3.5rem;
+    color: var(--white);
+    background: var(--navy-950);
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  .menu-hero-media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .menu-hero-media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 35%;
+  }
+
+  .menu-hero-media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgb(6 20 35 / 0.94) 0%, rgb(6 20 35 / 0.75) 55%, rgb(6 20 35 / 0.45) 100%);
+  }
+
+  .menu-hero-content {
+    display: grid;
+    gap: 1rem;
+  }
+
+  /* Sticky section nav */
+  .menu-nav {
+    position: sticky;
+    top: var(--header-h);
+    z-index: 30;
+    background: rgb(253 250 244 / 0.96);
+    border-bottom: 1px solid var(--sand-200);
+  }
+
+  @supports (backdrop-filter: blur(1px)) {
+    .menu-nav {
+      background: rgb(253 250 244 / 0.85);
+      backdrop-filter: blur(12px);
+    }
+  }
+
+  .menu-nav .container {
+    width: 100%;
+    max-width: calc(var(--max) + 2 * var(--gutter));
+    padding-inline: var(--gutter);
+  }
+
+  .menu-nav-list {
+    display: flex;
+    gap: 0.4rem;
+    padding-block: 0.7rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
+  }
+
+  .menu-nav-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .menu-nav-list li {
+    flex: none;
+    scroll-snap-align: start;
+  }
+
+  .menu-nav-list a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.6rem;
+    padding: 0.45rem 1rem;
+    border: 1px solid var(--sand-300);
+    border-radius: 999px;
+    background: var(--white);
+    font-size: 0.92rem;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  }
+
+  .menu-nav-list a:hover {
+    border-color: var(--navy-900);
+  }
+
+  .menu-nav-list a[aria-current='true'] {
+    background: var(--navy-900);
+    border-color: var(--navy-900);
+    color: var(--white);
+  }
+
+  /* Layout */
+  .menu-layout {
+    display: grid;
+    gap: 2.5rem;
+    padding-block: 2.5rem 5rem;
+  }
+
+  .menu-section {
+    scroll-margin-top: calc(var(--header-h) + 4.5rem);
+    padding-block: 2.5rem;
+    border-bottom: 1px solid var(--sand-200);
+  }
+
+  .menu-section:first-child {
+    padding-top: 0;
+  }
+
+  .menu-section-head {
+    display: grid;
+    gap: 0.4rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .menu-section-head p {
+    color: var(--ink-soft);
+  }
+
+  .item-list {
+    display: grid;
+    gap: 1.75rem 3rem;
+  }
+
+  .menu-item {
+    display: grid;
+    gap: 0.35rem;
+    align-content: start;
+  }
+
+  .item-name {
+    font-size: 1.3rem;
+    font-weight: 550;
+    line-height: 1.25;
+  }
+
+  .item-desc {
+    color: var(--ink-soft);
+  }
+
+  .item-note {
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--blue-600);
+  }
+
+  .item-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 0.1rem 0.55rem;
+    border: 1px solid var(--sand-300);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    background: var(--sand-50);
+  }
+
+  .tag-popular {
+    border-color: transparent;
+    background: #e6f2fa;
+    color: #07578a;
+  }
+
+  .compact-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .compact-list li {
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    background: var(--sand-100);
+    font-weight: 600;
+  }
+
+  /* Aside */
+  .aside-card {
+    display: grid;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    background: var(--sand-100);
+  }
+
+  .aside-notice {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
+
+  .aside-meta {
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+
+  .aside-actions {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .legend {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+
+  .menu-footnotes {
+    display: grid;
+    gap: 0.6rem;
+    padding-top: 2.5rem;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+
+  .menu-cta {
+    display: grid;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  @media (max-width: 959.98px) {
+    .menu-aside {
+      order: 2;
+    }
+  }
+
+  @media (min-width: 720px) {
+    .item-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 960px) {
+    .menu-hero {
+      padding-block: 7rem 5rem;
+    }
+
+    .menu-layout {
+      grid-template-columns: 17rem 1fr;
+      gap: 4rem;
+      padding-top: 3.5rem;
+    }
+
+    .menu-aside {
+      position: sticky;
+      top: calc(var(--header-h) + 5.5rem);
+      align-self: start;
+    }
+
+    .menu-cta {
+      grid-template-columns: 1fr auto;
+    }
+  }
+</style>
+
+<script>
+  const links = new Map<string, HTMLAnchorElement>();
+  document.querySelectorAll<HTMLAnchorElement>('[data-menu-link]').forEach((a) => {
+    links.set(a.dataset.menuLink!, a);
+  });
+
+  const setCurrent = (id: string) => {
+    links.forEach((a, key) => {
+      if (key === id) {
+        a.setAttribute('aria-current', 'true');
+        const list = a.closest('ul');
+        if (list) {
+          const left = a.offsetLeft - list.clientWidth / 2 + a.clientWidth / 2;
+          list.scrollTo({ left, behavior: 'auto' });
+        }
+      } else {
+        a.removeAttribute('aria-current');
+      }
+    });
+  };
+
+  const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-menu-section]'));
+  if ('IntersectionObserver' in window && sections.length) {
+    const visible = new Set<string>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) visible.add(e.target.id);
+          else visible.delete(e.target.id);
+        });
+        const first = sections.find((s) => visible.has(s.id));
+        if (first) setCurrent(first.id);
+      },
+      { rootMargin: '-30% 0px -60% 0px' },
+    );
+    sections.forEach((s) => observer.observe(s));
+  }
+</script>

@@ -1,0 +1,80 @@
+---
+import { business, formatTime } from '../data/business';
+
+interface Props {
+  class?: string;
+}
+---
+
+<dl class:list={['hours-list', Astro.props.class]} data-hours-list>
+  {
+    business.hours.map((d) => (
+      <div class="hours-row" data-day={d.day}>
+        <dt>{d.day}</dt>
+        <dd>
+          {d.open && d.close ? (
+            <>
+              <time datetime={d.open}>{formatTime(d.open)}</time> –{' '}
+              <time datetime={d.close}>{formatTime(d.close)}</time>
+            </>
+          ) : (
+            'Closed'
+          )}
+        </dd>
+      </div>
+    ))
+  }
+</dl>
+
+<style>
+  .hours-list {
+    display: grid;
+    gap: 0.1rem;
+  }
+
+  .hours-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.55rem 0.75rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .hours-row dd {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  .hours-row[data-today] {
+    background: rgb(10 106 166 / 0.1);
+    font-weight: 700;
+  }
+
+  :global(.on-dark) .hours-row[data-today],
+  :global(.bg-navy) .hours-row[data-today],
+  :global(.bg-deep) .hours-row[data-today] {
+    background: rgb(111 205 247 / 0.12);
+  }
+
+  .hours-row[data-today] dt::after {
+    content: ' · Today';
+    font-weight: 600;
+    color: var(--blue-600);
+  }
+
+  :global(.on-dark) .hours-row[data-today] dt::after,
+  :global(.bg-navy) .hours-row[data-today] dt::after,
+  :global(.bg-deep) .hours-row[data-today] dt::after {
+    color: var(--blue-300);
+  }
+</style>
+
+<script>
+  const today = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Los_Angeles',
+    weekday: 'long',
+  }).format(new Date());
+  document
+    .querySelectorAll<HTMLElement>(`[data-hours-list] [data-day="${today}"]`)
+    .forEach((row) => row.setAttribute('data-today', ''));
+</script>

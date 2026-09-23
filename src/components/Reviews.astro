@@ -1,0 +1,168 @@
+---
+import Icon from './Icon.astro';
+import { business } from '../data/business';
+import { googleRating, reviews } from '../data/reviews';
+
+const fullStars = Math.floor(googleRating.rating);
+const hasHalf = googleRating.rating - fullStars >= 0.5;
+---
+
+<section class="section reviews bg-navy on-dark" aria-labelledby="reviews-title">
+  <div class="container">
+    <div class="reviews-head">
+      <div class="section-head">
+        <p class="eyebrow">Guest reviews</p>
+        <h2 id="reviews-title" class="heading-lg">What guests say on Google</h2>
+      </div>
+
+      <div class="rating-card">
+        <p class="rating-number">{googleRating.rating.toFixed(1)}</p>
+        <div>
+          <span class="stars" role="img" aria-label={`Rated ${googleRating.rating} out of 5 on Google`}>
+            {Array.from({ length: fullStars }).map(() => <Icon name="star" />)}
+            {hasHalf && <Icon name="starHalf" />}
+          </span>
+          <p class="rating-meta">
+            <Icon name="google" size={16} />
+            {googleRating.count} Google reviews
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <ul role="list" class="review-grid">
+      {
+        reviews.map((r) => (
+          <li class="review-card">
+            <figure>
+              <span class="stars" role="img" aria-label={`${r.stars} out of 5 stars`}>
+                {Array.from({ length: r.stars }).map(() => <Icon name="star" />)}
+              </span>
+              <blockquote cite={business.links.googleReviews}>
+                <p>“{r.quote}”</p>
+              </blockquote>
+              <figcaption>
+                <span class="review-author">{r.author}</span>
+                <span class="review-source">Google review · {r.when}</span>
+              </figcaption>
+            </figure>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="reviews-foot">
+      <a class="btn btn-light" href={business.links.googleReviews} target="_blank" rel="noopener">
+        Read all reviews on Google <Icon name="external" />
+      </a>
+      <p class="reviews-note">
+        A selection of public Google reviews, quoted as written and shortened where marked “…”.
+        Rating, review count and review ages as shown on Google on {googleRating.capturedOnLabel}.
+        This section is not updated automatically.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .reviews-head {
+    display: grid;
+    gap: 1.5rem;
+    align-items: end;
+    margin-bottom: clamp(2rem, 1.5rem + 2vw, 3rem);
+  }
+
+  .reviews-head .section-head {
+    margin-bottom: 0;
+  }
+
+  .rating-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-self: start;
+    padding: 1rem 1.4rem;
+    border: 1px solid rgb(255 255 255 / 0.12);
+    border-radius: var(--radius);
+    background: rgb(255 255 255 / 0.04);
+  }
+
+  .rating-number {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    line-height: 1;
+    color: var(--white);
+  }
+
+  .rating-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.3rem;
+    font-size: 0.9rem;
+    color: rgb(247 241 230 / 0.8);
+  }
+
+  .review-grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .review-card figure {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    height: 100%;
+    padding: clamp(1.4rem, 1.1rem + 1vw, 2rem);
+    border-radius: var(--radius-lg);
+    background: var(--sand-50);
+    color: var(--ink);
+  }
+
+  .review-card blockquote {
+    flex: 1;
+    font-family: var(--font-display);
+    font-size: 1.12rem;
+    line-height: 1.55;
+    font-variation-settings: 'SOFT' 100;
+  }
+
+  .review-card figcaption {
+    display: grid;
+    gap: 0.1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--sand-200);
+  }
+
+  .review-author {
+    font-weight: 700;
+  }
+
+  .review-source {
+    font-size: 0.87rem;
+    color: var(--ink-soft);
+  }
+
+  .reviews-foot {
+    display: grid;
+    gap: 1.25rem;
+    justify-items: start;
+    margin-top: 2.5rem;
+  }
+
+  .reviews-note {
+    max-width: 44rem;
+    font-size: 0.85rem;
+    color: rgb(247 241 230 / 0.7);
+  }
+
+  @media (min-width: 800px) {
+    .reviews-head {
+      grid-template-columns: 1fr auto;
+    }
+
+    .review-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

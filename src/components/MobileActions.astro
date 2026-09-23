@@ -1,0 +1,70 @@
+---
+import Icon from './Icon.astro';
+import { business } from '../data/business';
+---
+
+<nav class="mobile-actions on-dark" aria-label="Quick actions">
+  <a href={business.phone.href} class="action">
+    <Icon name="phone" />
+    <span>Call</span>
+  </a>
+  <a href="/menu" class="action">
+    <Icon name="menu" />
+    <span>Menu</span>
+  </a>
+  <a href={business.links.directions} class="action" target="_blank" rel="noopener">
+    <Icon name="directions" />
+    <span>Directions</span>
+  </a>
+</nav>
+
+<style>
+  .mobile-actions {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 40;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    height: calc(var(--action-bar-h) + env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
+    background: rgb(6 20 35 / 0.97);
+    border-top: 1px solid rgb(255 255 255 / 0.1);
+    box-shadow: 0 -8px 24px -12px rgb(0 0 0 / 0.5);
+  }
+
+  .action {
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 0.2rem;
+    color: var(--sand-100);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+  }
+
+  .action + .action {
+    border-left: 1px solid rgb(255 255 255 / 0.08);
+  }
+
+  .action :global(svg) {
+    width: 1.45rem;
+    height: 1.45rem;
+    color: var(--blue-300);
+  }
+
+  .action:active {
+    background: rgb(255 255 255 / 0.06);
+  }
+
+  .action:focus-visible {
+    outline-offset: -4px;
+  }
+
+  @media (min-width: 960px) {
+    .mobile-actions {
+      display: none;
+    }
+  }
+</style>

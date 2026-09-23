@@ -1,0 +1,33 @@
+---
+import { Picture } from 'astro:assets';
+import { photos, type PhotoKey } from '../data/photos';
+
+interface Props {
+  name: PhotoKey;
+  /** CSS sizes attribute describing the rendered width. */
+  sizes: string;
+  widths?: number[];
+  eager?: boolean;
+  class?: string;
+  alt?: string;
+}
+
+const { name, sizes, widths = [480, 800, 1200, 1600], eager = false, class: className, alt } = Astro.props;
+const photo = photos[name];
+const usable = widths.filter((w) => w <= photo.src.width);
+if (!usable.includes(photo.src.width) && usable.length < widths.length) usable.push(photo.src.width);
+---
+
+<Picture
+  src={photo.src}
+  alt={alt ?? photo.alt}
+  widths={usable}
+  sizes={sizes}
+  formats={['avif', 'webp']}
+  fallbackFormat="jpg"
+  quality={72}
+  loading={eager ? 'eager' : 'lazy'}
+  fetchpriority={eager ? 'high' : 'auto'}
+  decoding={eager ? 'sync' : 'async'}
+  class={className}
+/>

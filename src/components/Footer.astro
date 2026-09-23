@@ -1,0 +1,190 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/brand/logo-white.png';
+import Icon from './Icon.astro';
+import { business } from '../data/business';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer bg-deep on-dark">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <a href="/" class="footer-logo">
+        <Image src={logo} alt={business.name} width={200} height={95} densities={[1, 2]} />
+      </a>
+      <p>{business.tagline}, on East Grand Avenue in Arroyo Grande.</p>
+      <ul role="list" class="social">
+        <li>
+          <a href={business.links.instagram} target="_blank" rel="noopener me">
+            <Icon name="instagram" label="Instagram" />
+          </a>
+        </li>
+        <li>
+          <a href={business.links.facebook} target="_blank" rel="noopener me">
+            <Icon name="facebook" label="Facebook" />
+          </a>
+        </li>
+        <li>
+          <a href={business.links.googleProfile} target="_blank" rel="noopener">
+            <Icon name="google" label="Google Maps listing" />
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="footer-title">Visit</h2>
+      <address>
+        <a href={business.links.directions} target="_blank" rel="noopener">
+          {business.address.street}<br />
+          {business.address.city}, {business.address.region} {business.address.postalCode}
+        </a>
+      </address>
+      <p><a href={business.phone.href}>{business.phone.display}</a></p>
+    </div>
+
+    <div>
+      <h2 class="footer-title">Hours</h2>
+      <dl class="footer-hours">
+        {
+          business.hoursSummary.map((h) => (
+            <div>
+              <dt>{h.label}</dt>
+              <dd>{h.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+
+    <nav aria-label="Footer">
+      <h2 class="footer-title">Explore</h2>
+      <ul role="list" class="footer-links">
+        <li><a href="/menu">Menu</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/visit">Visit &amp; Contact</a></li>
+        <li><a href={business.links.reserve} target="_blank" rel="noopener">Reserve a table</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="container footer-bottom">
+    <p>© {year} {business.name}. All rights reserved.</p>
+    <p>Menu items and hours are subject to change.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding-block: 4rem 2rem;
+    font-size: 0.95rem;
+  }
+
+  .footer-grid {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  .footer-brand p {
+    max-width: 22rem;
+    margin-top: 1rem;
+    color: rgb(247 241 230 / 0.75);
+  }
+
+  .footer-logo {
+    display: inline-block;
+  }
+
+  .footer-logo :global(img) {
+    width: 9.5rem;
+    height: auto;
+  }
+
+  .footer-title {
+    margin-bottom: 0.9rem;
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--brass-300);
+  }
+
+  .site-footer a {
+    text-decoration: none;
+    color: var(--sand-100);
+  }
+
+  .site-footer a:hover {
+    color: var(--blue-300);
+    text-decoration: underline;
+  }
+
+  address + p {
+    margin-top: 0.75rem;
+  }
+
+  .footer-hours {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .footer-hours dt {
+    color: rgb(247 241 230 / 0.7);
+  }
+
+  .footer-links {
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .social {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+  }
+
+  .social a {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid rgb(255 255 255 / 0.2);
+    border-radius: 50%;
+  }
+
+  .social a:hover {
+    border-color: var(--blue-300);
+    text-decoration: none;
+  }
+
+  .social :global(svg) {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 2rem;
+    margin-top: 3.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgb(255 255 255 / 0.1);
+    font-size: 0.85rem;
+    color: rgb(247 241 230 / 0.68);
+  }
+
+  @media (min-width: 720px) {
+    .footer-grid {
+      grid-template-columns: 1.4fr 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .footer-grid {
+      grid-template-columns: 1.6fr 1fr 1fr 0.9fr;
+    }
+  }
+</style>

@@ -1,0 +1,114 @@
+---
+/**
+ * "Open now" indicator computed in the visitor's browser using Pacific time.
+ * The server-rendered fallback (for crawlers / no-JS) is a neutral hours summary.
+ */
+import { business } from '../data/business';
+
+interface Props {
+  class?: string;
+}
+
+const hours = business.hours.map((d) => ({ day: d.day, short: d.short, open: d.open, close: d.close }));
+---
+
+<p class:list={['open-status', Astro.props.class]} data-open-status data-hours={JSON.stringify(hours)}>
+  <span class="dot" aria-hidden="true"></span>
+  <span data-open-text>Open Tuesday – Sunday from 11:30 AM</span>
+</p>
+
+<style>
+  .open-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-height: 1.75rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: var(--brass-300);
+    box-shadow: 0 0 0 4px rgb(220 192 138 / 0.2);
+    flex: none;
+  }
+
+  .open-status[data-state='open'] .dot {
+    background: #4ade80;
+    box-shadow: 0 0 0 4px rgb(74 222 128 / 0.22);
+  }
+
+  .open-status[data-state='closed'] .dot {
+    background: #f59e8b;
+    box-shadow: 0 0 0 4px rgb(245 158 139 / 0.2);
+  }
+</style>
+
+<script>
+  type Day = { day: string; short: string; open: string | null; close: string | null };
+
+  const toMinutes = (t: string) => {
+    const [h, m] = t.split(':').map(Number);
+    return h * 60 + m;
+  };
+  const fmt = (t: string) => {
+    const [h, m] = t.split(':').map(Number);
+    const hour = h % 12 === 0 ? 12 : h % 12;
+    return `${hour}${m ? ':' + String(m).padStart(2, '0') : ''} ${h >= 12 ? 'PM' : 'AM'}`;
+  };
+
+  function pacificNow() {
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/Los_Angeles',
+      weekday: 'long',
+      hour: '2-digit',
+      minute: '2-digit',
+      hourCycle: 'h23',
+    }).formatToParts(new Date());
+    const get = (type: string) => parts.find((p) => p.type === type)?.value ?? '';
+    return { weekday: get('weekday'), minutes: Number(get('hour')) * 60 + Number(get('minute')) };
+  }
+
+  function describe(hours: Day[]) {
+    const { weekday, minutes } = pacificNow();
+    const idx = hours.findIndex((d) => d.day === weekday);
+    if (idx === -1) return null;
+    const today = hours[idx];
+
+    if (today.open && today.close) {
+      const o = toMinutes(today.open);
+      const c = toMinutes(today.close);
+      if (minutes >= o && minutes < c) {
+        return { state: 'open', text: `Open now · until ${fmt(today.close)}` };
+      }
+      if (minutes < o) {
+        return { state: 'closed', text: `Closed now · opens today at ${fmt(today.open)}` };
+      }
+    }
+    for (let i = 1; i <= 7; i++) {
+      const next = hours[(idx + i) % 7];
+      if (next.open) {
+        const when = i === 1 ? 'tomorrow' : next.day;
+        return { state: 'closed', text: `Closed now · opens ${when} at ${fmt(next.open)}` };
+      }
+    }
+    return null;
+  }
+
+  function update() {
+    document.querySelectorAll<HTMLElement>('[data-open-status]').forEach((el) => {
+      const hours = JSON.parse(el.dataset.hours || '[]') as Day[];
+      const result = describe(hours);
+      const text = el.querySelector('[data-open-text]');
+      if (!result || !text) return;
+      el.dataset.state = result.state;
+      text.textContent = result.text;
+    });
+  }
+
+  update();
+  setInterval(update, 60_000);
+</script>
