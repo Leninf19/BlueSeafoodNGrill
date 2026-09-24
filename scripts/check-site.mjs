@@ -79,10 +79,11 @@ for (const file of htmlFiles) {
   if (!desc) errors.push(`${route}: missing meta description`);
   if (desc && (desc.length < 70 || desc.length > 170)) warn.push(`${route}: description length ${desc.length}`);
   if (title && title.length > 65) warn.push(`${route}: title length ${title.length}`);
-  if (!canonical) errors.push(`${route}: missing canonical`);
+  if (!canonical && route !== '/404') errors.push(`${route}: missing canonical`);
+  if (canonical && route === '/404') errors.push('/404: should not declare a canonical URL');
   if (canonical && canonical.endsWith('/') && route !== '/' && route !== '/404')
     errors.push(`${route}: canonical has trailing slash`);
-  for (const p of ['og:title', 'og:description', 'og:url', 'og:image'])
+  for (const p of route === '/404' ? ['og:title', 'og:description', 'og:image'] : ['og:title', 'og:description', 'og:url', 'og:image'])
     if (!html.includes(`property="${p}"`)) errors.push(`${route}: missing ${p}`);
   if (h1s.length !== 1) errors.push(`${route}: expected 1 <h1>, found ${h1s.length}`);
   if (route !== '/404') {

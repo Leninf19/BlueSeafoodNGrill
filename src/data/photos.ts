@@ -15,12 +15,10 @@ import oystersWide from '../assets/photos/oysters-wide.jpg';
 import oystersTall from '../assets/photos/oysters-tall.jpg';
 import oystersFeature from '../assets/photos/oysters-feature.jpg';
 import storefrontEvening from '../assets/photos/storefront-evening.jpg';
-import signDaytime from '../assets/photos/sign-daytime.jpg';
 import storefrontDay from '../assets/photos/storefront-day.jpg';
 import backEntranceNight from '../assets/photos/back-entrance-night.jpg';
 import fishOverGreens from '../assets/photos/fish-over-greens.jpg';
 import tostadas from '../assets/photos/tostadas.jpg';
-import dessertCreamPour from '../assets/photos/dessert-cream-pour.jpg';
 import ribeyeWithShrimp from '../assets/photos/ribeye-with-shrimp.jpg';
 import dessertSlice from '../assets/photos/dessert-slice.jpg';
 
@@ -65,10 +63,6 @@ export const photos = {
     src: backEntranceNight,
     alt: 'The Blue Seafood & Grill sign on the lattice fence at the back entrance at night, lit by a lamp post beside white roses',
   },
-  signDaytime: {
-    src: signDaytime,
-    alt: 'The Blue Seafood & Grill sign against a clear blue sky',
-  },
   fishOverGreens: {
     src: fishOverGreens,
     alt: 'A seared fish fillet over mixed greens with cucumber, tomato and red onion',
@@ -76,10 +70,6 @@ export const photos = {
   tostadas: {
     src: tostadas,
     alt: 'Two tostadas topped with avocado, microgreens and a wedge of lime',
-  },
-  dessertCreamPour: {
-    src: dessertCreamPour,
-    alt: 'Cream being poured over a dessert topped with whipped cream and fresh berries',
   },
   ribeyeWithShrimp: {
     src: ribeyeWithShrimp,

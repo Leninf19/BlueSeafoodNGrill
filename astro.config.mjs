@@ -21,9 +21,33 @@ export default defineConfig({
   trailingSlash: 'never',
   build: {
     format: 'directory',
+    // Inline the small per-page stylesheets: fewer render-blocking requests on first load.
+    inlineStylesheets: 'always',
   },
   integrations: [sitemap({ filter: (page) => !page.includes('/404') })],
   image: {
     responsiveStyles: false,
+  },
+  security: {
+    // Content-Security-Policy, emitted as a <meta> tag on every page. Astro adds hashes for its
+    // own inline scripts and styles; the extra style hash is the <noscript> header fallback in
+    // src/layouts/Base.astro (update it if that rule changes). The Google map on /visit is the
+    // only third-party frame.
+    csp: {
+      algorithm: 'SHA-256',
+      directives: [
+        "default-src 'self'",
+        "img-src 'self' data:",
+        "font-src 'self'",
+        "connect-src 'self'",
+        'frame-src https://www.google.com',
+        "base-uri 'self'",
+        "form-action 'self'",
+        "object-src 'none'",
+      ],
+      styleDirective: {
+        hashes: ['sha256-NVHrdMWI1RH1Lhi920gTzPTu9uVFA1cy0T9fxPtkIoI='],
+      },
+    },
   },
 });

@@ -489,17 +489,32 @@ const lastReviewed = new Date(`${menuLastReviewed}T12:00:00Z`).toLocaleDateStrin
   window.addEventListener('resize', syncOverflow);
   syncOverflow();
 
+  // While the visitor is scrolling the category row themselves, don't move it for them.
+  let manualUntil = 0;
+  const markManual = () => (manualUntil = Date.now() + 1500);
+  scroller?.addEventListener('pointerdown', markManual, { passive: true });
+  scroller?.addEventListener('wheel', markManual, { passive: true });
+
   more?.addEventListener('click', () => {
+    markManual();
     scroller?.scrollBy({ left: scroller.clientWidth * 0.7, behavior: 'smooth' });
   });
 
+  let currentId: string | null = null;
   const setCurrent = (id: string) => {
+    if (id === currentId) return;
+    currentId = id;
     links.forEach((a, key) => {
       if (key === id) {
         a.setAttribute('aria-current', 'true');
-        if (scroller) {
-          const left = a.offsetLeft - scroller.clientWidth / 2 + a.clientWidth / 2;
-          scroller.scrollTo({ left, behavior: 'auto' });
+        // Bring the active chip into view only if it is hidden, and never mid-gesture.
+        if (scroller && Date.now() > manualUntil) {
+          const start = scroller.scrollLeft;
+          const end = start + scroller.clientWidth;
+          if (a.offsetLeft < start || a.offsetLeft + a.offsetWidth > end) {
+            const left = a.offsetLeft - scroller.clientWidth / 2 + a.clientWidth / 2;
+            scroller.scrollTo({ left, behavior: 'auto' });
+          }
         }
       } else {
         a.removeAttribute('aria-current');
