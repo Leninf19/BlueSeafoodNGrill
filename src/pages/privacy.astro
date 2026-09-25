@@ -28,8 +28,7 @@ const privacy = {
   retentionMonths: null as number | null,
   /** true only after GA4 Admin shows Google signals off and no Google Ads links, and the owner confirms no ad use. */
   noAdvertisingUse: null as boolean | null,
-  /** Approved contact email for privacy questions. */
-  email: null as string | null,
+  // Privacy questions go to the phone number only (decided 2026-09-25); no email is listed.
 };
 
 const site = Astro.site ?? new URL(Astro.url.origin);
@@ -148,9 +147,7 @@ const gaCookie = `_ga_${GA_MEASUREMENT_ID.replace(/^G-/, '')}`;
     <section aria-labelledby="p-questions">
       <h2 id="p-questions" class="display-sm">Questions</h2>
       <p>
-        Call us at <a class="text-link" href={business.phone.href}>{business.phone.display}</a>{privacy.email ? (
-          <>, or email <a class="text-link" href={`mailto:${privacy.email}`}>{privacy.email}</a></>
-        ) : null}.
+        Call us at <a class="text-link" href={business.phone.href}>{business.phone.display}</a>.
       </p>
     </section>
 
