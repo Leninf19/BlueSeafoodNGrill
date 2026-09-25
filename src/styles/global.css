@@ -453,3 +453,50 @@ main:focus {
     padding-bottom: calc(var(--action-bar-h) + env(safe-area-inset-bottom));
   }
 }
+
+/* ---------- Info pages (order, reservations, FAQ, photos) ---------- */
+.info-top {
+  padding-block: clamp(2.5rem, 2rem + 3vw, 4.5rem);
+}
+
+.info-top-inner {
+  display: grid;
+  gap: 1rem;
+  justify-items: start;
+}
+
+.info-top-inner .lede {
+  max-width: 40rem;
+  color: var(--ink);
+}
+
+.info-body {
+  display: grid;
+  gap: 2.5rem;
+  padding-block: clamp(3rem, 2rem + 3vw, 5rem);
+}
+
+.info-block {
+  display: grid;
+  gap: 0.8rem;
+  align-content: start;
+  justify-items: start;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.info-block > p {
+  max-width: 40rem;
+}
+
+.info-note {
+  font-size: 0.88rem;
+  color: var(--soft);
+}
+
+@media (min-width: 960px) {
+  .info-body.two-col {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 4rem;
+  }
+}

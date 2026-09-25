@@ -6,6 +6,7 @@ import Icon from '../components/Icon.astro';
 import { business } from '../data/business';
 import { menu, menuNotice, consumerAdvisory, menuLastReviewed, tagLabels } from '../data/menu';
 import { menuSchema, breadcrumbSchema } from '../lib/schema';
+import { categoryBySection, dishByName } from '../data/pages';
 
 const site = Astro.site ?? new URL(Astro.url.origin);
 const lastReviewed = new Date(`${menuLastReviewed}T12:00:00Z`).toLocaleDateString('en-US', {
@@ -77,6 +78,11 @@ const lastReviewed = new Date(`${menuLastReviewed}T12:00:00Z`).toLocaleDateStrin
               <span class="section-num cond" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
               <h2 id={`${section.id}-title`} class="display-md">{section.title}</h2>
               {section.intro && <p class="muted">{section.intro}</p>}
+              {categoryBySection.get(section.id) && (
+                <a class="text-link section-more" href={`/menu/${categoryBySection.get(section.id)!.slug}`}>
+                  More about {section.title.toLowerCase()} <Icon name="arrowRight" size={15} />
+                </a>
+              )}
             </header>
 
             {featured.map((item) => (
@@ -86,7 +92,9 @@ const lastReviewed = new Date(`${menuLastReviewed}T12:00:00Z`).toLocaleDateStrin
                 </div>
                 <div class="featured-copy">
                   <p class="label">Featured</p>
-                  <h3 class="display-sm">{item.name}</h3>
+                  <h3 class="display-sm">
+                    {dishByName.get(item.name) ? <a class="dish-link" href={`/menu/${dishByName.get(item.name)!.slug}`}>{item.name}</a> : item.name}
+                  </h3>
                   {(item.popular || item.tags?.length) && (
                     <p class="item-tags">
                       {item.popular && <span class="tag tag-fav">Guest favorite</span>}
@@ -109,7 +117,9 @@ const lastReviewed = new Date(`${menuLastReviewed}T12:00:00Z`).toLocaleDateStrin
                 <ul role="list" class="item-list">
                   {rest.map((item) => (
                     <li class="menu-item">
-                      <h3 class="item-name">{item.name}</h3>
+                      <h3 class="item-name">
+                        {dishByName.get(item.name) ? <a class="dish-link" href={`/menu/${dishByName.get(item.name)!.slug}`}>{item.name}</a> : item.name}
+                      </h3>
                       {(item.popular || item.tags?.length) && (
                         <p class="item-tags">
                           {item.popular && <span class="tag tag-fav">Guest favorite</span>}
@@ -295,6 +305,21 @@ const lastReviewed = new Date(`${menuLastReviewed}T12:00:00Z`).toLocaleDateStrin
     scroll-margin-top: calc(var(--header-h) + 4.5rem);
     padding-block: 3rem;
     border-bottom: 1px solid var(--line);
+  }
+
+  .section-more {
+    font-size: 0.9rem;
+  }
+
+  .dish-link {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--line);
+    text-underline-offset: 0.2em;
+  }
+
+  .dish-link:hover {
+    text-decoration-color: currentColor;
   }
 
   .section-head {

@@ -1,0 +1,153 @@
+---
+/**
+ * Photo gallery: only the restaurant's own approved photos from src/data/photos.ts.
+ * Captions describe what is visible; links go to the matching dish or menu page.
+ */
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { breadcrumbSchema } from '../lib/schema';
+import type { PhotoKey } from '../data/photos';
+
+const site = Astro.site ?? new URL(Astro.url.origin);
+const trail = [
+  { name: 'Home', path: '/' },
+  { name: 'Photos', path: '/photos' },
+];
+
+const groups: { title: string; photos: { key: PhotoKey; caption: string; href?: string; wide?: boolean }[] }[] = [
+  {
+    title: 'From the kitchen',
+    photos: [
+      { key: 'seafoodBoilHero', caption: 'Cajun Seafood Boil', href: '/menu/cajun-seafood-boil', wide: true },
+      { key: 'seafoodBoilBowl', caption: 'Cajun Seafood Boil, served in a steel bowl', href: '/menu/cajun-seafood-boil' },
+      { key: 'sauteedJumboShrimp', caption: 'Sautéed Jumbo Shrimp over toasted sourdough', href: '/menu/sauteed-jumbo-shrimp' },
+      { key: 'oystersFeature', caption: 'Oysters', href: '/menu/oysters' },
+      { key: 'ribeyeWithShrimp', caption: 'Bone-In Ribeye, pictured topped with jumbo shrimp', href: '/menu/bone-in-ribeye' },
+      { key: 'dirtyFries', caption: 'Dirty Fries with parmesan and herbs', href: '/menu/dirty-fries' },
+      { key: 'tostadas', caption: 'Tostadas with avocado and lime' },
+      { key: 'fishOverGreens', caption: 'Seared fish over mixed greens' },
+      { key: 'dessertSlice', caption: 'A slice of pie with toasted meringue' },
+    ],
+  },
+  {
+    title: 'The restaurant',
+    photos: [
+      { key: 'storefrontDay', caption: 'The storefront at 1351 E Grand Ave', href: '/visit', wide: true },
+      { key: 'storefrontEvening', caption: 'The storefront at dusk, with “Seafood” and “Oysters” neon in the windows', href: '/about' },
+      { key: 'backEntranceNight', caption: 'The sign at the back entrance', href: '/about' },
+      { key: 'oystersWide', caption: 'Oysters under the blue neon sign' },
+    ],
+  },
+];
+---
+
+<Base
+  title="Photos of Our Food & Restaurant | Blue Seafood & Grill"
+  description="Photos from Blue Seafood & Grill in Arroyo Grande: the Cajun seafood boil, jumbo shrimp, oysters, ribeye, dirty fries, and the storefront on East Grand Avenue."
+  path="/photos"
+  schema={[breadcrumbSchema(site, trail)]}
+>
+  <section class="info-top bg-glass">
+    <div class="container info-top-inner">
+      <Breadcrumbs trail={trail} />
+      <p class="label">Photos</p>
+      <h1 class="display-xl">From our kitchen <em>and our door</em></h1>
+      <p class="lede">
+        Food and restaurant photos from Blue Seafood &amp; Grill on East Grand Avenue in Arroyo Grande. All photos
+        are the restaurant’s own.
+      </p>
+    </div>
+  </section>
+
+  <div class="container gallery-page">
+    {
+      groups.map((g) => (
+        <section class="gallery-group" aria-labelledby={`g-${g.title.replace(/\s+/g, '-').toLowerCase()}`}>
+          <h2 id={`g-${g.title.replace(/\s+/g, '-').toLowerCase()}`} class="display-md">{g.title}</h2>
+          <ul role="list" class="gallery-grid">
+            {g.photos.map((p) => (
+              <li class:list={['gallery-item', { wide: p.wide }]}>
+                <figure>
+                  <div class="fill">
+                    <Photo name={p.key} sizes={p.wide ? '(min-width: 960px) 66vw, 100vw' : '(min-width: 960px) 33vw, (min-width: 600px) 50vw, 100vw'} />
+                  </div>
+                  <figcaption>{p.href ? <a href={p.href}>{p.caption}</a> : p.caption}</figcaption>
+                </figure>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
+</Base>
+
+<style>
+  .gallery-page {
+    display: grid;
+    gap: 3rem;
+    padding-block: clamp(3rem, 2rem + 3vw, 5rem);
+  }
+
+  .gallery-group {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .gallery-grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .gallery-item figure {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .gallery-item .fill {
+    aspect-ratio: 4 / 3;
+  }
+
+  figcaption {
+    font-size: 0.92rem;
+    color: var(--soft);
+  }
+
+  figcaption a {
+    color: var(--blue);
+    text-decoration: underline;
+    text-decoration-color: rgb(10 102 163 / 0.35);
+    text-underline-offset: 0.2em;
+  }
+
+  @media (min-width: 600px) {
+    .gallery-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .gallery-item.wide {
+      grid-column: span 2;
+    }
+
+    .gallery-item.wide .fill {
+      aspect-ratio: 2 / 1;
+    }
+  }
+
+  @media (min-width: 960px) {
+    .gallery-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .gallery-item.wide {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+
+    .gallery-item.wide .fill {
+      aspect-ratio: auto;
+      height: calc(100% - 2rem);
+    }
+  }
+</style>

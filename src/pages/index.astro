@@ -7,6 +7,7 @@ import Reviews from '../components/Reviews.astro';
 import SpecialsPopup from '../components/SpecialsPopup.astro';
 import { business } from '../data/business';
 import { menu } from '../data/menu';
+import { categoryBySection, dishByName } from '../data/pages';
 
 // Dish names must match src/data/menu.ts exactly; the build fails if one is renamed or removed.
 // An optional third value is a shorter display label (e.g. "Seafood Alfredo" for "Seafood Alfredo Pasta").
@@ -14,7 +15,8 @@ const menuNames = new Set(menu.flatMap((s) => s.items.map((i) => i.name)));
 const dishes = (list: [string, string, string?][]) =>
   list.map(([name, short, label]) => {
     if (!menuNames.has(name)) throw new Error(`Home page dish "${name}" is not in src/data/menu.ts`);
-    return { name: label ?? name, short };
+    const page = dishByName.get(name);
+    return { name: label ?? name, short, href: page ? `/menu/${page.slug}` : undefined };
   });
 
 const boils = dishes([
@@ -90,9 +92,9 @@ for (const p of preview) if (!menuIds.has(p.id)) throw new Error(`Menu section #
       <h2 id="boils-title" class="display-lg">An assortment of seafood <em>on the plate</em></h2>
       <p class="spread-tagline">Built for a seafood feast.</p>
       <ul role="list" class="dish-list">
-        {boils.map((d) => <li><span class="name">{d.name}</span><span class="desc">{d.short}</span></li>)}
+        {boils.map((d) => <li>{d.href ? <a class="name dish-link" href={d.href}>{d.name}</a> : <span class="name">{d.name}</span>}<span class="desc">{d.short}</span></li>)}
       </ul>
-      <a class="text-link" href="/menu#steamers">All steamers &amp; boils <Icon name="arrowRight" size={16} /></a>
+      <a class="text-link" href="/menu/steamers-and-boils">All steamers &amp; boils <Icon name="arrowRight" size={16} /></a>
     </div>
   </section>
 
@@ -106,9 +108,9 @@ for (const p of preview) if (!menuIds.has(p.id)) throw new Error(`Menu section #
       <p class="label cond-label"><span class="cond">Starters &amp; Entrées</span></p>
       <h2 id="plates-title" class="display-lg">Shrimp on sourdough, <em>steak off the grill</em></h2>
       <ul role="list" class="dish-list">
-        {plates.map((d) => <li><span class="name">{d.name}</span><span class="desc">{d.short}</span></li>)}
+        {plates.map((d) => <li>{d.href ? <a class="name dish-link" href={d.href}>{d.name}</a> : <span class="name">{d.name}</span>}<span class="desc">{d.short}</span></li>)}
       </ul>
-      <a class="text-link" href="/menu#entrees">All entrées <Icon name="arrowRight" size={16} /></a>
+      <a class="text-link" href="/menu/entrees">All entrées <Icon name="arrowRight" size={16} /></a>
     </div>
   </section>
 
@@ -129,7 +131,7 @@ for (const p of preview) if (!menuIds.has(p.id)) throw new Error(`Menu section #
           {
             preview.map((p, i) => (
               <li>
-                <a href={`/menu#${p.id}`}>
+                <a href={categoryBySection.get(p.id) ? `/menu/${categoryBySection.get(p.id)!.slug}` : `/menu#${p.id}`}>
                   <span class="n cond">{String(i + 1).padStart(2, '0')}</span>
                   <span class="t cond">{p.title}</span>
                   <span class="s">{p.sample}</span>
@@ -287,6 +289,17 @@ for (const p of preview) if (!menuIds.has(p.id)) throw new Error(`Menu section #
 
   .spread-copy .dish-list {
     width: 100%;
+  }
+
+  .dish-link {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--line);
+    text-underline-offset: 0.2em;
+  }
+
+  .dish-link:hover {
+    color: var(--blue);
   }
 
   .spread-tagline {

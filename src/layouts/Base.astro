@@ -22,6 +22,8 @@ interface Props {
   path: string;
   ogImage?: string;
   ogImageAlt?: string;
+  /** Pixel size of ogImage when it is not the default 1200×630 share image. */
+  ogImageSize?: { width: number; height: number };
   /** Extra JSON-LD objects for this page. */
   schema?: object[];
   noindex?: boolean;
@@ -35,6 +37,7 @@ const {
   path,
   ogImage = '/og-image.jpg',
   ogImageAlt = `${business.name} — Cajun seafood boil`,
+  ogImageSize = { width: 1200, height: 630 },
   schema = [],
   noindex = false,
   headerOverlay = false,
@@ -77,8 +80,8 @@ const jsonLd = [restaurantSchema(site), ...schema];
     <meta property="og:description" content={description} />
     {!noindex && <meta property="og:url" content={canonical} />}
     <meta property="og:image" content={ogImageUrl} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:image:width" content={String(ogImageSize.width)} />
+    <meta property="og:image:height" content={String(ogImageSize.height)} />
     <meta property="og:image:alt" content={ogImageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />

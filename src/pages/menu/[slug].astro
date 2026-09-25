@@ -1,0 +1,614 @@
+---
+/**
+ * Menu category pages and dish pages. Content lives in src/data/pages.ts (what gets a page)
+ * and src/data/menu.ts (dish names, descriptions, tags). No prices, by design.
+ */
+import { getImage } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Photo from '../../components/Photo.astro';
+import Icon from '../../components/Icon.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { business } from '../../data/business';
+import { menu, tagLabels, consumerAdvisory, type MenuItem, type MenuSection } from '../../data/menu';
+import { photos } from '../../data/photos';
+import { categoryPages, dishPages, categoryBySection, dishByName, type CategoryPage, type DishPage } from '../../data/pages';
+import { breadcrumbSchema, menuSectionSchema, menuItemSchema, faqSchema } from '../../lib/schema';
+
+type Props =
+  | { kind: 'category'; page: CategoryPage; section: MenuSection }
+  | { kind: 'dish'; page: DishPage; item: MenuItem; section: MenuSection };
+
+export function getStaticPaths() {
+  const sectionById = new Map(menu.map((s) => [s.id, s]));
+  const findItem = (name: string) => {
+    for (const s of menu) {
+      const item = s.items.find((i) => i.name === name);
+      if (item) return { item, section: s };
+    }
+    throw new Error(`Dish page "${name}" is not in src/data/menu.ts`);
+  };
+  const slugs = new Set<string>();
+  const unique = (slug: string) => {
+    if (slugs.has(slug)) throw new Error(`Duplicate /menu/${slug}`);
+    slugs.add(slug);
+    return slug;
+  };
+  return [
+    ...categoryPages.map((page) => {
+      const section = sectionById.get(page.section);
+      if (!section) throw new Error(`Menu section "${page.section}" not found`);
+      return { params: { slug: unique(page.slug) }, props: { kind: 'category' as const, page, section } };
+    }),
+    ...dishPages.map((page) => {
+      const { item, section } = findItem(page.menuName);
+      for (const r of page.related) findItem(r);
+      for (const p of page.photos) if (!photos[p]) throw new Error(`Unknown photo "${p}"`);
+      return { params: { slug: unique(page.slug) }, props: { kind: 'dish' as const, page, item, section } };
+    }),
+  ];
+}
+
+const props = Astro.props as Props;
+const site = Astro.site ?? new URL(Astro.url.origin);
+const sectionLink = (id: string) => {
+  const c = categoryBySection.get(id);
+  return c ? `/menu/${c.slug}` : `/menu#${id}`;
+};
+const itemLink = (name: string) => {
+  const d = dishByName.get(name);
+  if (d) return `/menu/${d.slug}`;
+  const s = menu.find((sec) => sec.items.some((i) => i.name === name));
+  return s ? sectionLink(s.id) : '/menu';
+};
+const findItem = (name: string) => menu.flatMap((s) => s.items).find((i) => i.name === name)!;
+const hasRaw = (items: MenuItem[]) => items.some((i) => i.tags?.includes('raw'));
+
+// Open Graph image: the page's photo as a 1200px JPG.
+const ogPhoto = props.kind === 'dish' ? props.page.photos[0] : props.page.photo;
+const og = ogPhoto ? await getImage({ src: photos[ogPhoto].src, width: 1200, format: 'jpg', quality: 78 }) : null;
+
+let trail: { name: string; path: string }[];
+let schema: object[];
+if (props.kind === 'category') {
+  trail = [
+    { name: 'Home', path: '/' },
+    { name: 'Menu', path: '/menu' },
+    { name: props.section.title, path: `/menu/${props.page.slug}` },
+  ];
+  schema = [menuSectionSchema(site, props.section), breadcrumbSchema(site, trail)];
+} else {
+  const cat = categoryBySection.get(props.section.id);
+  trail = [
+    { name: 'Home', path: '/' },
+    { name: 'Menu', path: '/menu' },
+    ...(cat ? [{ name: props.section.title, path: `/menu/${cat.slug}` }] : []),
+    { name: props.item.name, path: `/menu/${props.page.slug}` },
+  ];
+  schema = [menuItemSchema(site, props.item, og?.src), breadcrumbSchema(site, trail), faqSchema(props.page.faqs)];
+}
+const otherCategories = categoryPages.filter((c) => props.kind !== 'category' || c.slug !== props.page.slug);
+---
+
+<Base
+  title={props.page.title}
+  description={props.page.description}
+  path={`/menu/${props.page.slug}`}
+  ogImage={og?.src}
+  ogImageAlt={ogPhoto ? photos[ogPhoto].alt : undefined}
+  ogImageSize={og ? { width: Number(og.attributes.width), height: Number(og.attributes.height) } : undefined}
+  schema={schema}
+>
+  {
+    props.kind === 'category' ? (
+      <>
+        <section class="page-top">
+          <div class="page-top-copy">
+            <Breadcrumbs trail={trail} />
+            <p class="label">
+              <span class="cond cat-label">Menu · {props.section.title}</span>
+            </p>
+            <h1 class="display-xl">
+              {props.page.h1} <em>{props.page.h1Em}</em>
+            </h1>
+            {props.page.intro.map((p, i) => <p class={i === 0 ? 'lede' : 'muted'}>{p}</p>)}
+            <div class="btn-row">
+              <a class="btn" href={business.links.order} target="_blank" rel="noopener">
+                <Icon name="bag" /> Order pickup or delivery<span class="visually-hidden"> (opens DoorDash)</span>
+              </a>
+              <a class="btn btn-ghost" href={business.links.reserve} target="_blank" rel="noopener">
+                <Icon name="calendar" /> Reserve a table
+              </a>
+            </div>
+          </div>
+          {props.page.photo && (
+            <figure class="page-top-photo">
+              <div class="fill">
+                <Photo name={props.page.photo} sizes="(min-width: 960px) 45vw, 100vw" eager />
+              </div>
+              {props.page.photoCaption && <figcaption>{props.page.photoCaption}</figcaption>}
+            </figure>
+          )}
+        </section>
+
+        <section class="container list-section" aria-labelledby="dishes-title">
+          <h2 id="dishes-title" class="display-md">
+            On the menu <em>now</em>
+          </h2>
+          {props.section.intro && <p class="muted">{props.section.intro}</p>}
+          <ul role="list" class="item-list">
+            {props.section.items.map((item) => {
+              const dish = dishByName.get(item.name);
+              return (
+                <li class="menu-item">
+                  <h3 class="item-name">
+                    {dish ? <a href={`/menu/${dish.slug}`}>{item.name}</a> : item.name}
+                  </h3>
+                  {(item.popular || item.tags?.length) && (
+                    <p class="item-tags">
+                      {item.popular && <span class="tag tag-fav">Guest favorite</span>}
+                      {item.tags?.map((t) => (
+                        <span class="tag">{tagLabels[t]}</span>
+                      ))}
+                    </p>
+                  )}
+                  {item.description && <p class="item-desc">{item.description}</p>}
+                  {item.note && <p class="item-note">{item.note}</p>}
+                  {dish && (
+                    <a class="text-link small-link" href={`/menu/${dish.slug}`}>
+                      Photos &amp; details <Icon name="arrowRight" size={15} />
+                    </a>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+          {hasRaw(props.section.items) && <p class="advisory">{consumerAdvisory}</p>}
+          <p class="list-foot">
+            Dishes and availability can change. For today’s specials or current pricing, call{' '}
+            <a class="text-link" href={business.phone.href}>{business.phone.display}</a>.
+          </p>
+        </section>
+      </>
+    ) : (
+      <>
+        <section class="page-top dish-top">
+          <figure class="page-top-photo">
+            <div class="fill">
+              <Photo name={props.page.photos[0]} sizes="(min-width: 960px) 50vw, 100vw" eager />
+            </div>
+          </figure>
+          <div class="page-top-copy">
+            <Breadcrumbs trail={trail} />
+            <p class="label">
+              <a class="cond cat-label" href={sectionLink(props.section.id)}>{props.section.title}</a>
+            </p>
+            <h1 class="display-xl">{props.item.name}</h1>
+            {(props.item.popular || props.item.tags?.length) && (
+              <p class="item-tags">
+                {props.item.popular && <span class="tag tag-fav">Guest favorite</span>}
+                {props.item.tags?.map((t) => (
+                  <span class="tag">{tagLabels[t]}</span>
+                ))}
+              </p>
+            )}
+            {props.item.description && <p class="lede">{props.item.description}</p>}
+            {props.item.note && <p class="item-note">{props.item.note}</p>}
+            <div class="btn-row">
+              <a class="btn" href={business.links.order} target="_blank" rel="noopener">
+                <Icon name="bag" /> Order pickup or delivery<span class="visually-hidden"> (opens DoorDash)</span>
+              </a>
+              <a class="btn btn-ghost" href={business.links.reserve} target="_blank" rel="noopener">
+                <Icon name="calendar" /> Reserve a table
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section class="container dish-details" aria-labelledby="details-title">
+          <div class="details-copy">
+            <h2 id="details-title" class="display-md">
+              Good to <em>know</em>
+            </h2>
+            <ul role="list" class="facts">
+              {props.page.facts.map((f) => (
+                <li>{f}</li>
+              ))}
+              {props.page.asPictured && <li>{props.page.asPictured}</li>}
+            </ul>
+            <p class="muted small">
+              Dishes and availability can change. For today’s specials or current pricing, call{' '}
+              <a class="text-link" href={business.phone.href}>{business.phone.display}</a>.
+            </p>
+          </div>
+          {props.page.photos[1] && (
+            <div class="details-photo fill">
+              <Photo name={props.page.photos[1]} sizes="(min-width: 960px) 40vw, 100vw" />
+            </div>
+          )}
+        </section>
+
+        <section class="container faq-block" aria-labelledby="dish-faq-title">
+          <h2 id="dish-faq-title" class="display-sm">Questions about the {props.item.name}</h2>
+          <div class="faq-list">
+            {props.page.faqs.map((f) => (
+              <details class="faq">
+                <summary>
+                  <span>{f.q}</span>
+                  <span class="faq-icon" aria-hidden="true" />
+                </summary>
+                <p>{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+
+        <section class="container related" aria-labelledby="related-title">
+          <h2 id="related-title" class="display-sm">
+            Also on the <em>menu</em>
+          </h2>
+          <ul role="list" class="dish-list">
+            {props.page.related.map((name) => {
+              const r = findItem(name);
+              return (
+                <li>
+                  <a class="name" href={itemLink(name)}>{name}</a>
+                  <span class="desc">{r.description ?? ''}</span>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      </>
+    )
+  }
+
+  <section class="more bg-glass" aria-labelledby="more-title">
+    <div class="container more-inner">
+      <h2 id="more-title" class="label">More of the menu</h2>
+      <ul role="list" class="more-links">
+        {
+          otherCategories.map((c) => (
+            <li>
+              <a href={`/menu/${c.slug}`} class="cond">
+                {menu.find((s) => s.id === c.section)?.title}
+              </a>
+            </li>
+          ))
+        }
+        <li><a href="/menu" class="cond">Full menu</a></li>
+      </ul>
+      <p class="more-note">
+        <a class="text-link" href="/order">Pickup &amp; delivery</a> ·
+        <a class="text-link" href="/reservations">Reservations</a> ·
+        <a class="text-link" href="/visit">Hours &amp; directions</a>
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-top {
+    display: grid;
+  }
+
+  .page-top-copy {
+    display: grid;
+    gap: 1rem;
+    align-content: center;
+    justify-items: start;
+    padding: 2rem var(--gutter) 2.5rem;
+  }
+
+  .page-top-copy .lede {
+    max-width: 36rem;
+    color: var(--ink);
+  }
+
+  .page-top-copy .muted {
+    max-width: 36rem;
+  }
+
+  .cat-label {
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
+    color: var(--blue);
+    text-decoration: none;
+  }
+
+  a.cat-label:hover {
+    text-decoration: underline;
+  }
+
+  .page-top-photo {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .page-top-photo .fill {
+    aspect-ratio: 4 / 3;
+  }
+
+  .page-top-photo figcaption {
+    padding-inline: var(--gutter);
+    font-size: 0.85rem;
+    color: var(--soft);
+  }
+
+  .list-section {
+    display: grid;
+    gap: 1rem;
+    padding-block: clamp(3rem, 2rem + 3vw, 5rem);
+  }
+
+  .item-list {
+    display: grid;
+    gap: 1.6rem 3.5rem;
+    margin-top: 1rem;
+  }
+
+  .menu-item {
+    display: grid;
+    gap: 0.3rem;
+    align-content: start;
+    padding-bottom: 1.4rem;
+    border-bottom: 1px dashed var(--line);
+  }
+
+  .item-name {
+    font-size: 1.35rem;
+    line-height: 1.25;
+  }
+
+  .item-name a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--line);
+    text-underline-offset: 0.2em;
+  }
+
+  .item-name a:hover {
+    text-decoration-color: currentColor;
+  }
+
+  .item-desc {
+    color: var(--soft);
+  }
+
+  .item-note {
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--blue);
+  }
+
+  .item-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--soft);
+  }
+
+  .tag-fav {
+    border-color: transparent;
+    background: var(--glass);
+    color: var(--blue-deep);
+  }
+
+  .small-link {
+    font-size: 0.9rem;
+  }
+
+  .advisory,
+  .list-foot {
+    font-size: 0.9rem;
+    color: var(--soft);
+  }
+
+  .dish-details {
+    display: grid;
+    gap: 2rem;
+    padding-block: clamp(3rem, 2rem + 3vw, 5rem) 1rem;
+  }
+
+  .details-copy {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+  }
+
+  .facts {
+    display: grid;
+    gap: 0.7rem;
+    border-top: 1px solid var(--line);
+    padding-top: 1rem;
+  }
+
+  .facts li {
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .facts li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65em;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: var(--blue);
+  }
+
+  .small {
+    font-size: 0.88rem;
+  }
+
+  .details-photo {
+    aspect-ratio: 3 / 2;
+  }
+
+  .faq-block,
+  .related {
+    display: grid;
+    gap: 1.25rem;
+    padding-block: 2.5rem;
+  }
+
+  .faq-list {
+    border-top: 1px solid var(--line);
+  }
+
+  .faq {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .faq summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 0;
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .faq summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-icon {
+    position: relative;
+    flex: none;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .faq-icon::before,
+  .faq-icon::after {
+    content: '';
+    position: absolute;
+    inset: 50% 0 auto;
+    height: 1.5px;
+    margin-top: -1px;
+    background: var(--blue);
+    transition: transform 0.2s var(--ease);
+  }
+
+  .faq-icon::after {
+    transform: rotate(90deg);
+  }
+
+  .faq[open] .faq-icon::after {
+    transform: rotate(0deg);
+  }
+
+  .faq p {
+    padding: 0 0 1.1rem;
+    color: var(--soft);
+  }
+
+  .related .dish-list a.name {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--line);
+    text-underline-offset: 0.2em;
+  }
+
+  .related .dish-list a.name:hover {
+    color: var(--blue);
+  }
+
+  .more {
+    margin-top: 2.5rem;
+    padding-block: 2.5rem;
+  }
+
+  .more-inner {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .more-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .more-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    background: var(--paper);
+    font-size: 1.15rem;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    color: var(--navy);
+  }
+
+  .more-links a:hover {
+    border-color: var(--navy);
+  }
+
+  .more-note {
+    font-size: 0.92rem;
+  }
+
+  @media (min-width: 720px) {
+    .item-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 960px) {
+    .page-top {
+      grid-template-columns: 1.1fr 1fr;
+      min-height: min(70svh, 40rem);
+    }
+
+    .page-top-copy {
+      padding: 3rem 4rem 3rem var(--edge);
+    }
+
+    .dish-top {
+      grid-template-columns: 1.15fr 1fr;
+    }
+
+    .dish-top .page-top-copy {
+      padding: 3rem var(--edge) 3rem 4rem;
+    }
+
+    .page-top-photo .fill {
+      aspect-ratio: auto;
+      height: 100%;
+      min-height: 26rem;
+    }
+
+    .page-top-photo {
+      grid-template-rows: 1fr auto;
+    }
+
+    .page-top-photo figcaption {
+      padding: 0 0 0.75rem 1rem;
+    }
+
+    .dish-details {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+  }
+</style>

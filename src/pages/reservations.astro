@@ -1,0 +1,66 @@
+---
+/** Reservations. Source: Reserve with Google page for Blue (booking times provided by Yelp), checked 2026-09-23. */
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import HoursList from '../components/HoursList.astro';
+import { business } from '../data/business';
+import { breadcrumbSchema } from '../lib/schema';
+
+const site = Astro.site ?? new URL(Astro.url.origin);
+const trail = [
+  { name: 'Home', path: '/' },
+  { name: 'Reservations', path: '/reservations' },
+];
+---
+
+<Base
+  title="Reservations | Blue Seafood & Grill, Arroyo Grande"
+  description="Reserve a table at Blue Seafood & Grill in Arroyo Grande online through Reserve with Google, or call (805) 202-8166. Open Tuesday–Sunday from 11:30 AM."
+  path="/reservations"
+  schema={[breadcrumbSchema(site, trail)]}
+>
+  <section class="info-top bg-glass">
+    <div class="container info-top-inner">
+      <Breadcrumbs trail={trail} />
+      <p class="label">Reservations</p>
+      <h1 class="display-xl">Reserve a <em>table</em></h1>
+      <p class="lede">
+        Book online through Reserve with Google — booking times are provided by Yelp — or call the restaurant
+        at {business.phone.display}.
+      </p>
+      <div class="btn-row">
+        <a class="btn" href={business.links.reserve} target="_blank" rel="noopener">
+          <Icon name="calendar" /> Reserve a table<span class="visually-hidden"> (opens Reserve with Google)</span>
+        </a>
+        <a class="btn btn-ghost" href={business.phone.href}><Icon name="phone" /> {business.phone.display}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="container info-body two-col" aria-label="Reservation details">
+    <div class="info-block">
+      <h2 class="label">When we’re open</h2>
+      <HoursList />
+      <p class="info-note">Closed Mondays. Holiday hours can differ — please call ahead.</p>
+    </div>
+
+    <div class="info-block">
+      <h2 class="label">Larger groups</h2>
+      <p>
+        For larger parties, please call <a class="text-link" href={business.phone.href}>{business.phone.display}</a>
+        {' '}ahead of time so we can check availability.
+      </p>
+      <h2 class="label">Getting here</h2>
+      <p>
+        {business.address.street}, {business.address.city}, {business.address.region} {business.address.postalCode}.
+        {' '}<a class="text-link" href="/visit">Map and directions</a>.
+      </p>
+      <h2 class="label">Before you come</h2>
+      <p>
+        Browse the <a class="text-link" href="/menu">menu</a>, or read the
+        {' '}<a class="text-link" href="/faq">frequently asked questions</a>.
+      </p>
+    </div>
+  </section>
+</Base>

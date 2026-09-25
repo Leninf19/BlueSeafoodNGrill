@@ -143,8 +143,15 @@ for (const f of ['robots.txt', 'sitemap-index.xml', 'og-image.jpg', 'favicon-32.
   if (!existsSync(join(DIST, f))) errors.push(`missing dist/${f}`);
 
 const sitemap = files.filter((f) => /sitemap-\d+\.xml$/.test(f)).map((f) => readFileSync(f, 'utf8')).join('');
-for (const r of ['/menu', '/about', '/visit'])
-  if (!new RegExp(`<loc>[^<]*${r}</loc>`).test(sitemap)) errors.push(`sitemap missing ${r}`);
+// The sitemap must list exactly the live pages (every built page except the 404).
+const sitemapPaths = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => new URL(m[1]).pathname.replace(/(.)\/$/, '$1'));
+const livePages = [...routes].filter((r) => r !== '/404');
+for (const r of livePages) if (!sitemapPaths.includes(r)) errors.push(`sitemap missing ${r}`);
+for (const p of sitemapPaths) if (!routes.has(p)) errors.push(`sitemap lists a page that does not exist: ${p}`);
+if (new Set(sitemapPaths).size !== sitemapPaths.length) errors.push('sitemap has duplicate URLs');
+for (const f of ['sitemap.xml', 'llms.txt']) if (!existsSync(join(DIST, f))) errors.push(`missing dist/${f}`);
+if (existsSync(join(DIST, 'sitemap.xml')) && !/<sitemapindex[\s\S]*sitemap-0\.xml/.test(readFileSync(join(DIST, 'sitemap.xml'), 'utf8')))
+  errors.push('sitemap.xml should be a sitemap index pointing at sitemap-0.xml');
 if (/404/.test(sitemap)) errors.push('sitemap should not list the 404 page');
 
 console.log(`Checked ${htmlFiles.length} pages: ${[...routes].join(', ')}`);

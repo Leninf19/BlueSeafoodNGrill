@@ -80,7 +80,7 @@ const faqs = [
 
       <div class="info-block">
         <h2 class="label">Pickup &amp; delivery</h2>
-        <p>Order online for pickup or delivery through DoorDash, or call {business.phone.display} to order by phone.</p>
+        <p>Order online for pickup or delivery through DoorDash. Questions? Call {business.phone.display}. <a class="text-link" href="/order">More about ordering</a></p>
         <div class="btn-row">
           <a class="btn" href={business.links.order} target="_blank" rel="noopener"><Icon name="bag" /> Order pickup or delivery<span class="visually-hidden"> (opens DoorDash)</span></a>
         </div>
@@ -153,6 +153,7 @@ const faqs = [
           ))
         }
       </div>
+      <p class="faq-more"><a class="text-link" href="/faq">All frequently asked questions</a></p>
     </div>
   </section>
 </Base>
@@ -351,6 +352,10 @@ const faqs = [
 
   .faq[open] .faq-icon::after {
     transform: rotate(0deg);
+  }
+
+  .faq-more {
+    margin-top: 1.25rem;
   }
 
   .faq p {
