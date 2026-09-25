@@ -35,14 +35,40 @@
   window.gtag('js', new Date());
   window.gtag('config', GA_MEASUREMENT_ID);
 
+  let gtagRequested = false;
   function loadGtag() {
+    if (gtagRequested) return;
+    gtagRequested = true;
     const script = document.createElement('script');
     script.async = true;
     script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
     document.head.appendChild(script);
   }
-  if (document.readyState === 'complete') loadGtag();
-  else window.addEventListener('load', loadGtag, { once: true });
+
+  // Start gtag.js once the page has loaded AND its largest paint (usually the hero photo) has
+  // settled: 300 ms without a new largest-contentful-paint entry. Capped at 3 s after load, and
+  // immediate where the browser doesn't report LCP (hidden tabs never do, hence the cap).
+  function afterMainPaint(start: () => void) {
+    const lcpSupported = PerformanceObserver.supportedEntryTypes?.includes('largest-contentful-paint');
+    if (!lcpSupported) return start();
+    let settle = 0;
+    const observer = new PerformanceObserver(() => {
+      clearTimeout(settle);
+      settle = window.setTimeout(done, 300);
+    });
+    const cap = window.setTimeout(done, 3000);
+    function done() {
+      observer.disconnect();
+      clearTimeout(settle);
+      clearTimeout(cap);
+      start();
+    }
+    observer.observe({ type: 'largest-contentful-paint', buffered: true });
+  }
+
+  const onLoad = () => afterMainPaint(loadGtag);
+  if (document.readyState === 'complete') onLoad();
+  else window.addEventListener('load', onLoad, { once: true });
 
   type ClickEvent = [name: string, params: Record<string, string>];
 
