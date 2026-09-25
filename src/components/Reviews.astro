@@ -8,7 +8,7 @@ const hasHalf = googleRating.rating - fullStars >= 0.5;
 ---
 
 <section class="reviews bg-glass" aria-labelledby="reviews-title">
-  <div class="container reviews-grid">
+  <div class:list={['container reviews-grid', { 'no-quotes': reviews.length === 0 }]}>
     <div class="summary">
       <h2 id="reviews-title" class="label">From Google reviews</h2>
       <p class="score">
@@ -19,11 +19,11 @@ const hasHalf = googleRating.rating - fullStars >= 0.5;
         </span>
       </p>
       <p class="meta">
-        {googleRating.count} reviews on Google as of {googleRating.capturedOnLabel}. Excerpts are quoted as
-        written and don’t update automatically.
+        {googleRating.count} reviews on Google as of {googleRating.capturedOnLabel}.
+        {reviews.length > 0 && ' Excerpts are quoted as written and don’t update automatically.'}
       </p>
       <p class="topics">
-        Mentioned most:
+        Mentioned most:{' '}
         {googleTopics.map((t, i) => (
           <>
             <span class="topic">{t.label}</span>{i < googleTopics.length - 1 ? ', ' : '.'}
@@ -35,6 +35,7 @@ const hasHalf = googleRating.rating - fullStars >= 0.5;
       </a>
     </div>
 
+    {reviews.length > 0 && (
     <ul role="list" class="quotes">
       {
         reviews.map((r) => (
@@ -51,6 +52,7 @@ const hasHalf = googleRating.rating - fullStars >= 0.5;
         ))
       }
     </ul>
+    )}
   </div>
 </section>
 
@@ -126,6 +128,10 @@ const hasHalf = googleRating.rating - fullStars >= 0.5;
     .reviews-grid {
       grid-template-columns: 1fr 2.3fr;
       gap: 4rem;
+    }
+
+    .reviews-grid.no-quotes {
+      grid-template-columns: minmax(0, 40rem);
     }
 
     .quotes {

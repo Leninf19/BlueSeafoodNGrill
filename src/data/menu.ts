@@ -233,7 +233,7 @@ export const menu: MenuSection[] = [
         name: 'Parmesan-Crusted Halibut',
         description: 'Crispy potatoes, shiitake mushrooms, broccolini and beurre blanc.',
       },
-      // confirm: listed on the previous website only
+      // Confirmed as served by the restaurant (2026-09-24).
       {
         name: 'King Crab',
         description: 'Grilled asparagus and drawn butter.',
@@ -244,7 +244,7 @@ export const menu: MenuSection[] = [
         name: 'Bone-In Ribeye',
         description: 'Pomme purée, grilled asparagus and peppercorn sauce.',
       },
-      // confirm: listed on the previous website only
+      // Confirmed as served by the restaurant (2026-09-24).
       {
         name: 'Chicken Breast Madeira',
         description: 'Wild mushrooms, asparagus and pomme purée.',

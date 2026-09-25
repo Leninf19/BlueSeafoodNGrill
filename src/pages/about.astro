@@ -9,7 +9,7 @@ import { breadcrumbSchema } from '../lib/schema';
 const site = Astro.site ?? new URL(Astro.url.origin);
 const topics = googleTopics.map((t) => `${t.label.toLowerCase()} (${t.count})`);
 const topicsText = `${topics.slice(0, -1).join(', ')} and ${topics.at(-1)}`;
-const quote = reviews[0];
+const quote = reviews.at(0); // none until reuse permission is confirmed
 ---
 
 <Base
@@ -99,10 +99,12 @@ const quote = reviews[0];
           Across {googleRating.count} Google reviews (as of {googleRating.capturedOnLabel}), the dishes
           mentioned most are {topicsText}.
         </p>
-        <figure>
-          <blockquote cite={business.links.googleReviews}><p>“{quote.quote}”</p></blockquote>
-          <figcaption>{quote.author} · Google, {quote.when}</figcaption>
-        </figure>
+        {quote && (
+          <figure>
+            <blockquote cite={business.links.googleReviews}><p>“{quote.quote}”</p></blockquote>
+            <figcaption>{quote.author} · Google, {quote.when}</figcaption>
+          </figure>
+        )}
         <a class="text-link" href={business.links.googleReviews} target="_blank" rel="noopener">
           Read the reviews on Google <Icon name="external" size={16} />
         </a>
@@ -114,7 +116,7 @@ const quote = reviews[0];
   <section class="container strip" aria-label="More photos from the kitchen">
     <div class="strip-grid">
       <div class="fill s-1"><Photo name="tostadas" sizes="(min-width: 960px) 34vw, 100vw" widths={[480, 640, 800, 1000]} /></div>
-      <div class="fill s-2"><Photo name="dessertSlice" sizes="(min-width: 960px) 22vw, 50vw" widths={[400, 750]} /></div>
+      <div class="fill s-2"><Photo name="oystersTall" sizes="(min-width: 960px) 22vw, 50vw" widths={[400, 750]} /></div>
       <div class="fill s-3"><Photo name="fishOverGreens" sizes="(min-width: 960px) 34vw, 50vw" widths={[480, 800, 1000]} /></div>
     </div>
   </section>

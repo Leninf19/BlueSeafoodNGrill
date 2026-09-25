@@ -37,23 +37,6 @@ export const googleTopics = [
   { label: 'Lobster roll', count: 13 },
 ];
 
-export const reviews: Review[] = [
-  {
-    author: 'Luke B.',
-    stars: 5,
-    when: '4 months ago',
-    quote: 'Those shrimp tacos alone are worth the stop.',
-  },
-  {
-    author: 'Linh & Charles',
-    stars: 5,
-    when: '9 months ago',
-    quote: 'Everything was amazing! Especially the steak.',
-  },
-  {
-    author: 'Willis W.',
-    stars: 5,
-    when: '2 years ago',
-    quote: 'Waitress was very attentive, bathroom was clean, and food was good.',
-  },
-];
+// Quotes are off the site until the restaurant confirms permission to reuse them (2026-09-24).
+// The previous selection is in git history; add entries back here once approved.
+export const reviews: Review[] = [];
