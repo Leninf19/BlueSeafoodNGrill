@@ -6,10 +6,11 @@
  * The CSP in astro.config.mjs allows the Google tag hosts (script-src, img-src, connect-src).
  * The config snippet below is a bundled script, so Astro adds its hash to the CSP automatically.
  *
- * gtag.js is added after the page's load event so it doesn't compete with the hero photo on slow
- * phone connections (it cost ~12 Lighthouse points on mobile when loaded up front). Page views and
- * clicks queue in dataLayer until it arrives; a visit that leaves before the page finishes loading
- * is not counted.
+ * gtag.js (~170 KB) is added after the page's load event so it stays off the critical path for real
+ * visitors. Measured 2026-09-25: real-browser LCP ~0.4 s with or without it; Lighthouse's simulated
+ * mobile score is still ~8 points lower with the tag (77–78 vs 86 with it blocked) — a lab effect.
+ * Page views and clicks queue in dataLayer until it arrives; a visit that leaves before the page
+ * finishes loading is not counted.
  *
  * Click events (intent, not outcomes — a tap on "Call" is not a completed call, and an
  * "order_click" is not an order):
