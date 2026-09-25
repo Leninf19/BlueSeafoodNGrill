@@ -17,7 +17,8 @@ const trail = [
   { name: 'Order pickup or delivery', path: '/order' },
 ];
 
-// DoorDash "Most ordered" list, captured 2026-09-23 (names matched to our menu).
+// First five items of the "Most Ordered" list on DoorDash and order.online (same list, same order),
+// checked 2026-09-24. Names matched to our menu.
 const mostOrdered = ['Halibut Tacos (3)', 'Lobster Roll', 'Melted Shrimp Tacos (3)', 'Cajun Seafood Boil', 'Fish N’ Chips'];
 const linkFor = (name: string) => {
   const d = dishByName.get(name);
@@ -31,7 +32,7 @@ const linkFor = (name: string) => {
 
 <Base
   title="Order Pickup or Delivery | Blue Seafood & Grill, Arroyo Grande"
-  description="Order Blue Seafood & Grill for pickup or delivery through DoorDash. Pickup at 1351 E Grand Ave, Arroyo Grande. Online ordering hours, most-ordered dishes and contact."
+  description="Order Blue Seafood & Grill for pickup or delivery through DoorDash. Pickup at 1351 E Grand Ave, Arroyo Grande. Most-ordered dishes and who to call with questions."
   path="/order"
   schema={[breadcrumbSchema(site, trail)]}
 >
@@ -67,14 +68,15 @@ const linkFor = (name: string) => {
         {' '}— the same store and menu, on Blue’s own ordering page (powered by DoorDash).
       </p>
       <p class="info-note">
-        Blue’s ordering page lists online ordering hours of 11:30 AM – 7:45 PM (checked September 24, 2026).
-        The restaurant is closed on Mondays. Prices for online orders are shown on DoorDash.
+        Online ordering hours are set on DoorDash and can end before the dining room closes: on Thursday,
+        September 24, 2026, online orders were accepted from 11:30 AM to 7:45 PM. The restaurant is closed on
+        Mondays. Prices for online orders are shown on DoorDash.
       </p>
     </div>
 
     <div class="info-block">
       <h2 class="label">Most ordered online</h2>
-      <p>DoorDash’s “most ordered” list for Blue (September 2026):</p>
+      <p>The top five in DoorDash’s “Most Ordered” list for Blue (checked September 24, 2026):</p>
       <ul role="list" class="dish-list">
         {
           mostOrdered.map((name) => (

@@ -210,6 +210,9 @@ export const menu: MenuSection[] = [
         name: 'Classic Shrimp Scampi',
         description: 'Sautéed jumbo shrimp in garlic butter and lemon-wine sauce over linguine.',
       },
+      // confirm with the restaurant: the home page ("What We Cook") uses the owner's wording
+      // "Linguini with house-made Alfredo sauce and an assortment of seafood." This menu
+      // description matches DoorDash. Don't change the ingredients until the restaurant confirms.
       {
         name: 'Seafood Alfredo Pasta',
         description: 'Lobster, shrimp, scallops and clams.',
@@ -240,8 +243,6 @@ export const menu: MenuSection[] = [
       {
         name: 'Bone-In Ribeye',
         description: 'Pomme purée, grilled asparagus and peppercorn sauce.',
-        photo: 'ribeyeWithShrimp',
-        photoNote: 'Pictured topped with jumbo shrimp.',
       },
       // confirm: listed on the previous website only
       {

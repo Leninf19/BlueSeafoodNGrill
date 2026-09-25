@@ -101,7 +101,7 @@ const otherCategories = categoryPages.filter((c) => props.kind !== 'category' ||
   {
     props.kind === 'category' ? (
       <>
-        <section class="page-top">
+        <section class:list={['page-top', { 'page-top-text': !props.page.photo, 'bg-glass': !props.page.photo }]}>
           <div class="page-top-copy">
             <Breadcrumbs trail={trail} />
             <p class="label">
@@ -581,6 +581,17 @@ const otherCategories = categoryPages.filter((c) => props.kind !== 'category' ||
 
     .page-top-copy {
       padding: 3rem 4rem 3rem var(--edge);
+    }
+
+    /* Category pages without a photo: one centred column instead of an empty half. */
+    .page-top-text {
+      grid-template-columns: 1fr;
+      min-height: 0;
+    }
+
+    .page-top-text .page-top-copy {
+      max-width: calc(46rem + var(--edge));
+      padding: 3.5rem var(--gutter) 3rem var(--edge);
     }
 
     .dish-top {

@@ -107,8 +107,7 @@ export const categoryPages: CategoryPage[] = [
       // MENU
       'The longest part of the menu: tacos (melted shrimp and grilled halibut), a lobster roll with dirty fries, beer-battered fish n’ chips, three seafood pastas, miso-glazed salmon, parmesan-crusted halibut, grilled lobster tail — and for the steak side of the table, a bone-in ribeye and a Western burger.',
     ],
-    photo: 'ribeyeWithShrimp',
-    photoCaption: 'Bone-in ribeye, pictured topped with jumbo shrimp.',
+    // No photo: the only ribeye photo shows shrimp the menu description doesn't include.
   },
 ];
 
@@ -167,31 +166,8 @@ export const dishPages: DishPage[] = [
     ],
     onlineOrdering: true,
   },
-  {
-    slug: 'bone-in-ribeye',
-    menuName: 'Bone-In Ribeye',
-    section: 'entrees',
-    title: 'Bone-In Ribeye with Peppercorn Sauce | Blue Seafood & Grill',
-    description:
-      'The Bone-In Ribeye at Blue Seafood & Grill in Arroyo Grande, with pomme purée, grilled asparagus and peppercorn sauce. The steak side of a seafood menu.',
-    photos: ['ribeyeWithShrimp'],
-    // PHOTO
-    asPictured: 'Our photo shows the ribeye topped with jumbo shrimp; the menu description does not include the shrimp.',
-    facts: [
-      // MENU
-      'Served with pomme purée, grilled asparagus and peppercorn sauce.',
-      // ORDER
-      'Available for pickup or delivery through Blue’s online ordering page (DoorDash).',
-    ],
-    related: ['Grilled Lobster Tail', 'Western Burger', 'Cajun Seafood Boil', 'Lobster Roll'],
-    faqs: [
-      {
-        q: 'Does Blue Seafood & Grill serve steak?',
-        a: 'Yes. The menu includes a bone-in ribeye with pomme purée, grilled asparagus and peppercorn sauce, and a Western burger.',
-      },
-    ],
-    onlineOrdering: true,
-  },
+  // Bone-In Ribeye: unpublished until there is a photo that matches the menu description
+  // (the only ribeye photo shows it topped with jumbo shrimp, which the menu doesn't list).
   {
     slug: 'dirty-fries',
     menuName: 'Dirty Fries',

@@ -19,7 +19,6 @@ import storefrontDay from '../assets/photos/storefront-day.jpg';
 import backEntranceNight from '../assets/photos/back-entrance-night.jpg';
 import fishOverGreens from '../assets/photos/fish-over-greens.jpg';
 import tostadas from '../assets/photos/tostadas.jpg';
-import ribeyeWithShrimp from '../assets/photos/ribeye-with-shrimp.jpg';
 import dessertSlice from '../assets/photos/dessert-slice.jpg';
 
 export const photos = {
@@ -70,10 +69,6 @@ export const photos = {
   tostadas: {
     src: tostadas,
     alt: 'Two tostadas topped with avocado, microgreens and a wedge of lime',
-  },
-  ribeyeWithShrimp: {
-    src: ribeyeWithShrimp,
-    alt: 'Bone-in ribeye with sauce and grilled asparagus, topped with jumbo shrimp',
   },
   dessertSlice: {
     src: dessertSlice,
