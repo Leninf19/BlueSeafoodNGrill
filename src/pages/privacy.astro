@@ -12,9 +12,9 @@
  *  - Google map loads only after "Show interactive map". No forms, accounts or sign-ins.
  * If the site starts collecting anything else, update this page and `lastUpdated`.
  *
- * Owner review: the text was sent to the restaurant for approval. Fields set to null are pending
- * their answers; the sentence is left out until they're filled in. `lastUpdated` must be a real
- * date before publishing — the build check fails while it says DRAFT.
+ * Approved by the restaurant (2026-09-25). `retentionMonths` and `noAdvertisingUse` stay null — so
+ * their sentences don't render — until those GA4 Admin settings have actually been checked. When
+ * the text changes, update `lastUpdated` (the build check fails if it ever says DRAFT).
  */
 import Base from '../layouts/Base.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
@@ -23,7 +23,7 @@ import { GA_MEASUREMENT_ID } from '../data/analytics';
 import { breadcrumbSchema } from '../lib/schema';
 
 const privacy = {
-  lastUpdated: 'DRAFT',
+  lastUpdated: 'September 25, 2026',
   /** GA4 Admin → Data collection and modification → Data retention (user-level and event-level data), in months. */
   retentionMonths: null as number | null,
   /** true only after GA4 Admin shows Google signals off and no Google Ads links, and the owner confirms no ad use. */
