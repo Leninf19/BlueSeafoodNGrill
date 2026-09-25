@@ -34,9 +34,9 @@ const current = Astro.url.pathname.replace(/\/+$/, '') || '/';
         alt={business.name}
         width={168}
         height={80}
-        densities={[1, 2]}
+        widths={[104, 168, 208, 336]}
+        sizes="(min-width: 960px) 104px, 94px"
         loading="eager"
-        fetchpriority="high"
         class="brand-logo"
       />
     </a>
