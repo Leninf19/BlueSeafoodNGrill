@@ -105,7 +105,7 @@ const gaCookie = `_ga_${GA_MEASUREMENT_ID.replace(/^G-/, '')}`;
         Google processes this information for us. Google explains how it uses data from websites that use its services
         in <a class="text-link" href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">How Google uses information from sites or apps that use our services</a>.
         {privacy.retentionMonths &&
-          ` Google Analytics keeps user-level and event-level data for ${privacy.retentionMonths} months, then deletes it.`}
+          ` Our Google Analytics data retention setting is ${privacy.retentionMonths} months for user-level and event-level data. This setting does not apply to standard aggregated reports.`}
         {privacy.noAdvertisingUse && ' We don’t use Google Analytics data for advertising.'}
       </p>
     </section>
