@@ -32,19 +32,23 @@ export default defineConfig({
     // Content-Security-Policy, emitted as a <meta> tag on every page. Astro adds hashes for its
     // own inline scripts and styles; the extra style hash is the <noscript> header fallback in
     // src/layouts/Base.astro (update it if that rule changes). The Google map on /visit is the
-    // only third-party frame.
+    // only third-party frame. Google Analytics 4 (src/components/GoogleAnalytics.astro) needs the
+    // Google tag hosts in script-src, img-src and connect-src, per Google's CSP guide for GA4.
     csp: {
       algorithm: 'SHA-256',
       directives: [
         "default-src 'self'",
-        "img-src 'self' data:",
+        "img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com",
         "font-src 'self'",
-        "connect-src 'self'",
+        "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com",
         'frame-src https://www.google.com',
         "base-uri 'self'",
         "form-action 'self'",
         "object-src 'none'",
       ],
+      scriptDirective: {
+        resources: ["'self'", 'https://*.googletagmanager.com'],
+      },
       styleDirective: {
         hashes: ['sha256-NVHrdMWI1RH1Lhi920gTzPTu9uVFA1cy0T9fxPtkIoI='],
       },

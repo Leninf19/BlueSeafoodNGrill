@@ -69,6 +69,13 @@ for (const file of htmlFiles) {
   const credit = html.match(/Website design &amp; maintenance by <a href="([^"]+)"[^>]*>Future Marketing Studio<\/a>/);
   if (!credit || credit[1] !== 'https://futuremark.studio') errors.push(`${route}: missing footer credit`);
 
+  // Google Analytics: the Google tag loads exactly once, after the CSP meta tag -----
+  const gtagTags = html.match(/<script[^>]+src="https:\/\/www\.googletagmanager\.com\/gtag\/js\?id=G-E4JB2S27XN"/g) ?? [];
+  if (gtagTags.length !== 1) errors.push(`${route}: Google tag found ${gtagTags.length} times (expected 1)`);
+  const cspAt = html.search(/<meta http-equiv="content-security-policy"/i);
+  if (cspAt === -1 || cspAt > html.indexOf('googletagmanager.com/gtag/js'))
+    errors.push(`${route}: CSP meta tag must come before the Google tag`);
+
   // SEO -------------------------------------------------------------------
   const decode = (s) => s?.replace(/&amp;/g, '&');
   const title = decode(html.match(/<title>([^<]*)<\/title>/i)?.[1]?.trim());

@@ -1,0 +1,23 @@
+---
+/**
+ * Google Analytics 4 (Google tag), included once per page from src/layouts/Base.astro.
+ * The Measurement ID lives in src/data/analytics.ts.
+ *
+ * The CSP in astro.config.mjs allows the Google tag hosts (script-src, img-src, connect-src).
+ * The config snippet below is a bundled script, so Astro adds its hash to the CSP automatically.
+ */
+import { GA_MEASUREMENT_ID } from '../data/analytics';
+---
+
+<script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
+<script>
+  import { GA_MEASUREMENT_ID } from '../data/analytics';
+
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function gtag() {
+    // gtag.js expects the arguments object itself, not an array.
+    window.dataLayer.push(arguments);
+  };
+  window.gtag('js', new Date());
+  window.gtag('config', GA_MEASUREMENT_ID);
+</script>
