@@ -56,9 +56,9 @@ export const categoryPages: CategoryPage[] = [
     h1Em: 'three ways',
     intro: [
       // MENU
-      'Blue’s menu lists oysters three ways, each by the half dozen or dozen: baked Rockefeller-style with hollandaise, spinach and parmesan; grilled with garlic butter, parmesan and parsley, served with toasted garlic sourdough; or fried, with house salad, remoulade and cocktail sauce.',
+      'We serve oysters three ways, by the half dozen or the dozen: baked Rockefeller-style with hollandaise, spinach and parmesan; grilled with garlic butter, parmesan and parsley, with toasted garlic sourdough; or fried, with house salad, remoulade and cocktail sauce.',
       // GOOGLE
-      'Oysters are one of the dishes guests mention most in Blue’s Google reviews.',
+      'They’re one of the dishes guests bring up most in our Google reviews.',
     ],
     photo: 'oystersFeature',
     photoCaption: 'Oysters at Blue Seafood & Grill.',
@@ -68,7 +68,7 @@ export const categoryPages: CategoryPage[] = [
     slug: 'steamers-and-boils',
     title: 'Cajun Seafood Boil, Cioppino & Pan Roast | Blue Seafood & Grill',
     description:
-      'Steamers and boils at Blue Seafood & Grill in Arroyo Grande: Cajun Seafood Boil, Pan Roast, Cioppino and Sautéed Clams — an assortment of seafood on the plate.',
+      'Steamers and boils at Blue Seafood & Grill in Arroyo Grande: the Cajun Seafood Boil, Pan Roast, Cioppino and Sautéed Clams. An assortment of seafood on the plate.',
     h1: 'Steamers &',
     h1Em: 'boils',
     intro: [
@@ -90,7 +90,7 @@ export const categoryPages: CategoryPage[] = [
     h1Em: 'to share',
     intro: [
       // MENU
-      'Six starters, half of them built around shrimp: a chilled jumbo shrimp cocktail with spicy remoulade, jumbo shrimp sautéed in roasted garlic cream over sourdough, and shrimp ceviche tostadas — plus jumbo lump crab cakes, flash-fried calamari and sesame-seared ahi tuna.',
+      'Six starters, half of them built around shrimp: a chilled jumbo shrimp cocktail with spicy remoulade, jumbo shrimp sautéed in roasted garlic cream over sourdough, and shrimp ceviche tostadas. The other three are jumbo lump crab cakes, flash-fried calamari and sesame-seared ahi tuna.',
     ],
     photo: 'sauteedJumboShrimp',
     photoCaption: 'Sautéed Jumbo Shrimp over toasted sourdough.',
@@ -100,12 +100,12 @@ export const categoryPages: CategoryPage[] = [
     slug: 'entrees',
     title: 'Seafood & Steak Entrées | Blue Seafood & Grill, Arroyo Grande',
     description:
-      'Entrées at Blue Seafood & Grill in Arroyo Grande: melted shrimp tacos, lobster roll, fish n’ chips, halibut, salmon, seafood pastas, lobster tail and bone-in ribeye.',
+      'Entrées at Blue Seafood & Grill in Arroyo Grande: shrimp and halibut tacos, lobster roll, fish n’ chips, seafood pastas, salmon, king crab and bone-in ribeye.',
     h1: 'Seafood & steak',
     h1Em: 'entrées',
     intro: [
       // MENU
-      'The longest part of the menu: tacos (melted shrimp and grilled halibut), a lobster roll with dirty fries, beer-battered fish n’ chips, three seafood pastas, miso-glazed salmon, parmesan-crusted halibut, grilled lobster tail — and for the steak side of the table, a bone-in ribeye and a Western burger.',
+      'The longest part of the menu: tacos (melted shrimp and grilled halibut), a lobster roll with dirty fries, beer-battered fish n’ chips, three seafood pastas, miso-glazed salmon, parmesan-crusted halibut, grilled lobster tail and King Crab when it’s in season. For the steak side of the table there’s a bone-in ribeye and a Western burger, and there’s Chicken Breast Madeira too.',
     ],
     // No photo: the only ribeye photo shows shrimp the menu description doesn't include.
   },
@@ -121,22 +121,22 @@ export const dishPages: DishPage[] = [
       'Blue’s Cajun Seafood Boil: shrimp, crab, lobster, clams, mussels, red potatoes, corn and smoked sausage in spicy garlic butter. Arroyo Grande, dine in or order online.',
     photos: ['seafoodBoilBowl', 'seafoodBoilHero'],
     // PHOTO
-    asPictured: 'In our photos it arrives in a steel bowl with lemon and a cup of dipping sauce on the side.',
+    asPictured: 'In our photos it’s served in a steel bowl, with lemon and a cup of dipping sauce.',
     facts: [
       // MENU
-      'Listed under Steamers & Boils on Blue’s menu, and made with spicy garlic butter.',
+      'Made with spicy garlic butter. It’s one of our steamers and boils.',
       // ORDER
-      'Available for pickup or delivery through Blue’s online ordering page (DoorDash).',
+      'You can order it on DoorDash for pickup or delivery.',
     ],
     related: ['Pan Roast', 'Cioppino', 'Seafood Alfredo Pasta', 'Dirty Fries'],
     faqs: [
       {
         q: 'Is the Cajun Seafood Boil spicy?',
-        a: 'The menu describes it with spicy garlic butter. If you have questions about spice, ask your server before you order.',
+        a: 'It’s made with spicy garlic butter. If you’re not sure about the heat, ask your server before you order.',
       },
       {
         q: 'Can I order the Cajun Seafood Boil for pickup or delivery?',
-        a: 'Yes. It is listed on Blue’s online ordering page through DoorDash, for pickup or delivery.',
+        a: 'Yes. It’s on our DoorDash menu for pickup or delivery.',
       },
     ],
     onlineOrdering: true,
@@ -147,21 +147,21 @@ export const dishPages: DishPage[] = [
     section: 'starters',
     title: 'Sautéed Jumbo Shrimp with Garlic Cream | Blue Seafood & Grill',
     description:
-      'Sautéed Jumbo Shrimp at Blue Seafood & Grill in Arroyo Grande: jumbo shrimp in roasted garlic cream over toasted sourdough. A starter for the table.',
+      'Sautéed Jumbo Shrimp at Blue Seafood & Grill in Arroyo Grande: jumbo shrimp in roasted garlic cream, served over toasted sourdough. One of our starters.',
     photos: ['sauteedJumboShrimp'],
     // PHOTO
-    asPictured: 'In our photo the shrimp sit on toasted sourdough, finished with fresh green herbs.',
+    asPictured: 'In our photo the shrimp sit on toasted sourdough, finished with green herbs.',
     facts: [
       // MENU
-      'One of six starters on Blue’s menu.',
+      'One of six starters on our menu.',
       // ORDER
-      'Available for pickup or delivery through Blue’s online ordering page (DoorDash).',
+      'You can order it on DoorDash for pickup or delivery.',
     ],
     related: ['Jumbo Shrimp Cocktail', 'Shrimp Ceviche Tostadas', 'Classic Shrimp Scampi', 'Melted Shrimp Tacos (3)'],
     faqs: [
       {
         q: 'What comes with the Sautéed Jumbo Shrimp?',
-        a: 'According to the menu, the jumbo shrimp are sautéed in roasted garlic cream and served over toasted sourdough.',
+        a: 'The jumbo shrimp are sautéed in roasted garlic cream and served over toasted sourdough.',
       },
     ],
     onlineOrdering: true,
@@ -180,21 +180,21 @@ export const dishPages: DishPage[] = [
     asPictured: 'In our photo they are lifted from the fryer in a wire basket, tossed with parmesan and herbs.',
     facts: [
       // MENU
-      'Ordered as a side, and they come with the Lobster Roll.',
+      'Order them as a side. They also come with the Lobster Roll.',
       // MENU
-      'Available as a substitute on the Fish N’ Chips and the Spicy Louisiana Fried Shrimp.',
+      'You can swap them in on the Fish N’ Chips and the Spicy Louisiana Fried Shrimp.',
       // ORDER
-      'Available for pickup or delivery through Blue’s online ordering page (DoorDash).',
+      'You can order them on DoorDash for pickup or delivery.',
     ],
     related: ['Lobster Roll', 'Fish N’ Chips', 'Spicy Louisiana Fried Shrimp', 'Sourdough Garlic Bread'],
     faqs: [
       {
         q: 'What are dirty fries?',
-        a: 'At Blue they are fries finished with truffle oil, garlic and parmesan.',
+        a: 'Ours are fries finished with truffle oil, garlic and parmesan.',
       },
       {
         q: 'Which dishes come with dirty fries?',
-        a: 'The Lobster Roll comes with dirty fries, and they are listed as a substitute on the Fish N’ Chips and the Spicy Louisiana Fried Shrimp.',
+        a: 'The Lobster Roll comes with them, and you can swap them in on the Fish N’ Chips and the Spicy Louisiana Fried Shrimp.',
       },
     ],
     onlineOrdering: true,

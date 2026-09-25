@@ -60,7 +60,6 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header-h) + 1rem);
 }
 
@@ -97,6 +96,18 @@ select {
 
 button {
   cursor: pointer;
+}
+
+a,
+button,
+summary {
+  touch-action: manipulation;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 a {

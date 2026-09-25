@@ -164,8 +164,8 @@ const otherCategories = categoryPages.filter((c) => props.kind !== 'category' ||
           </ul>
           {hasRaw(props.section.items) && <p class="advisory">{consumerAdvisory}</p>}
           <p class="list-foot">
-            Dishes and availability can change. For today’s specials or current pricing, call{' '}
-            <a class="text-link" href={business.phone.href}>{business.phone.display}</a>.
+            The menu can change. Ask about today’s specials, or call{' '}
+            <a class="text-link" href={business.phone.href}>{business.phone.display}</a> for current prices.
           </p>
         </section>
       </>
@@ -216,8 +216,8 @@ const otherCategories = categoryPages.filter((c) => props.kind !== 'category' ||
               {props.page.asPictured && <li>{props.page.asPictured}</li>}
             </ul>
             <p class="muted small">
-              Dishes and availability can change. For today’s specials or current pricing, call{' '}
-              <a class="text-link" href={business.phone.href}>{business.phone.display}</a>.
+              The menu can change. Ask about today’s specials, or call{' '}
+              <a class="text-link" href={business.phone.href}>{business.phone.display}</a> for current prices.
             </p>
           </div>
           {props.page.photos[1] && (

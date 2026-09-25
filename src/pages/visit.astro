@@ -12,7 +12,7 @@ const site = Astro.site ?? new URL(Astro.url.origin);
 const faqs = [
   {
     q: 'Do you take reservations?',
-    a: `Yes. Book online through Reserve with Google (booking times are provided by Yelp), or call ${business.phone.display}.`,
+    a: `Yes. Book a table online with Reserve with Google, or call ${business.phone.display}.`,
   },
   {
     q: 'Are you open on Mondays?',
@@ -20,11 +20,16 @@ const faqs = [
   },
   {
     q: 'Do you have vegetarian or vegan dishes?',
-    a: 'Yes — Veggie Marinara Bucatini, vegan Shiitake Tacos and several salads. Let your server know about any dietary needs.',
+    a: 'Yes: Veggie Marinara Bucatini, vegan Shiitake Tacos and several salads. Let your server know about any dietary needs.',
   },
   {
     q: 'Is there a kids menu?',
     a: 'Yes: kids sliders, kids pasta with butter or marinara, and kids fish n’ chips.',
+  },
+  {
+    // Distances: OpenStreetMap driving route (OSRM), checked 2026-09-25.
+    q: 'How far is Blue from Grover Beach and Pismo Beach?',
+    a: 'Blue is in Arroyo Grande, at 1351 E Grand Ave. From central Grover Beach it’s about a mile east along Grand Avenue, and it’s about 3 miles by car from the Pismo Beach Pier.',
   },
   {
     q: 'Can you seat a large group?',
@@ -34,8 +39,8 @@ const faqs = [
 ---
 
 <Base
-  title="Hours, Directions & Reservations | Blue Seafood & Grill"
-  description={`Blue Seafood & Grill, ${fullAddress}. Open Tue–Sun from 11:30 AM, closed Mondays. Hours, map, directions, reservations and phone.`}
+  title="Hours & Directions | Blue Seafood & Grill, Arroyo Grande"
+  description="Blue Seafood & Grill is at 1351 E Grand Ave in Arroyo Grande, between Courtland and Elm Streets. Open Tuesday–Sunday from 11:30 AM; closed Mondays."
   path="/visit"
   schema={[
     breadcrumbSchema(site, [
@@ -50,6 +55,7 @@ const faqs = [
         <p class="label">Visit &amp; contact</p>
         <h1 id="visit-title" class="display-xl">1351 E Grand Ave, <em>Arroyo Grande</em></h1>
         <OpenStatus class="visit-status" />
+        <p class="visit-where">On East Grand Avenue between Courtland Street and Elm Street, about a mile east of central Grover Beach.</p>
         <div class="btn-row">
           <a class="btn btn-blue" href={business.links.directions} target="_blank" rel="noopener"><Icon name="directions" /> Get directions</a>
           <a class="btn btn-ghost" href={business.phone.href}><Icon name="phone" /> {business.phone.display}</a>
@@ -69,23 +75,23 @@ const faqs = [
       <div class="info-block">
         <h2 class="label">Hours</h2>
         <HoursList />
-        <p class="muted small">Holiday hours can differ — please call ahead.</p>
+        <p class="muted small">Holiday hours can differ, so please call ahead.</p>
       </div>
 
       <div class="info-block">
         <h2 class="label">Reservations</h2>
-        <p>Book online through Reserve with Google (booking times are provided by Yelp), or call us.</p>
+        <p>Book a table online with Reserve with Google, or call us at {business.phone.display}.</p>
         <p><a class="text-link" href={business.links.reserve} target="_blank" rel="noopener">Reserve a table <Icon name="external" size={16} /></a></p>
       </div>
 
       <div class="info-block">
         <h2 class="label">Pickup &amp; delivery</h2>
-        <p>Order online for pickup or delivery through DoorDash. Questions? Call {business.phone.display}. <a class="text-link" href="/order">More about ordering</a></p>
+        <p>Order online on DoorDash for pickup here or delivery. Questions about an order? Call {business.phone.display}. <a class="text-link" href="/order">More about ordering</a></p>
         <div class="btn-row">
           <a class="btn" href={business.links.order} target="_blank" rel="noopener"><Icon name="bag" /> Order pickup or delivery<span class="visually-hidden"> (opens DoorDash)</span></a>
         </div>
         <p class="muted small">
-          The same store takes orders on <a class="text-link" href={business.links.orderOnline} target="_blank" rel="noopener">Blue’s order.online page</a> (powered by DoorDash).
+          You can also order from <a class="text-link" href={business.links.orderOnline} target="_blank" rel="noopener">our order.online page</a>, which is run by DoorDash.
         </p>
       </div>
 
@@ -176,6 +182,11 @@ const faqs = [
   }
 
   .visit-top-copy :global(.visit-status) {
+    color: var(--soft);
+  }
+
+  .visit-where {
+    max-width: 34rem;
     color: var(--soft);
   }
 

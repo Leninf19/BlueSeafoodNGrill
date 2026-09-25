@@ -28,12 +28,18 @@ const groups: { title: string; items: { q: string; a: string; link?: { href: str
       },
       {
         q: 'Where is Blue Seafood & Grill?',
-        a: `${fullAddress}, on East Grand Avenue.`,
+        a: `At ${fullAddress}, on East Grand Avenue between Courtland Street and Elm Street.`,
         link: { href: '/visit', label: 'Map and directions' },
       },
       {
+        // Distances: OpenStreetMap driving route (OSRM), checked 2026-09-25.
+        q: 'How far is Blue from Grover Beach and Pismo Beach?',
+        a: 'Blue is in Arroyo Grande. From central Grover Beach it’s about a mile east along Grand Avenue, and it’s about 3 miles by car from the Pismo Beach Pier.',
+        link: { href: '/visit', label: 'Directions' },
+      },
+      {
         q: 'Do you take reservations?',
-        a: `Yes. Book online through Reserve with Google (booking times are provided by Yelp), or call ${business.phone.display}.`,
+        a: `Yes. Book a table online with Reserve with Google, or call ${business.phone.display}.`,
         link: { href: '/reservations', label: 'Reservations' },
       },
       {
@@ -51,7 +57,7 @@ const groups: { title: string; items: { q: string; a: string; link?: { href: str
     items: [
       {
         q: 'Can I order online for pickup or delivery?',
-        a: 'Yes. Blue takes online orders for pickup and delivery through DoorDash, and on Blue’s order.online page (powered by DoorDash).',
+        a: 'Yes. Order on DoorDash for pickup or delivery, or on our order.online page, which is also run by DoorDash.',
         link: { href: '/order', label: 'Pickup and delivery' },
       },
       {
@@ -65,12 +71,12 @@ const groups: { title: string; items: { q: string; a: string; link?: { href: str
     items: [
       {
         q: 'What kind of food does Blue Seafood & Grill serve?',
-        a: 'Mostly seafood — oysters, starters like crab cakes and calamari, Cajun seafood boil, pan roast and cioppino, tacos, a lobster roll, fish n’ chips, seafood pastas, salmon and halibut — plus a bone-in ribeye and a Western burger.',
+        a: 'Mostly seafood: oysters, starters like crab cakes and calamari, a Cajun seafood boil, pan roast, cioppino, tacos, a lobster roll, fish n’ chips, seafood pastas, salmon and halibut. Beyond seafood, there’s a bone-in ribeye, Chicken Breast Madeira and a Western burger.',
         link: { href: '/menu', label: 'See the menu' },
       },
       {
         q: 'How are the oysters served?',
-        a: 'The menu lists three ways — baked Rockefeller-style, grilled with garlic butter, or fried — each by the half dozen or dozen.',
+        a: 'Three ways: baked Rockefeller-style, grilled with garlic butter, or fried. Each comes by the half dozen or the dozen.',
         link: { href: '/menu/oysters', label: 'Oysters' },
       },
       {
@@ -80,7 +86,13 @@ const groups: { title: string; items: { q: string; a: string; link?: { href: str
       },
       {
         q: 'Do you serve steak?',
-        a: 'Yes — a bone-in ribeye with pomme purée, grilled asparagus and peppercorn sauce, and a Western burger.',
+        a: 'Yes: a bone-in ribeye with pomme purée, grilled asparagus and peppercorn sauce. There’s also a Western burger.',
+        link: { href: '/menu/entrees', label: 'Entrées' },
+      },
+      {
+        // King Crab confirmed as served by the restaurant (2026-09-24); portion note is from the menu.
+        q: 'Do you have king crab?',
+        a: 'Yes. King Crab is on our entrée menu, with grilled asparagus and drawn butter, in half-pound or one-pound portions. Availability can vary, so call ahead if you’re coming for it.',
         link: { href: '/menu/entrees', label: 'Entrées' },
       },
       {
@@ -106,7 +118,7 @@ const groups: { title: string; items: { q: string; a: string; link?: { href: str
     items: [
       {
         q: 'How can I contact Blue Seafood & Grill?',
-        a: `Call ${business.phone.display}. Blue is also on Instagram (${business.links.instagramHandle}) and Facebook.`,
+        a: `Call us at ${business.phone.display}. We’re also on Instagram (${business.links.instagramHandle}) and Facebook.`,
       },
     ],
   },
@@ -116,8 +128,8 @@ const allFaqs = groups.flatMap((g) => g.items.map(({ q, a }) => ({ q, a })));
 ---
 
 <Base
-  title="FAQ – Hours, Reservations, Ordering & Menu | Blue Seafood & Grill"
-  description="Answers about Blue Seafood & Grill in Arroyo Grande: hours, location, reservations, pickup and delivery, oysters, the seafood boil, steak and vegetarian dishes."
+  title="FAQ | Blue Seafood & Grill, Arroyo Grande"
+  description="Hours, directions, reservations, pickup and delivery, and menu questions at Blue Seafood & Grill in Arroyo Grande, from oysters and the seafood boil to king crab."
   path="/faq"
   schema={[breadcrumbSchema(site, trail), faqSchema(allFaqs)]}
 >

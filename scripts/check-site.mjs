@@ -69,11 +69,17 @@ for (const file of htmlFiles) {
   const credit = html.match(/Website design &amp; maintenance by <a href="([^"]+)"[^>]*>Future Marketing Studio<\/a>/);
   if (!credit || credit[1] !== 'https://futuremark.studio') errors.push(`${route}: missing footer credit`);
 
-  // Google Analytics: the Google tag loads exactly once, after the CSP meta tag -----
-  const gtagTags = html.match(/<script[^>]+src="https:\/\/www\.googletagmanager\.com\/gtag\/js\?id=G-E4JB2S27XN"/g) ?? [];
-  if (gtagTags.length !== 1) errors.push(`${route}: Google tag found ${gtagTags.length} times (expected 1)`);
+  // Google Analytics: the tag loader (inline, or a bundled /_astro script) appears exactly once, and
+  // after the CSP meta tag -------------------------------------------------------------------------
+  const scriptBlocks = [...html.matchAll(/<script(?![^>]*application\/ld\+json)[^>]*>([\s\S]*?)<\/script>/g)];
+  const gaLoaders = scriptBlocks.filter((m) => {
+    const src = m[0].match(/src="(\/_astro\/[^"]+)"/);
+    const code = src ? readFileSync(join(DIST, src[1]), 'utf8') : m[1];
+    return code.includes('googletagmanager.com/gtag/js') && code.includes('G-E4JB2S27XN');
+  });
+  if (gaLoaders.length !== 1) errors.push(`${route}: Google tag loader found ${gaLoaders.length} times (expected 1)`);
   const cspAt = html.search(/<meta http-equiv="content-security-policy"/i);
-  if (cspAt === -1 || cspAt > html.indexOf('googletagmanager.com/gtag/js'))
+  if (cspAt === -1 || (gaLoaders[0] && cspAt > gaLoaders[0].index))
     errors.push(`${route}: CSP meta tag must come before the Google tag`);
 
   // SEO -------------------------------------------------------------------

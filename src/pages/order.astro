@@ -31,8 +31,8 @@ const linkFor = (name: string) => {
 ---
 
 <Base
-  title="Order Pickup or Delivery | Blue Seafood & Grill, Arroyo Grande"
-  description="Order Blue Seafood & Grill for pickup or delivery through DoorDash. Pickup at 1351 E Grand Ave, Arroyo Grande. Most-ordered dishes and who to call with questions."
+  title="Order Pickup & Delivery | Blue Seafood & Grill, Arroyo Grande"
+  description="Order Blue Seafood & Grill on DoorDash for pickup at 1351 E Grand Ave in Arroyo Grande, or for delivery. See what people order most, and who to call with questions."
   path="/order"
   schema={[breadcrumbSchema(site, trail)]}
 >
@@ -42,8 +42,8 @@ const linkFor = (name: string) => {
       <p class="label">Pickup &amp; delivery</p>
       <h1 class="display-xl">Order pickup <em>or delivery</em></h1>
       <p class="lede">
-        Blue Seafood &amp; Grill takes online orders for pickup and delivery through DoorDash. Pickup is at
-        the restaurant, {business.address.street} in {business.address.city}.
+        Order online on DoorDash and pick it up at {business.address.street} in {business.address.city}, or have
+        it delivered.
       </p>
       <div class="btn-row">
         <a class="btn" href={business.links.order} target="_blank" rel="noopener">
@@ -60,23 +60,21 @@ const linkFor = (name: string) => {
     <div class="info-block">
       <h2 class="label">Two ways to order online</h2>
       <p>
-        <a class="text-link" href={business.links.order} target="_blank" rel="noopener">Blue on DoorDash</a> —
-        pickup or delivery.
+        <a class="text-link" href={business.links.order} target="_blank" rel="noopener">DoorDash</a>: pickup or delivery.
       </p>
       <p>
-        <a class="text-link" href={business.links.orderOnline} target="_blank" rel="noopener">Blue’s order.online page</a>
-        {' '}— the same store and menu, on Blue’s own ordering page (powered by DoorDash).
+        <a class="text-link" href={business.links.orderOnline} target="_blank" rel="noopener">Our order.online page</a>: the
+        same menu and kitchen, on an ordering page run by DoorDash.
       </p>
       <p class="info-note">
-        Online ordering hours are set on DoorDash and can end before the dining room closes: on Thursday,
-        September 24, 2026, online orders were accepted from 11:30 AM to 7:45 PM. The restaurant is closed on
-        Mondays. Prices for online orders are shown on DoorDash.
+        Online ordering can close before the dining room does, so check DoorDash for today’s ordering hours.
+        We’re closed Mondays. Prices for online orders are shown on DoorDash.
       </p>
     </div>
 
     <div class="info-block">
       <h2 class="label">Most ordered online</h2>
-      <p>The top five in DoorDash’s “Most Ordered” list for Blue (checked September 24, 2026):</p>
+      <p>The top five on DoorDash’s “Most Ordered” list for Blue (September 2026):</p>
       <ul role="list" class="dish-list">
         {
           mostOrdered.map((name) => (
@@ -91,7 +89,7 @@ const linkFor = (name: string) => {
 
     <div class="info-block">
       <h2 class="label">Questions about an order?</h2>
-      <p>Call the restaurant at <a class="text-link" href={business.phone.href}>{business.phone.display}</a>.</p>
+      <p>Call us at <a class="text-link" href={business.phone.href}>{business.phone.display}</a>.</p>
     </div>
 
     <div class="info-block">

@@ -94,8 +94,6 @@ const jsonLd = [restaurantSchema(site), ...schema];
     {jsonLd.map((obj) => <script type="application/ld+json" set:html={JSON.stringify(obj)} />)}
   </head>
   <body>
-    {/* First in <body>, not <head>: Astro injects the CSP meta tag after the head content, and the tag must come after it. */}
-    <GoogleAnalytics />
     <a class="skip-link" href="#main">Skip to content</a>
     <Header overlay={headerOverlay} />
     <main id="main" tabindex="-1">
@@ -103,5 +101,6 @@ const jsonLd = [restaurantSchema(site), ...schema];
     </main>
     <Footer />
     <MobileActions />
+    <GoogleAnalytics />
   </body>
 </html>

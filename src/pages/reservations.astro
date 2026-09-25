@@ -26,8 +26,7 @@ const trail = [
       <p class="label">Reservations</p>
       <h1 class="display-xl">Reserve a <em>table</em></h1>
       <p class="lede">
-        Book online through Reserve with Google — booking times are provided by Yelp — or call the restaurant
-        at {business.phone.display}.
+        Book a table online with Reserve with Google, or call us at {business.phone.display}.
       </p>
       <div class="btn-row">
         <a class="btn" href={business.links.reserve} target="_blank" rel="noopener">
@@ -35,6 +34,7 @@ const trail = [
         </a>
         <a class="btn btn-ghost" href={business.phone.href}><Icon name="phone" /> {business.phone.display}</a>
       </div>
+      <p class="info-note">Online booking runs through Google, and the available times come from Yelp.</p>
     </div>
   </section>
 
@@ -42,7 +42,7 @@ const trail = [
     <div class="info-block">
       <h2 class="label">When we’re open</h2>
       <HoursList />
-      <p class="info-note">Closed Mondays. Holiday hours can differ — please call ahead.</p>
+      <p class="info-note">Closed Mondays. Holiday hours can differ, so please call ahead.</p>
     </div>
 
     <div class="info-block">
@@ -53,8 +53,8 @@ const trail = [
       </p>
       <h2 class="label">Getting here</h2>
       <p>
-        {business.address.street}, {business.address.city}, {business.address.region} {business.address.postalCode}.
-        {' '}<a class="text-link" href="/visit">Map and directions</a>.
+        {business.address.street}, {business.address.city}, {business.address.region} {business.address.postalCode}, on East Grand
+        Avenue between Courtland Street and Elm Street. <a class="text-link" href="/visit">Map and directions</a>.
       </p>
       <h2 class="label">Before you come</h2>
       <p>
