@@ -61,6 +61,7 @@ for (const file of htmlFiles) {
   if (/raymundo|perez/i.test(html)) errors.push(`${route}: mentions former staff`);
   if (/\bchef\b/i.test(text)) warn.push(`${route}: mentions "chef" — confirm it is not a staff claim`);
   if (/BlueSeafoodNGrill/i.test(html)) errors.push(`${route}: contains old GitHub Pages base path`);
+  if (route === '/privacy' && /Last updated: DRAFT/.test(text)) errors.push('/privacy: still a DRAFT — set lastUpdated after the restaurant approves the text');
 
   // Required links ----------------------------------------------------------
   const ORDER = 'https://www.doordash.com/store/blue-seafood-and-grill-arroyo-grande-25401228/';
