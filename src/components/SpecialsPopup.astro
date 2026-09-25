@@ -1,0 +1,163 @@
+---
+/**
+ * Home page "Ask about today's specials" pop-up.
+ * - Native <dialog> (focus moves in, background is inert, Escape closes, focus returns).
+ * - Shown at most once per browser session, a moment after the page loads.
+ * - Generic on purpose: never names a specific special unless one is confirmed.
+ */
+import Icon from './Icon.astro';
+import { business } from '../data/business';
+---
+
+<dialog class="specials" aria-labelledby="specials-title" aria-describedby="specials-text" data-specials>
+  <div class="specials-inner">
+    <button type="button" class="specials-close" aria-label="Close" data-specials-close>
+      <Icon name="close" />
+    </button>
+    <p class="label">Today at Blue</p>
+    <h2 id="specials-title" class="specials-title">Ask about today’s <em>specials</em></h2>
+    <p id="specials-text" class="specials-text">
+      Our team can tell you what’s available today. Just ask when you visit, or give us a call.
+    </p>
+    <div class="btn-row">
+      <a class="btn" href={business.phone.href}><Icon name="phone" /> Call Us</a>
+      <button type="button" class="btn btn-ghost" data-specials-close>Not now</button>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  .specials {
+    width: min(100% - 2rem, 27rem);
+    max-width: none;
+    /* The global reset removes the dialog's default auto margins; restore centring. */
+    margin: auto;
+    padding: 0;
+    border: 0;
+    border-radius: 2px;
+    background: var(--paper);
+    color: var(--ink);
+    box-shadow: 0 24px 60px -20px rgb(6 18 30 / 0.55);
+  }
+
+  .specials::backdrop {
+    background: rgb(6 18 30 / 0.45);
+  }
+
+  .specials-inner {
+    position: relative;
+    display: grid;
+    gap: 0.8rem;
+    justify-items: start;
+    padding: 1.75rem 1.5rem 1.6rem;
+    border-top: 4px solid var(--blue);
+  }
+
+  .specials-title {
+    padding-right: 2.5rem;
+    font-size: var(--step-3);
+  }
+
+  .specials-text {
+    color: var(--soft);
+  }
+
+  .specials .btn-row {
+    margin-top: 0.4rem;
+  }
+
+  .specials-close {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: var(--paper);
+    color: var(--navy);
+  }
+
+  .specials-close:hover {
+    background: var(--glass);
+  }
+
+  .specials-close :global(svg) {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  /* Phones: bottom sheet, clear of the fixed Call / Menu / Directions bar */
+  @media (max-width: 599.98px) {
+    .specials {
+      width: 100%;
+      margin: auto 0 0;
+    }
+
+    .specials-inner {
+      padding: 1.6rem 1.25rem calc(1.4rem + env(safe-area-inset-bottom));
+    }
+
+    .specials .btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .specials[open] {
+      animation: specials-in 0.28s var(--ease);
+    }
+
+    @keyframes specials-in {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+    }
+  }
+</style>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('[data-specials]');
+  const KEY = 'blue-specials-shown';
+
+  const alreadyShown = () => {
+    try {
+      return sessionStorage.getItem(KEY) === '1';
+    } catch {
+      return false;
+    }
+  };
+
+  const markShown = () => {
+    try {
+      sessionStorage.setItem(KEY, '1');
+    } catch {
+      /* storage unavailable: the pop-up simply shows on this page view only */
+    }
+  };
+
+  const open = () => {
+    if (!dialog || dialog.open || alreadyShown()) return;
+    // Don't interrupt someone who has the mobile menu open; try again shortly.
+    if (document.querySelector('[data-nav-panel].is-open')) {
+      window.setTimeout(open, 3000);
+      return;
+    }
+    markShown();
+    dialog.showModal();
+  };
+
+  if (dialog && typeof dialog.showModal === 'function' && !alreadyShown()) {
+    window.setTimeout(open, 2500);
+    dialog.querySelectorAll('[data-specials-close]').forEach((btn) => btn.addEventListener('click', () => dialog.close()));
+    // Tap/click on the dimmed backdrop closes it (the dialog element itself is only the backdrop area).
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+  }
+</script>

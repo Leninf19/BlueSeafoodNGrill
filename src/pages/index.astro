@@ -4,22 +4,24 @@ import Photo from '../components/Photo.astro';
 import Icon from '../components/Icon.astro';
 import OpenStatus from '../components/OpenStatus.astro';
 import Reviews from '../components/Reviews.astro';
+import SpecialsPopup from '../components/SpecialsPopup.astro';
 import { business } from '../data/business';
 import { menu } from '../data/menu';
 
 // Dish names must match src/data/menu.ts exactly; the build fails if one is renamed or removed.
+// An optional third value is a shorter display label (e.g. "Seafood Alfredo" for "Seafood Alfredo Pasta").
 const menuNames = new Set(menu.flatMap((s) => s.items.map((i) => i.name)));
-const dishes = (list: [string, string][]) =>
-  list.map(([name, short]) => {
+const dishes = (list: [string, string, string?][]) =>
+  list.map(([name, short, label]) => {
     if (!menuNames.has(name)) throw new Error(`Home page dish "${name}" is not in src/data/menu.ts`);
-    return { name, short };
+    return { name: label ?? name, short };
   });
 
 const boils = dishes([
-  ['Cajun Seafood Boil', 'crab · lobster · shrimp · corn'],
-  ['Pan Roast', 'smoked tomato cream · jasmine rice'],
-  ['Cioppino', 'tomato-herb broth · crostini'],
-  ['Sautéed Clams', 'garlic butter–wine sauce'],
+  ['Cajun Seafood Boil', 'crab · lobster · shrimp · corn · and more'],
+  ['Pan Roast', 'an assortment of seafood · smoked tomato cream · jasmine rice'],
+  ['Cioppino', 'an assortment of seafood · tomato-herb broth · crostini'],
+  ['Seafood Alfredo Pasta', 'Linguini with house-made Alfredo sauce and an assortment of seafood.', 'Seafood Alfredo'],
 ]);
 
 const plates = dishes([
@@ -71,8 +73,8 @@ for (const p of preview) if (!menuIds.has(p.id)) throw new Error(`Menu section #
   <section class="container intro" aria-labelledby="intro-title">
     <h2 id="intro-title" class="label">What we cook</h2>
     <p class="intro-text">
-      Oysters grilled with garlic butter, baked Rockefeller-style or fried. A Cajun boil of crab,
-      lobster, shrimp and corn for the middle of the table. <em>Melted shrimp tacos</em>, a lobster
+      Oysters grilled with garlic butter, baked Rockefeller-style or fried. A Cajun boil with crab,
+      lobster, shrimp, corn and more for the middle of the table. <em>Melted shrimp tacos</em>, a lobster
       roll with truffle-parmesan fries, and a bone-in ribeye for whoever came for steak.
     </p>
   </section>
@@ -85,7 +87,8 @@ for (const p of preview) if (!menuIds.has(p.id)) throw new Error(`Menu section #
     </div>
     <div class="spread-copy">
       <p class="label cond-label"><span class="cond">Steamers &amp; Boils</span></p>
-      <h2 id="boils-title" class="display-lg">Built for the <em>middle of the table</em></h2>
+      <h2 id="boils-title" class="display-lg">An assortment of seafood <em>on the plate</em></h2>
+      <p class="spread-tagline">Built for a seafood feast.</p>
       <ul role="list" class="dish-list">
         {boils.map((d) => <li><span class="name">{d.name}</span><span class="desc">{d.short}</span></li>)}
       </ul>
@@ -174,6 +177,8 @@ for (const p of preview) if (!menuIds.has(p.id)) throw new Error(`Menu section #
       </div>
     </div>
   </section>
+
+  <SpecialsPopup />
 </Base>
 
 <style>
@@ -282,6 +287,14 @@ for (const p of preview) if (!menuIds.has(p.id)) throw new Error(`Menu section #
 
   .spread-copy .dish-list {
     width: 100%;
+  }
+
+  .spread-tagline {
+    font-family: var(--serif);
+    font-size: var(--step-1);
+    font-style: italic;
+    color: var(--soft);
+    margin-top: -0.35rem;
   }
 
   .cond-label {
